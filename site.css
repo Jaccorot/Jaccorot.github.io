@@ -11,10 +11,10 @@ img { border: 1px solid #808A87; }
 }
 #left{
   float:left;
-  width:80%;
+  width:100%;
   text-align: right;
   padding-right: 10px;
-  margin-top:100px;
+  margin-top:10px;
 }
 #left #div2{
     margin-top:300px;
