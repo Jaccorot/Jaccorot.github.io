@@ -2,10 +2,10 @@
 layout: post
 title:  "如何快速发现微信中你是否已经被删除"
 date:   2016-01-08 20:00:00 +0800
-categories: jekyll update
+categories: python
 ---
 
-    今天逛论坛时发现一段蛮好玩的code，可以快速发现微信中你是否已经被删除。
+  今天逛论坛时发现一段蛮好玩的code，可以快速发现微信中你是否已经被删除。
 代码如下：
 
 '
