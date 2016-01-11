@@ -8,7 +8,8 @@ categories: python
   今天逛论坛时发现一段蛮好玩的code，可以快速发现微信中你是否已经被删除。
 代码如下：
 
-'
+{% highlight python linenos  %}
+
 #!/usr/bin/env python
 # coding=utf-8
 
@@ -445,5 +446,7 @@ if __name__ == '__main__' :
 
     print '回车键结束'
     raw_input()
-'
 
+
+
+{% endhighlight %}
