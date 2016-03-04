@@ -49,6 +49,7 @@ categories: github, markdown
         >second line
 
     SAMPLE:
+
     # h1 tag
     ## h2 tag
     ###### h6 tag
@@ -103,6 +104,7 @@ categories: github, markdown
         2. 冰河
 
     SAMPLE:
+    
     * 雅典娜
     * 紫龙
 
