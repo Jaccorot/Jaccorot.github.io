@@ -1,20 +1,21 @@
 ---
 layout: post
-title:  "Android test(1)"
+title:  "Android-Test-ADB(1)"
 date:   2016-03-03 20:51:00 +0800
-categories: android appium
+categories: android test
 ---
   鉴于Android机卡顿慢，测试起来及其容易出问题，计划近期做一些关于Android的自动化测试相关学习。
   计划了解的内容有：
-  1. ADB
-  2. monkey
-  3. monkeyrunner
-  4. uiautomator
-  5. robotium
-  6. appium
+  
+1. ADB
+2. monkey
+3. monkeyrunner
+4. uiautomator
+5. robotium
+6. appium
 
 
-# 1.ADB
+## 1.ADB
 在SDK的platform-tools文件夹下包含着Android模拟器操作的重要命令ADB，ADB的全称为Android Debug Bridge，就是调试桥的作用，借助这个工具，我们可以管理设备或手机模拟器的状态,还可以进行以下的操作：
 
 （1）快速更新设备或手机模拟器中的代码，如应用或Android系统升级；
@@ -22,7 +23,7 @@ categories: android appium
 （3）管理设备或手机模拟器上的预定端口；
 （4）在设备或手机模拟器上复制或粘贴文件。
 
-1.1 adb启动
+### 1.1 adb启动
 
 adb默认端口为5037,通常将adb置入环境变量的path中，即可通过cmd启动。
 
@@ -68,7 +69,7 @@ adb默认端口为5037,通常将adb置入环境变量的path中，即可通过cm
     linux下只要 export $ANDROID_ADB_SERVER_PORT = 自定义端口，即可。
 
 
-1.2 版本信息
+### 1.2 版本信息
 
 `adb version`
 
@@ -78,14 +79,14 @@ adb默认端口为5037,通常将adb置入环境变量的path中，即可通过cm
 
     Revision 09a0d98bebce-android
 
-1.3 安装应用到模拟器 
+### 1.3 安装应用到模拟器 
 
 `adb install [-l] [-r] <file>`
 
 其中file是需要安装的apk文件的绝对路径。
 
  
-1.4卸载已经安装的应用
+### 1.4卸载已经安装的应用
 
 （1）方法1：
 
@@ -99,7 +100,7 @@ adb默认端口为5037,通常将adb置入环境变量的path中，即可通过cm
     cd /data/app
     rm app.apk
 
-1.5 进入设备或模拟器的Shell
+### 1.5 进入设备或模拟器的Shell
 
 `adb shell` 通过该命令，就可以进入设备或模拟器的Shell环境中，在这个Linux Shell中，可以执行各种Linux 的命令，另外如果只想执行一条Shell命令，可以采用以下的方式：
 `adb shell [command]`
@@ -120,7 +121,7 @@ adb默认端口为5037,通常将adb置入环境变量的path中，即可通过cm
     /firmware               64.0M    51.3M    12.6M   16384
     /mnt/shell/emulated     10.5G     2.8G     7.7G   4096
 
-1.6 复制文件
+### 1.6 复制文件
 
 可以使用`adb pull` ,`adb push` 命令将文件复制到一个模拟器/设备实例的数据文件或是从数据文件中复制。install 命令只将一个apk文件复制到一个特定的位置，与其不同的是，pull 和 push 命令可让用户复制任意的目录和文件到一个模拟器/设备实例的任何位置。
 
