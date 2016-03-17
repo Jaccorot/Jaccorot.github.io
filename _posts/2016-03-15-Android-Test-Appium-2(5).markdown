@@ -47,178 +47,178 @@ find_element_by_ios_uiautomation(self, uia_string):
             driver.find_element_by_ios_uiautomation('.elements()[1].cells()[2]')
     用法dr. find_element_by_ios_uiautomation(‘elements’)
 
-5. find_element_by_accessibility_id
+### 5. find_element_by_accessibility_id
 find_element_by_accessibility_id(self, id):
 
-Finds an element by accessibility id.
-    通过accessibility id查找元素
-    :Args:
-     - id - a string corresponding to a recursive element search using the
-     Id/Name that the native Accessibility options utilize
+    Finds an element by accessibility id.
+        通过accessibility id查找元素
+        :Args:
+         - id - a string corresponding to a recursive element search using the
+         Id/Name that the native Accessibility options utilize
 
-    :Usage:
-        driver.find_element_by_accessibility_id()
-用法driver.find_element_by_accessibility_id(‘id’)
-6.scroll
+        :Usage:
+            driver.find_element_by_accessibility_id()
+    用法driver.find_element_by_accessibility_id(‘id’)
+### 6.scroll
 scroll(self, origin_el, destination_el):
 
-Scrolls from one element to another
-    从元素origin_el滚动至元素destination_el
-    :Args:
-     - originalEl - the element from which to being scrolling
-     - destinationEl - the element to scroll to
+    Scrolls from one element to another
+        从元素origin_el滚动至元素destination_el
+        :Args:
+         - originalEl - the element from which to being scrolling
+         - destinationEl - the element to scroll to
 
-    :Usage:
-        driver.scroll(el1, el2)
-用法 driver.scroll(el1,el2)
+        :Usage:
+            driver.scroll(el1, el2)
+    用法 driver.scroll(el1,el2)
 
-7. drag_and_drop
+### 7. drag_and_drop
 drag_and_drop(self, origin_el, destination_el):
 
-Drag the origin element to the destination element
-    将元素origin_el拖到目标元素destination_el
-    :Args:
-     - originEl - the element to drag
-     - destinationEl - the element to drag to
-用法 driver.drag_and_drop(el1,el2)
-8.tap
+    Drag the origin element to the destination element
+        将元素origin_el拖到目标元素destination_el
+        :Args:
+         - originEl - the element to drag
+         - destinationEl - the element to drag to
+    用法 driver.drag_and_drop(el1,el2)
+### 8.tap
 tap(self, positions, duration=None):
 
-Taps on an particular place with up to five fingers, holding for a certain time
-模拟手指点击（最多五个手指），可设置按住时间长度（毫秒）
+    Taps on an particular place with up to five fingers, holding for a certain time
+    模拟手指点击（最多五个手指），可设置按住时间长度（毫秒）
 
-    :Args:
-     - positions - an array of tuples representing the x/y coordinates of
-     the fingers to tap. Length can be up to five.
-     - duration - (optional) length of time to tap, in ms
+        :Args:
+         - positions - an array of tuples representing the x/y coordinates of
+         the fingers to tap. Length can be up to five.
+         - duration - (optional) length of time to tap, in ms
 
-    :Usage:
-        driver.tap([(100, 20), (100, 60), (100, 100)], 500)
-用法 driver.tap([(x,y),(x1,y1)],500)
-9. swipe
+        :Usage:
+            driver.tap([(100, 20), (100, 60), (100, 100)], 500)
+    用法 driver.tap([(x,y),(x1,y1)],500)
+### 9. swipe
 swipe(self, start_x, start_y, end_x, end_y, duration=None):
 
-Swipe from one point to another point, for an optional duration.
-    从A点滑动至B点，滑动时间为毫秒
-    :Args:
-     - start_x - x-coordinate at which to start
-     - start_y - y-coordinate at which to start
-     - end_x - x-coordinate at which to stop
-     - end_y - y-coordinate at which to stop
-     - duration - (optional) time to take the swipe, in ms.
+    Swipe from one point to another point, for an optional duration.
+        从A点滑动至B点，滑动时间为毫秒
+        :Args:
+         - start_x - x-coordinate at which to start
+         - start_y - y-coordinate at which to start
+         - end_x - x-coordinate at which to stop
+         - end_y - y-coordinate at which to stop
+         - duration - (optional) time to take the swipe, in ms.
 
-    :Usage:
-        driver.swipe(100, 100, 100, 400)
-用法 driver.swipe(x1,y1,x2,y2,500)
+        :Usage:
+            driver.swipe(100, 100, 100, 400)
+    用法 driver.swipe(x1,y1,x2,y2,500)
 
-10.flick
+### 10.flick
 flick(self, start_x, start_y, end_x, end_y):
 
-Flick from one point to another point.
-    按住A点后快速滑动至B点
-    :Args:
-     - start_x - x-coordinate at which to start
-     - start_y - y-coordinate at which to start
-     - end_x - x-coordinate at which to stop
-     - end_y - y-coordinate at which to stop
+    Flick from one point to another point.
+        按住A点后快速滑动至B点
+        :Args:
+         - start_x - x-coordinate at which to start
+         - start_y - y-coordinate at which to start
+         - end_x - x-coordinate at which to stop
+         - end_y - y-coordinate at which to stop
 
-    :Usage:
-        driver.flick(100, 100, 100, 400)
+        :Usage:
+            driver.flick(100, 100, 100, 400)
 
-用法 driver.flick(x1,y1,x2,y2)
-11.pinch
+    用法 driver.flick(x1,y1,x2,y2)
+### 11.pinch
 pinch(self, element=None, percent=200, steps=50):
 
-Pinch on an element a certain amount
-    在元素上执行模拟双指捏（缩小操作）
-    :Args:
-     - element - the element to pinch
-     - percent - (optional) amount to pinch. Defaults to 200%
-     - steps - (optional) number of steps in the pinch action
+    Pinch on an element a certain amount
+        在元素上执行模拟双指捏（缩小操作）
+        :Args:
+         - element - the element to pinch
+         - percent - (optional) amount to pinch. Defaults to 200%
+         - steps - (optional) number of steps in the pinch action
 
-    :Usage:
-        driver.pinch(element)
-用法 driver.pinch(element)
-12.zoom
+        :Usage:
+            driver.pinch(element)
+    用法 driver.pinch(element)
+### 12.zoom
 zoom(self, element=None, percent=200, steps=50):
 
-Zooms in on an element a certain amount
-    在元素上执行放大操作
-    :Args:
-     - element - the element to zoom
-     - percent - (optional) amount to zoom. Defaults to 200%
-     - steps - (optional) number of steps in the zoom action
+    Zooms in on an element a certain amount
+        在元素上执行放大操作
+        :Args:
+         - element - the element to zoom
+         - percent - (optional) amount to zoom. Defaults to 200%
+         - steps - (optional) number of steps in the zoom action
 
-    :Usage:
-        driver.zoom(element)
-用法 driver.zoom(element)
-13.reset
+        :Usage:
+            driver.zoom(element)
+    用法 driver.zoom(element)
+### 13.reset
 reset(self):
 
-Resets the current application on the device.
-重置应用(类似删除应用数据)
-用法 driver.reset()
-14. hide_keyboard
+    Resets the current application on the device.
+    重置应用(类似删除应用数据)
+    用法 driver.reset()
+### 14. hide_keyboard
 hide_keyboard(self, key_name=None, key=None, strategy=None):
 
-Hides the software keyboard on the device. In iOS, use `key_name` to press a particular key, or `strategy`. In Android, no parameters are used.
-    隐藏键盘,iOS使用key_name隐藏，安卓不使用参数
+    Hides the software keyboard on the device. In iOS, use `key_name` to press a particular key, or `strategy`. In Android, no parameters are used.
+        隐藏键盘,iOS使用key_name隐藏，安卓不使用参数
 
-    :Args:
-     - key_name - key to press
-     - strategy - strategy for closing the keyboard (e.g., `tapOutside`)
-driver.hide_keyboard()
-15. keyevent
+        :Args:
+         - key_name - key to press
+         - strategy - strategy for closing the keyboard (e.g., `tapOutside`)
+    driver.hide_keyboard()
+### 15. keyevent
 keyevent(self, keycode, metastate=None):
 
-Sends a keycode to the device. Android only. Possible keycodes can be found in http://developer.android.com/reference/android/view/KeyEvent.html.
-    发送按键码（安卓仅有），按键码可以上网址中找到
-    :Args:
-     - keycode - the keycode to be sent to the device
-     - metastate - meta information about the keycode being sent
-用法 dr.keyevent(‘4’)
-16. press_keycode
+    Sends a keycode to the device. Android only. Possible keycodes can be found in http://developer.android.com/reference/android/view/KeyEvent.html.
+        发送按键码（安卓仅有），按键码可以上网址中找到
+        :Args:
+         - keycode - the keycode to be sent to the device
+         - metastate - meta information about the keycode being sent
+    用法 dr.keyevent(‘4’)
+### 16. press_keycode
 press_keycode(self, keycode, metastate=None):
 
-Sends a keycode to the device. Android only. Possible keycodes can be found in http://developer.android.com/reference/android/view/KeyEvent.html.
-    发送按键码（安卓仅有），按键码可以上网址中找到
+    Sends a keycode to the device. Android only. Possible keycodes can be found in http://developer.android.com/reference/android/view/KeyEvent.html.
+        发送按键码（安卓仅有），按键码可以上网址中找到
 
-    :Args:
-     - keycode - the keycode to be sent to the device
-     - metastate - meta information about the keycode being sent
-用法 driver.press_ keycode(‘4’)
-dr.keyevent(‘4’)与driver.press_ keycode(‘4’) 功能实现上一样的，都是按了返回键
-17. long_press_keycode
+        :Args:
+         - keycode - the keycode to be sent to the device
+         - metastate - meta information about the keycode being sent
+    用法 driver.press_ keycode(‘4’)
+    dr.keyevent(‘4’)与driver.press_ keycode(‘4’) 功能实现上一样的，都是按了返回键
+### 17. long_press_keycode
 long_press_keycode(self, keycode, metastate=None):
 
-Sends a long press of keycode to the device. Android only. Possible keycodes can be
-    found in http://developer.android.com/reference/android/view/KeyEvent.html.
-    发送一个长按的按键码（长按某键）
-   详细的按键代码见这里  http://developer.android.com/reference/android/view/KeyEvent.html.
+    Sends a long press of keycode to the device. Android only. Possible keycodes can be
+        found in http://developer.android.com/reference/android/view/KeyEvent.html.
+        发送一个长按的按键码（长按某键）
+       详细的按键代码见这里  http://developer.android.com/reference/android/view/KeyEvent.html.
 
-    :Args:
-     - keycode - the keycode to be sent to the device
-     - metastate - meta information about the keycode being sent
- 用法 driver.long_press_keycode(4)  谢谢@t880216t童鞋反馈
-18.current_activity
+        :Args:
+         - keycode - the keycode to be sent to the device
+         - metastate - meta information about the keycode being sent
+     用法 driver.long_press_keycode(4) 
+### 18.current_activity
 current_activity(self):
 
-Retrieves the current activity on the device.
-获取当前的activity
-用法 print(driver.current_activity())
-19. wait_activity
+    Retrieves the current activity on the device.
+    获取当前的activity
+    用法 print(driver.current_activity())
+### 19. wait_activity
 wait_activity(self, activity, timeout, interval=1):
 
-Wait for an activity: block until target activity presents or time out.
-    This is an Android-only method.
-    等待指定的activity出现直到超时，interval为扫描间隔1秒
-即每隔几秒获取一次当前的activity
-返回的True 或 False
-    :Agrs:
-     - activity - target activity
-     - timeout - max wait time, in seconds
-     - interval - sleep interval between retries, in seconds
-用法driver.wait_activity(‘.activity.xxx’,5,2)
+    Wait for an activity: block until target activity presents or time out.
+        This is an Android-only method.
+        等待指定的activity出现直到超时，interval为扫描间隔1秒
+    即每隔几秒获取一次当前的activity
+    返回的True 或 False
+        :Agrs:
+         - activity - target activity
+         - timeout - max wait time, in seconds
+         - interval - sleep interval between retries, in seconds
+    用法driver.wait_activity(‘.activity.xxx’,5,2)
 20. background_app
 background_app(self, seconds):
 
