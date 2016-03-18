@@ -219,93 +219,93 @@ wait_activity(self, activity, timeout, interval=1):
          - timeout - max wait time, in seconds
          - interval - sleep interval between retries, in seconds
     用法driver.wait_activity(‘.activity.xxx’,5,2)
-20. background_app
+### 20. background_app
 background_app(self, seconds):
 
-Puts the application in the background on the device for a certain duration.
-    后台运行app多少秒
-    :Args:
-     - seconds - the duration for the application to remain in the background
-用法 driver.background_app(5)   置后台5秒后再运行
-21.is_app_installed
+    Puts the application in the background on the device for a certain duration.
+        后台运行app多少秒
+        :Args:
+         - seconds - the duration for the application to remain in the background
+    用法 driver.background_app(5)   置后台5秒后再运行
+### 21.is_app_installed
 is_app_installed(self, bundle_id):
 
-Checks whether the application specified by `bundle_id` is installed on the device.
-    检查app是否有安装
-返回 True or False
-    :Args:
-     - bundle_id - the id of the application to query
-用法 driver.is_app_installed(“com.xxxx”)
-22.install_app
+    Checks whether the application specified by `bundle_id` is installed on the device.
+        检查app是否有安装
+    返回 True or False
+        :Args:
+         - bundle_id - the id of the application to query
+    用法 driver.is_app_installed(“com.xxxx”)
+### 22.install_app
 install_app(self, app_path):
 
-Install the application found at `app_path` on the device.
-    安装app,app_path为安装包路径
-    :Args:
-     - app_path - the local or remote path to the application to install
-用法 driver.install_app(app_path)
-23.remove_app
+    Install the application found at `app_path` on the device.
+        安装app,app_path为安装包路径
+        :Args:
+         - app_path - the local or remote path to the application to install
+    用法 driver.install_app(app_path)
+### 23.remove_app
 remove_app(self, app_id):
 
-Remove the specified application from the device.
-    删除app
-    :Args:
-     - app_id - the application id to be removed
-用法 driver.remove_app(“com.xxx.”)
+    Remove the specified application from the device.
+        删除app
+        :Args:
+         - app_id - the application id to be removed
+    用法 driver.remove_app(“com.xxx.”)
 
-24.launch_app
+### 24.launch_app
 launch_app(self):
 
-Start on the device the application specified in the desired capabilities.
-启动app
-用法 driver.launch_app()
-25.close_app
+    Start on the device the application specified in the desired capabilities.
+    启动app
+    用法 driver.launch_app()
+### 25.close_app
 close_app(self):
 
-Stop the running application, specified in the desired capabilities, on the device.
-关闭app
-用法 driver.close_app()
-启动和关闭app运行好像会出错
-26. start_activity
+    Stop the running application, specified in the desired capabilities, on the device.
+    关闭app
+    用法 driver.close_app()
+    启动和关闭app运行好像会出错
+### 26. start_activity
 start_activity(self, app_package, app_activity, **opts):
 
-Opens an arbitrary activity during a test. If the activity belongs to
-    another application, that application is started and the activity is opened.
+    Opens an arbitrary activity during a test. If the activity belongs to
+        another application, that application is started and the activity is opened.
 
-    This is an Android-only method.
-    在测试过程中打开任意活动。如果活动属于另一个应用程序，该应用程序的启动和活动被打开。
-这是一个安卓的方法
-    :Args:
-    - app_package - The package containing the activity to start.
-    - app_activity - The activity to start.
-    - app_wait_package - Begin automation after this package starts (optional).
-    - app_wait_activity - Begin automation after this activity starts (optional).
-    - intent_action - Intent to start (optional).
-    - intent_category - Intent category to start (optional).
-    - intent_flags - Flags to send to the intent (optional).
-    - optional_intent_arguments - Optional arguments to the intent (optional).
-    - stop_app_on_reset - Should the app be stopped on reset (optional)?
-用法 driver.start_activity(app_package, app_activity)
-27.lock
+        This is an Android-only method.
+        在测试过程中打开任意活动。如果活动属于另一个应用程序，该应用程序的启动和活动被打开。
+    这是一个安卓的方法
+        :Args:
+        - app_package - The package containing the activity to start.
+        - app_activity - The activity to start.
+        - app_wait_package - Begin automation after this package starts (optional).
+        - app_wait_activity - Begin automation after this activity starts (optional).
+        - intent_action - Intent to start (optional).
+        - intent_category - Intent category to start (optional).
+        - intent_flags - Flags to send to the intent (optional).
+        - optional_intent_arguments - Optional arguments to the intent (optional).
+        - stop_app_on_reset - Should the app be stopped on reset (optional)?
+    用法 driver.start_activity(app_package, app_activity)
+### 27.lock
 lock(self, seconds):
 
-Lock the device for a certain period of time. iOS only.
-    锁屏一段时间  iOS专有
-    :Args:
-     - the duration to lock the device, in seconds
-用法 driver.lock()
-28.shake
+    Lock the device for a certain period of time. iOS only.
+        锁屏一段时间  iOS专有
+        :Args:
+         - the duration to lock the device, in seconds
+    用法 driver.lock()
+### 28.shake
 shake(self):
 
-Shake the device.
-摇一摇手机
-用法 driver.shake()
-29.open_notifications
+    Shake the device.
+    摇一摇手机
+    用法 driver.shake()
+### 29.open_notifications
 open_notifications(self):
 
-Open notification shade in Android (API Level 18 and above)
-打系统通知栏（仅支持API 18 以上的安卓系统）
-用法 driver.open_notifications()
+    Open notification shade in Android (API Level 18 and above)
+    打系统通知栏（仅支持API 18 以上的安卓系统）
+    用法 driver.open_notifications()
 30.network_connection
 network_connection(self):
 
