@@ -60,5 +60,10 @@ categories: fiddler test
         Rules - Automatic Breakpoint - Disabled
         快捷键：Shift + F11
 
+## 响应调试
+
+AutoResponder
+
+
 原文地址：[http://v2in.com/tamper-request-response-in-fiddler.html](http://v2in.com/tamper-request-response-in-fiddler.html)
 
