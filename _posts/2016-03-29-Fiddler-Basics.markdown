@@ -25,14 +25,41 @@ categories: fiddler test
 1. 设置无线WiFi，最好借助360WiFi做出专有WiFi，避免抓包时数据混杂，不易分辨。
 
 2. 在命令行中用ipconfig查看所设置WiFi所对应的IP
-![HTTPS](../static/images/20160329/20160329_fiddler_wifi.jpg)
+![PC](../static/images/20160329/20160329_fiddler_wifi.jpg)
 
 * 移动端（iOS or Android）
 
 1. 链接PC端所分享的WiFi，并进入详细设置页面
-![HTTPS](../static/images/20160329/20160329_fiddler_phone_setting.jpg)
+![PHONE](../static/images/20160329/20160329_fiddler_phone_setting.jpg)
 
 2.将代理设置为`手动`，并将上述操作中的IP填入，端口号默认为`8888`
-![HTTPS](../static/images/20160329/20160329_fiddler_phone_agent.jpg)
+![PHONE](../static/images/20160329/20160329_fiddler_phone_agent.jpg)
 
 这样，就实现了网络抓包。当移动端进行网络访问时，即可查看其所交互的内容。
+
+## Filter
+
+切换到fiddler右侧窗口的Filters选项卡，勾选顶部的“Use Filters”，找到Hosts区域，设置以下三个选项：
+![Filter](../static/images/20160329/20160329_fiddler_filter.png)
+
+1. 第一项有三个选项，不做更改：
+
+    “No zone filter”
+  
+    “Show Only Intranet Hosts”
+  
+    “Show Only Internet Hosts”
+
+2. 第二个选项是只监控以下网址，文本框内输入需要过滤的域名，多个域名使用”;“分号分割。fiddler默认会检查http头中设置的host，强制显示http地址中的域名。
+
+    如只监控易企秀相关内容，在下面的输入框里填上测试服、预发布服和文件服务器等相关域名。
+
+    “No Host Filter”不设置hosts过滤
+  
+    “Hide The Following Hosts”隐藏过滤到的域名
+  
+    “Show Only The Following Hosts”只显示过滤到的域名
+  
+    “Flag The Following Hosts”标记过滤到的域名
+
+3. 在Actions中点击`Run Filterset now`，执行筛选条件。
