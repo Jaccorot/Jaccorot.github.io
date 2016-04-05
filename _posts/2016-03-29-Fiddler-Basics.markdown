@@ -63,3 +63,12 @@ categories: fiddler test
     “Flag The Following Hosts”标记过滤到的域名
 
 3. 在Actions中点击`Run Filterset now`，执行筛选条件。
+
+## Cases
+
+1. 选中截取的请求后，点击`r`可以再次发送该请求，在调试时极为方便。
+
+2. 选中截取的请求后，点击`CTRL+1`~`CTRL+6`即可对该请求做特殊颜色标示，用于突出。
+
+3. 选中截取的请求后，点击`CTRL+U`，可以复制请求所对应的URL地址。
+
