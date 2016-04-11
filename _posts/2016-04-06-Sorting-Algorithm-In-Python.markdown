@@ -142,3 +142,38 @@ class heap_sort(object):
  
         return sort_list
 {% endhighlight %} 
+
+最后一种要说明的交换排序算法（以上所有算法都为交换排序，原因是都需要通过两两比较交换顺序）自然就是经典的快速排序。
+
+先来讲解一下原理。首先要用到的是分区工具函数（partition），对于给定的列表（数组），我们首先选择基准元素（这里我选择最后一个元素），通过比较，最后使得该元素的位置，使得这个运行结束的新列表（就地运行）所有在基准元素左边的数都小于基准元素，而右边的数都大于它。然后我们对于待排的列表，用分区函数求得位置，将列表分为左右两个列表（理想情况下），然后对其递归调用分区函数，直到子序列的长度小于等于1。
+
+下面是快速排序的源代码：
+{% highlight python linenos %}
+    class quick_sort(object):
+        def _partition(self, alist, p, r):
+            i = p-1
+            x = alist[r]
+            for j in range(p, r):
+                if alist[j]<=x:
+                    i += 1
+                    alist[i], alist[j] = alist[j], alist[i]
+            alist[i+1], alist[r] = alist[r], alist[i+1]
+            return i+1
+     
+        def _quicksort(self, alist, p, r):
+            if p<r:
+                q = self._partition(alist, p, r)
+                self._quicksort(alist, p, q-1)
+                self._quicksort(alist, q+1, r)
+     
+        def __call__(self, sort_list):
+            self._quicksort(sort_list, 0, len(sort_list)-1)
+            return sort_list
+{% endhighlight %}
+
+细心的朋友在这里可能会发现一个问题，如果待排序列正好是顺序的时候，整个的递归将会达到最大递归深度（序列的长度）。而实际上在操作的时候，当列表长度大于1000（理论值）的时候，程序会中断，报超出最大递归深度的错误（maximum recursion depth exceeded）。在查过资料后我们知道，Python在默认情况下，最大递归深度为1000（理论值，其实真实情况下，只有995左右，各个系统这个值的大小也不同）。这个问题有两种解决方案，1）重新设置最大递归深度，采用以下方法设置：
+
+{% highlight python linenos %}
+    import sys
+    sys.setrecursionlimit(99999)
+{% endhighlight %}
