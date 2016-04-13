@@ -72,3 +72,18 @@ categories: fiddler test
 
 3. 选中截取的请求后，点击`CTRL+U`，可以复制请求所对应的URL地址。
 
+## 模拟限速
+
+原理：Fiddler的模拟限速是在客户端请求前来自定义限速的逻辑，此逻辑是通过延迟发送数据或接收的数据的时间来限制网络的下载速度和上传速度，从而达到限速的效果。
+
+限速操作：勾选Rules->Performance->Simulate Modem Speeds
+
+![Limit](../static/images/20160329/20160329_fiddler_limit_choice.png)
+
+限速的代码：Rules->Customize Rules 或快捷键Ctrl+R
+
+通过关键字m_SimulateModem找到以下代码。
+
+![Limit](../static/images/20160329/20160329_fiddler_limit_script.png)
+
+注意，修改完存档之后，原本已经勾选的Simulate Modem Speeds 会被取消勾选，要记得再到Rules->Performance->Simulate Modem Speeds勾选才生效。
