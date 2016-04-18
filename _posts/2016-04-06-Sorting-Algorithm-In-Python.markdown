@@ -201,3 +201,86 @@ class heap_sort(object):
                 self._quicksort(alist, p, q-1)
                 self._quicksort(alist, q+1, r)
 {% endhighlight %}
+
+关于快速排序的讨论还没有结束。我们都知道，Python是一门很优雅的语言，而Python写出来的代码是相当简洁而可读性极强的。这里就介绍快排的另一种写法，只需要三行就能够搞定，但是又不失阅读性。（当然，要看懂是需要一定的Python基础的）代码如下：
+def quick_sort_2(sort_list):
+    if len(sort_list)<=1:
+        return sort_list
+    return quick_sort_2([lt for lt in sort_list[1:] if lt<sort_list[0]]) + \
+           sort_list[0:1] + \
+           quick_sort_2([ge for ge in sort_list[1:] if ge>=sort_list[0]])
+怎么样看懂了吧，这段代码出自《Python cookbook 第二版》，这种写法展示出了列表推导的强大表现力。
+对于比较排序算法，我们知道，可以把所有可能出现的情况画成二叉树（决策树模型），对于n个长度的列表，其决策树的高度为h，叶子节点就是这个列表乱序的全部可能性为n!，而我们知道，这个二叉树的叶子节点不会超过2^h，所以有2^h>=n！，取对数，可以知道，h>=logn!，这个是近似于O(nlogn)。也就是说比较排序算法的最好性能就是O(nlgn)。
+那有没有线性时间，也就是时间复杂度为O(n)的算法呢？答案是肯定的。不过由于排序在实际应用中算法其实是非常复杂的。这里只是讨论在一些特殊情形下的线性排序算法。特殊情形下的线性排序算法主要有计数排序，桶排序和基数排序。这里只简单说一下计数排序。
+计数排序是建立在对待排序列这样的假设下：假设待排序列都是正整数。首先，声明一个新序列list2，序列的长度为待排序列中的最大数。遍历待排序列，对每个数，设其大小为i，list2[i]++，这相当于计数大小为i的数出现的次数。然后，申请一个list，长度等于待排序列的长度（这个是输出序列，由此可以看出计数排序不是就地排序算法），倒序遍历待排序列（倒排的原因是为了保持排序的稳定性，及大小相同的两个数在排完序后位置不会调换），假设当前数大小为i，list[list2[i]-1] = i，同时list2[i]自减1（这是因为这个大小的数已经输出一个，所以大小要自减）。于是，计数排序的源代码如下。
+{% highlight python linenos %}
+    class counting_sort(object):
+        def _counting_sort(self, alist, k):
+            alist3 = [0 for i in range(k)]
+            alist2 = [0 for i in range(len(alist))]
+            for j in alist:
+                alist3[j] += 1
+            for i in range(1, k):
+                alist3[i] = alist3[i-1] + alist3[i]
+            for l in alist[::-1]:
+                alist2[alist3[l]-1] = l
+                alist3[l] -= 1
+            return alist2
+     
+        def __call__(self, sort_list, k=None):
+            if k is None:
+                import heapq
+                k = heapq.nlargest(1, sort_list)[0] + 1
+            return self._counting_sort(sort_list, k)
+{% endhighlight %}
+
+各种排序算法介绍完（以上的代码都通过了我写的单元测试），我们再回到Python这个主题上来。其实Python从最早的版本开始，多次更换内置的排序算法。从开始使用C库提供的qsort例程（这个方法有相当多的问题），到后来自己开始实现自己的算法，包括2.3版本以前的抽样排序和折半插入排序的混合体，以及最新的适应性的排序算法，代码也由C语言的800行到1200行，以至于更多。从这些我们可以知道，在实际生产环境中，使用经典的排序算法是不切实际的，它们仅仅能做学习研究之用。而在实践中，更推荐的做法应该遵循以下两点：
+当需要排序的时候，尽量设法使用内建Python列表的sort方法。
+当需要搜索的时候，尽量设法使用内建的字典。
+我写了测试函数，来比较内置的sort方法相比于以上方法的优越性。测试序列长度为5000，每个函数测试3次取平均值，可以得到以下的测试结果：
+ 
+可以看出，Python内置函数是有很大的优势的。因此在实际应用时，我们应该尽量使用内置的sort方法。
+由此，我们引出另外一个问题。怎么样判断一个序列中是否有重复元素，如果有返回True，没有返回False。有人会说，这不很简单么，直接写两个嵌套的迭代，遍历就是了。代码写下来应该是这样。
+
+{% highlight python linenos %}
+    def normal_find_same(alist):
+        length = len(alist)
+        for i in range(length):
+            for j in range(i+1, length):
+                if alist[i] == alist[j]:
+                    return True
+        return False
+{% endhighlight %}
+
+这种方法的代价是非常大的（平均时间复杂度是O(n^2)，当列表中没有重复元素的时候会达到最坏情况），由之前的经验，我们可以想到，利用内置sort方法极快的经验，我们可以这么做：首先将列表排序，然后遍历一遍，看是否有重复元素。包括完整的测试代码如下：
+{% highlight python linenos %}
+    import time
+    import random
+     
+    def record_time(func, alist):
+        start = time.time()
+        func(alist)
+        end = time.time()
+     
+        return end - start
+     
+    def quick_find_same(alist):
+        alist.sort()
+        length = len(alist)
+        for i in range(length-1):
+            if alist[i] == alist[i+1]:
+                return True
+        return False
+     
+    if __name__ == "__main__":
+        methods = (normal_find_same, quick_find_same)
+        alist = range(5000)
+        random.shuffle(alist)
+         
+        for m in methods:
+            print 'The method %s spends %s' % (m.__name__, record_time(m, alist))
+{% endhighlight %}
+
+运行以后我的数据是，对于5000长度，没有重复元素的列表，普通方法需要花费大约1.205秒，而快速查找法花费只有0.003秒。这就是排序在实际应用中的一个例子。
+
+文章来源：[http://www.cnblogs.com/chineking/archive/2011/05/24/implement-sort-algorithm-with-python.html](http://www.cnblogs.com/chineking/archive/2011/05/24/implement-sort-algorithm-with-python.html)
