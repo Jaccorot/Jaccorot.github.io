@@ -3,7 +3,10 @@ layout: post
 title:  "Fiddler基础介绍"
 date:   2016-03-29 17:00:00 +0800
 categories: fiddler test
+tags: fiddler
 ---
+* content
+{:toc}
 
 ## 工作原理
   Fiddler 是以代理web服务器的形式工作的，它使用代理地址:127.0.0.1，端口:8888。当Fiddler退出的时候它会自动注销，这样就不会影响别的程序。
@@ -16,31 +19,31 @@ categories: fiddler test
 1. 打开Fiddler,     Tools-> Fiddler Options 。  （配置完后记得要重启Fiddler）.
 
 2. 选中"Decrpt HTTPS traffic",    Fiddler就可以截获HTTPS请求
-![HTTPS](../static/images/20160329/20160329_fiddler_setting_https.jpg)
+![HTTPS](/images/2016/03/29/fiddler_setting_https.jpg)
 3. 选中"Allow remote computers to connect".  是允许别的机器把HTTP/HTTPS请求发送到Fiddler上来.
-![HTTPS](../static/images/20160329/20160329_fiddler_setting_connections.jpg)
+![HTTPS](/images/2016/03/29/fiddler_setting_connections.jpg)
 
 * PC设置
 
 1. 设置无线WiFi，最好借助360WiFi做出专有WiFi，避免抓包时数据混杂，不易分辨。
 
 2. 在命令行中用ipconfig查看所设置WiFi所对应的IP
-![PC](../static/images/20160329/20160329_fiddler_wifi.jpg)
+![PC](/images/2016/03/29/fiddler_wifi.jpg)
 
 * 移动端（iOS or Android）
 
 1. 链接PC端所分享的WiFi，并进入详细设置页面
-![PHONE](../static/images/20160329/20160329_fiddler_phone_setting.jpg)
+![PHONE](/images/2016/03/29/fiddler_phone_setting.jpg)
 
 2.将代理设置为`手动`，并将上述操作中的IP填入，端口号默认为`8888`
-![PHONE](../static/images/20160329/20160329_fiddler_phone_agent.jpg)
+![PHONE](/images/2016/03/29/fiddler_phone_agent.jpg)
 
 这样，就实现了网络抓包。当移动端进行网络访问时，即可查看其所交互的内容。
 
 ## Filter
 
 切换到fiddler右侧窗口的Filters选项卡，勾选顶部的“Use Filters”，找到Hosts区域，设置以下三个选项：
-![Filter](../static/images/20160329/20160329_fiddler_filter.png)
+![Filter](/images/2016/03/29/fiddler_filter.png)
 
 1. 第一项有三个选项，不做更改：
 
@@ -78,12 +81,12 @@ categories: fiddler test
 
 限速操作：勾选Rules->Performance->Simulate Modem Speeds
 
-![Limit](../static/images/20160329/20160329_fiddler_limit_choice.png)
+![Limit](/images/2016/03/29/fiddler_limit_choice.png)
 
 限速的代码：Rules->Customize Rules 或快捷键Ctrl+R
 
 通过关键字m_SimulateModem找到以下代码。
 
-![Limit](../static/images/20160329/20160329_fiddler_limit_script.png)
+![Limit](/images/2016/03/29/fiddler_limit_script.png)
 
 注意，修改完存档之后，原本已经勾选的Simulate Modem Speeds 会被取消勾选，要记得再到Rules->Performance->Simulate Modem Speeds勾选才生效。

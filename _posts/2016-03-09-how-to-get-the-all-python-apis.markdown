@@ -3,6 +3,7 @@ layout: post
 title:  "How To Get The All Python Apis"
 date:   2016-03-09 17:00:00 +0800
 categories: python
+tags: python
 ---
 
 经常遇到某个python库，但是不记得其中方法的情况，此时，只需运行一行简单命令，即可查看所有的apis。

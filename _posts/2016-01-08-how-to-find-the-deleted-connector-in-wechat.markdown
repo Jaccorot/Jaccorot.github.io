@@ -1,15 +1,15 @@
 ---
 layout: post
 title:  "如何快速发现微信中你是否已经被删除"
-date:   2016-01-08 20:00:00 +0800
+date:   2016-01-08 20:00:00 
 categories: python
+tags: python
 ---
 
   今天逛论坛时发现一段蛮好玩的code，可以快速发现微信中你是否已经被删除。
 代码如下：
 
-{% highlight python linenos  %}
-
+```python
 #!/usr/bin/env python
 # coding=utf-8
 
@@ -141,19 +141,6 @@ def login():
     response = urllib2.urlopen(request)
     data = response.read()
 
-    # print data
-
-    '''
-        <error>
-            <ret>0</ret>
-            <message>OK</message>
-            <skey>xxx</skey>
-            <wxsid>xxx</wxsid>
-            <wxuin>xxx</wxuin>
-            <pass_ticket>xxx</pass_ticket>
-            <isgrayscale>1</isgrayscale>
-        </error>
-    '''
 
     doc = xml.dom.minidom.parseString(data)
     root = doc.documentElement
@@ -446,7 +433,4 @@ if __name__ == '__main__' :
 
     print '回车键结束'
     raw_input()
-
-
-
-{% endhighlight %}
+```

@@ -7,17 +7,59 @@
 
 # Site settings
 title: Jaccorot
-email: caozijun007@163.com
-description: > # this means to ignore newlines until "baseurl:"
-  This is Jaccorot blog.
+brief-intro: 日事日毕日清日高
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://jaccorot.github.io/" # the base hostname & protocol for your site
-sina_username: 我想我还可以再抢救下
-github_username:  Jaccorot
-permalink: /:title
+url: "https://jaccorot.github.io" # the base hostname & protocol for your site
+
+permalink: /:year/:month/:day/:title/
+
+# other links
+github_username:  jaccorot
+email: caozijun007@163.com
+weibo_username: 1320424440
+
+description_footer: 记录学习的每一步！
+
+# comments
+# two ways to comment, only choose one, and use your own short name
+# 两种评论插件，选一个就好了，使用自己的 short_name
+duoshuo_shortname: #hygblog
+disqus_shortname: #gaohaoyang
+# 第三种评论Gitalk
+Gitalk_clientID: 614bd43f4387022b9ba3
+Gitalk_clientSecret: 2804e797d6c0378d145e13a3d97245fe4e9543d1
+repo: Jaccorot.github.io #存储你评论 issue 的 Github 仓库名（建议直接用 GitHub Page 的仓库名）
+owner: Jaccorot
+admin: ['Jaccorot']   #这个仓库的管理员，可以有多个，用数组表示，一般写自己,
+id: page.url  #页面的唯一标识，gitalk 会根据这个标识自动创建的issue的标签,我们使用页面的相对路径作为标识
+
+
+
+
+# statistic analysis 统计代码
+# 百度统计 id，将统计代码替换为自己的百度统计id，即
+# hm.src = "//hm.baidu.com/hm.js?xxxxxxxxxxxx";
+# xxxxx字符串
+baidu_tongji_id: 563d459d7ed8546c04af326d972e1a2b
+google_analytics_id: UA-121191178-1 # google 分析追踪id
 
 # Build settings
-# markdown: redcarpet
-redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "strikethrough", "superscript", "with_toc_data", "footnotes","space_after_headers","highlight","underline","quote","lax_spacing"]
-highlighter: rouge 
+markdown: kramdown
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# port
+# port: 1234
+
+# url
+category_dir: category/
+tag_dir: tag/
+
+# excerpt
+excerpt_separator: "\n\n\n\n"
+
+# paginate
+gems: [jekyll-paginate]
+paginate: 6

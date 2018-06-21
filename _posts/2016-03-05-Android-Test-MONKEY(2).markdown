@@ -3,7 +3,10 @@ layout: post
 title:  "Android-Test-MONKEY(2)"
 date:   2016-03-05 17:00:00 +0800
 categories: android test
+tags: monkey
 ---
+* content
+{:toc}
 
 ## AVD环境搭建
 使用Android SDK开发应用程序需要进行测试，Android为开发人员提供了可以在电脑上直接测试应用程序的虚拟设备AVD（Android Virtual Device），或称作模拟器。使用AVD可以方便地对程序进行测试。
