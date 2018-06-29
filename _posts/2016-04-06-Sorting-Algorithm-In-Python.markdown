@@ -5,10 +5,12 @@ date:   2016-04-06 18:00:00 +0800
 categories: python
 tags: algorithm
 ---
+* content
+{:toc}
 
 最简单的排序有三种：插入排序，选择排序和冒泡排序。这三种排序比较简单，它们的平均时间复杂度均为O(n^2)，在这里对原理就不加赘述了。贴出来源代码。
 
-* 插入排序：
+## 插入排序
 ```python
     def insertion_sort(sort_list):
         iter_len = len(sort_list)
@@ -24,7 +26,7 @@ tags: algorithm
         return sort_list
 ```
 
-* 冒泡排序：
+## 冒泡排序
 ```python
     def bubble_sort(sort_list):
         iter_len = len(sort_list)
@@ -37,7 +39,7 @@ tags: algorithm
         return sort_list
 ```
 
-* 选择排序：
+## 选择排序
 ```python
     def selection_sort(sort_list):
         iter_len = len(sort_list)
@@ -58,7 +60,7 @@ tags: algorithm
 
 平均时间复杂度为O(nlogn)的算法有：归并排序，堆排序和快速排序。
 
-* 归并排序
+## 归并排序
 对于一个子序列，分成两份，比较两份的第一个元素，小者弹出，然后重复这个过程。对于待排序列，以中间值分成左右两个序列，然后对于各子序列再递归调用。源代码如下，由于有工具函数，所以写成了callable的类：
 
 ```python
@@ -90,7 +92,7 @@ class merge_sort(object):
 ``` 
 
 
-* 堆排序
+## 堆排序
 
 是建立在数据结构——堆上的。关于堆的基本概念、以及堆的存储方式这里不作介绍。这里用一个列表来存储堆（和用数组存储类似），对于处在i位置的元素，2*i+1位置上的是其左孩子，2*i+2是其右孩子，类似得可以得出该元素的父元素。
 
@@ -143,6 +145,7 @@ class heap_sort(object):
  
         return sort_list
 ```
+## 快速排序
 
 最后一种要说明的交换排序算法（以上所有算法都为交换排序，原因是都需要通过两两比较交换顺序）自然就是经典的快速排序。
 
