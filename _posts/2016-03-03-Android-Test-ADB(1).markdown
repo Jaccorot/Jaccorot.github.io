@@ -2,8 +2,9 @@
 layout: post
 title:  "Android-Test-ADB(1)"
 date:   2016-03-03 20:51:00 +0800
-categories: android test
+categories: 移动测试
 tags: adb
+excerpt: Android-Test-ADB(1)
 ---
 * content
 {:toc}

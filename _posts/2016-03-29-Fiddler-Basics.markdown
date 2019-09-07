@@ -2,8 +2,10 @@
 layout: post
 title:  "Fiddler基础介绍"
 date:   2016-03-29 17:00:00 +0800
-categories: fiddler test
+categories: 移动测试
 tags: fiddler
+excerpt: Fiddler基础介绍
+
 ---
 * content
 {:toc}

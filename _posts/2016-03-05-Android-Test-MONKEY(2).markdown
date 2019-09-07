@@ -2,8 +2,9 @@
 layout: post
 title:  "Android-Test-MONKEY(2)"
 date:   2016-03-05 17:00:00 +0800
-categories: android test
+categories: 移动测试
 tags: monkey
+excerpt: Android-Test-MONKEY(2)
 ---
 * content
 {:toc}

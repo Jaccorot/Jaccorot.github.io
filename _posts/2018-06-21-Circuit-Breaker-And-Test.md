@@ -2,8 +2,9 @@
 layout: post
 title:  "微服务测试之断路器"
 date:   2018-06-21 21:30:00 +0800
-categories: 测试 微服务 
+categories: 微服务 服务端测试
 tags: hystrix 熔断
+excerpt: 微服务测试之断路器
 ---
 * content
 {:toc}

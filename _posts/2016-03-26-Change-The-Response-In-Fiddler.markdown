@@ -2,8 +2,10 @@
 layout: post
 title:  "Fiddler中怎样修改请求和响应数据？"
 date:   2016-03-26 17:00:00 +0800
-categories: fiddler test
+categories: 移动测试
 tags: fiddler
+excerpt: Fiddler中怎样修改请求和响应数据？
+
 ---
 * content
 {:toc}

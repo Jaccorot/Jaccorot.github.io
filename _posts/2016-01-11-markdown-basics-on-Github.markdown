@@ -2,7 +2,8 @@
 layout: post
 title:  "Github Markdown基础"
 date:   2016-01-11 20:00:00 +0800
-categories: github, markdown
+categories: 杂谈
+excerpt: Github Markdown基础
 ---
   Markdown可以有效的将你的易读易写的纯文本格式，转化为方便在Github上阅览HTML格式。
 

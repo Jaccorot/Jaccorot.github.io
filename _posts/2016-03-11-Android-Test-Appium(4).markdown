@@ -2,8 +2,9 @@
 layout: post
 title:  "Android-Test-Appium(4)"
 date:   2016-03-11 20:00:00 +0800
-categories: android test
+categories: python 移动测试
 tags: Appium
+excerpt: Android-Test-Appium(4)
 ---
 * content
 {:toc}

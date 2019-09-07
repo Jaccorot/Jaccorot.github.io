@@ -2,8 +2,10 @@
 layout: post
 title:  "Android-Test-MonkeyRunner(3)"
 date:   2016-03-08 17:00:00 +0800
-categories: android test
+categories: 移动测试
 tags: MonkeyRunner
+excerpt: Android-Test-MonkeyRunner(3)
+
 ---
 * content
 {:toc}

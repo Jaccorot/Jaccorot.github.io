@@ -2,8 +2,10 @@
 layout: post
 title:  "Python排序算法归纳"
 date:   2016-04-06 18:00:00 +0800
-categories: python
+categories: python 算法
 tags: algorithm
+excerpt: Python排序算法归纳
+
 ---
 * content
 {:toc}
