@@ -4,7 +4,7 @@ title:  "《Intermediate Python》读后总结"
 date:   2019-11-21 07:30:00 +0800
 categories: python 
 tags: python
-excerpt: 《Intermediate Python》，即python进阶，核心要点
+excerpt: 《Intermediate Python》，即python进阶，包含很多妙用
 ---
 * content
 {:toc}
