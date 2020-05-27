@@ -40,3 +40,9 @@ list.remove(obj)
 list.pop([index=-1])
 移除列表中的一个元素（默认最后一个元素），并且返回该元素的值
 ```
+
+## 468-Validate-IP-Address
+
+[leetcode-468-Validate-IP-Address](https://leetcode.com/problems/validate-ip-address/)
+
+[解法](http://jaccorot.github.io/2020/05/27/ARTS-001/)
