@@ -2,7 +2,7 @@
 layout: post
 title:  "CSRF and XSS basics"
 date:   2017-08-06 17:30:00 +0800
-categories: 安全 
+categories: 网络知识
 tags: 安全 计算机网络
 excerpt: 请求攻击基本概念
 ---
