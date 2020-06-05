@@ -46,3 +46,9 @@ list.pop([index=-1])
 [leetcode-468-Validate-IP-Address](https://leetcode.com/problems/validate-ip-address/)
 
 [解法](http://jaccorot.github.io/2020/05/27/ARTS-001/)
+
+## 167-Two-Sum-II
+[167.Two Sum II - Input array is sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+
+[解法](http://jaccorot.github.io/2020/06/05/ARTS-002/)
+
