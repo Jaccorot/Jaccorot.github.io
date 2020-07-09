@@ -11,6 +11,11 @@ excerpt: leetcode算法汇总，刷完就可以面试去了
 
 # [overcome leetcode](https://leetcode.com/problemset/all/)
 
+# Suffix Array
+[1163.Last Substring in Lexicographical Order](https://leetcode.com/problems/last-substring-in-lexicographical-order/)
+[解法](http://jaccorot.github.io/2020/07/10/ARTS-007/)
+
+
 
 ## 21. Merge Two Sorted Lists
 [21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
