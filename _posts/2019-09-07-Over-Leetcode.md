@@ -34,6 +34,9 @@ excerpt: leetcode算法汇总，刷完就可以面试去了
 [206. Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/submissions/)
 [解法](http://jaccorot.github.io/2020/07/03/ARTS-006/)
 
+## 257. Binary Tree Paths
+[257. Binary Tree Paths](https://leetcode-cn.com/problems/binary-tree-paths/)
+[解法](http://jaccorot.github.io/2020/09/01/ARTS-012/)
 
 ## 468-Validate-IP-Address
 [leetcode-468-Validate-IP-Address](https://leetcode.com/problems/validate-ip-address/)
