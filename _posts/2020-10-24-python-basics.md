@@ -7,6 +7,8 @@ tags: python
 excerpt: python基础整理
 ---
 
+* content
+{:toc}
 
 
 # 基础语法
