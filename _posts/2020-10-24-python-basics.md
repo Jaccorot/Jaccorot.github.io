@@ -1,4 +1,11 @@
-
+---
+layout: post
+title:  "python basics"
+date:   2020-10-24 11:00:00 +0800
+categories: python
+tags: python
+excerpt: python基础整理
+---
 
 
 
