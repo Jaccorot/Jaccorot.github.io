@@ -2672,3 +2672,154 @@ if __name__ == '__main__':
     print(end - start)  # 3.0s
 ```
 
+## IO模型
+
+### 阻塞IO-(blocking IO)
+
+![阻塞io](../images/all/blocking-io.png)
+
+当用户进程调用了recvfrom这个系统调用，kernel就开始了IO的第一个阶段：准备数据。对于network io来说，很多时候数据在一开始还没有到达（比如，还没有收到一个完整的UDP包），这个时候kernel就要等待足够的数据到来。
+
+ 而在用户进程这边，整个进程会被阻塞。当kernel一直等到数据准备好了，它就会将数据从kernel中拷贝到用户内存，然后kernel返回结果，用户进程才解除block的状态，重新运行起来。
+​ **所以，blocking IO的特点就是在IO执行的两个阶段（等待数据和拷贝数据两个阶段）都被block了。**
+
+![socket_blocking](../images/all/socket-blocking.png)
+
+### 非阻塞IO-(non-blocking IO)
+
+![non-blocking-io](../images/all/non-blocking-io.png)
+
+当用户进程发出read操作时，如果kernel中的数据还没有准备好，那么它并不会block用户进程，而是立刻返回一个error。从用户进程角度讲 ，它发起一个read操作后，并不需要等待，而是马上就得到了一个结果。用户进程判断结果是一个error时，它就知道数据还没有准备好，于是用户就可以在本次到下次再发起read询问的时间间隔内做其他事情，或者直接再次发送read操作。一旦kernel中的数据准备好了，并且又再次收到了用户进程的system call，那么它马上就将数据拷贝到了用户内存（这一阶段仍然是阻塞的），然后返回。
+
+轮询检查内核数据，直到数据准备好，再拷贝数据到进程，进行数据处理。需要注意，拷贝数据整个过程，进程仍然是属于阻塞的状态。
+
+* 优点：能够在等待任务完成的时间里干其他活了（包括提交其他任务，也就是 “后台” 可以有多个任务在“”同时“”执行）。
+
+* 缺点：
+
+  1. 循环调用recv()将大幅度推高CPU占用率
+
+  2. 任务完成的响应延迟增大了，因为每过一段时间才去轮询一次read操作，而任务可能在两次轮询之间的任意时间完成。这会导致整体数据吞吐量的降低。
+
+```python
+# 服务端
+import socket
+import time
+
+server=socket.socket()
+server.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+server.bind(('127.0.0.1',8083))
+server.listen(5)
+
+server.setblocking(False)
+r_list=[]
+w_list={}
+
+while 1:
+    try:
+        conn,addr=server.accept()
+        r_list.append(conn)
+    except BlockingIOError:
+        # 强调强调强调：！！！非阻塞IO的精髓在于完全没有阻塞！！！
+        # time.sleep(0.5) # 打开该行注释纯属为了方便查看效果
+        print('在做其他的事情')
+        print('rlist: ',len(r_list))
+        print('wlist: ',len(w_list))
+
+
+        # 遍历读列表，依次取出套接字读取内容
+        del_rlist=[]
+        for conn in r_list:
+            try:
+                data=conn.recv(1024)
+                if not data:
+                    conn.close()
+                    del_rlist.append(conn)
+                    continue
+                w_list[conn]=data.upper()
+            except BlockingIOError: # 没有收成功，则继续检索下一个套接字的接收
+                continue
+            except ConnectionResetError: # 当前套接字出异常，则关闭，然后加入删除列表，等待被清除
+                conn.close()
+                del_rlist.append(conn)
+
+
+        # 遍历写列表，依次取出套接字发送内容
+        del_wlist=[]
+        for conn,data in w_list.items():
+            try:
+                conn.send(data)
+                del_wlist.append(conn)
+            except BlockingIOError:
+                continue
+
+
+        # 清理无用的套接字,无需再监听它们的IO操作
+        for conn in del_rlist:
+            r_list.remove(conn)
+
+        for conn in del_wlist:
+            w_list.pop(conn)
+
+
+
+#客户端
+import socket
+import os
+
+client=socket.socket()
+client.connect(('127.0.0.1',8083))
+
+while 1:
+    res=('%s hello' %os.getpid()).encode('utf-8')
+    client.send(res)
+    data=client.recv(1024)
+
+    print(data.decode('utf-8'))
+```
+
+### 多路复用IO-(IO multiplexing)
+
+![io-multiplexing](../images/all/io-multiplexing.png)
+
+又称为事件驱动IO
+
+当用户进程调用了select，那么整个进程会被block，而同时，kernel会“监视”所有select负责的socket，当任何一个socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从kernel拷贝到用户进程。
+
+**强调：**
+
+ **1. 如果处理的连接数不是很高的话，使用select/epoll的web server不一定比使用multi-threading + blocking IO的web server性能更好，可能延迟还更大。select/epoll的优势并不是对于单个连接能处理得更快，而是在于能处理更多的连接。**
+
+ **2. 在多路复用模型中，对于每一个socket，一般都设置成为non-blocking，但是，如上图所示，整个用户的process其实是一直被block的。只不过process是被select这个函数block，而不是被socket IO给block。**
+
+ **结论: select的优势在于可以处理多个连接，不适用于单个连接**
+
+```python
+"""
+监管机制有很多种
+
+select机制  windows/linux都有
+
+poll机制  只有linux有
+select和 poll都可以监管多个对象，但是poll监管的更多
+当监管对象特别多时，可能会出现极大的响应时延
+
+epoll机制 只有linux有
+它给每个监管对象都绑定一个回调机制
+一旦有响应，回调机制立刻发起提醒
+"""
+```
+
+### 异步IO(Asynchronous I/O)
+
+![asynchronous-io](../images/all/asynchronous-io.png)
+
+用户进程发起read操作之后，立刻就可以开始去做其它的事。而另一方面，从kernel的角度，当它受到一个asynchronous read之后，首先它会立刻返回，所以不会对用户进程产生任何block。然后，kernel会等待数据准备完成，然后将数据拷贝到用户内存，当这一切都完成之后，kernel会给用户进程发送一个signal，告诉它read操作完成了。
+
+```python
+"""
+模块： asyncio 
+异步框架：sanic tronado twisted
+"""
+```
+
