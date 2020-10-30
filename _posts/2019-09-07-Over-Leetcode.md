@@ -47,3 +47,19 @@ excerpt: leetcode算法汇总，刷完就可以面试去了
 [leetcode-468-Validate-IP-Address](https://leetcode.com/problems/validate-ip-address/)
 [解法](http://jaccorot.github.io/2020/05/27/ARTS-001/)
 
+
+## 88. 合并两个有序数组
+## 121. 买卖股票的最佳时机
+## 122. 买卖股票的最佳时机 II
+## 141. 环形链表
+## 142. 环形链表 II
+## 155. 最小栈
+## 217. 存在重复元素
+## 231. 2的幂
+## 235. 二叉搜索树的最近公共祖先
+## 237. 删除链表中的节点
+## 292. Nim 游戏
+## 344. 反转字符串
+## 365. 有多少小于当前数字的数字
+## 557. 反转字符串中的单词 III
+[解法](http://jaccorot.github.io/2020/10/25/ARTS-015/)
