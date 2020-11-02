@@ -1,3 +1,16 @@
+---
+layout: post
+title:  "leetcode book"
+date:   2020-11-02 11:00:00 +0800
+categories: python leetcode
+tags: python leetcode argrithms
+excerpt: leetcode leetbook
+---
+
+* content
+{:toc}
+
+
 # 初级算法
 
 ## 数组
