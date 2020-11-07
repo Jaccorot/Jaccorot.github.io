@@ -1,5 +1,5 @@
 ---
-layout: post
+	layout: post
 title:  "leetcode book"
 date:   2020-11-02 11:00:00 +0800
 categories: python leetcode
@@ -510,3 +510,518 @@ class Solution:
         return check_valid(row_check_list,column_check_list,square_check_list)
 ```
 
+### 旋转图像
+
+给定一个 n × n 的二维矩阵表示一个图像。
+
+将图像顺时针旋转 90 度。
+
+说明：
+
+你必须在原地旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要使用另一个矩阵来旋转图像。
+
+> 示例 1:
+>
+> 给定 matrix = 
+> [
+>   [1,2,3],
+>   [4,5,6],
+>   [7,8,9]
+> ],
+>
+> 原地旋转输入矩阵，使其变为:
+> [
+>   [7,4,1],
+>   [8,5,2],
+>   [9,6,3]
+> ]
+> 示例 2:
+>
+> 给定 matrix =
+> [
+>   [ 5, 1, 9,11],
+>   [ 2, 4, 8,10],
+>   [13, 3, 6, 7],
+>   [15,14,12,16]
+> ], 
+>
+> 原地旋转输入矩阵，使其变为:
+> [
+>   [15,13, 2, 5],
+>   [14, 3, 4, 1],
+>   [12, 6, 8, 9],
+>   [16, 7,10,11]
+> ]
+
+```python
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        # 1.会使用新的空间，但这答案真精髓!!!
+        # matrix[:] = map(list,zip(*matrix[::-1]))
+
+        # 2. 先转置矩阵，然后翻转每一行。这个简单的方法已经能达到最优的时间复杂度O(N^2)
+        l_matrix = len(matrix)
+        for i in range(l_matrix):
+            for j in range(i, l_matrix):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        
+        for t in matrix:
+            t.reverse()
+```
+
+## 字符串
+
+### 反转字符串
+
+编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。
+
+不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+
+你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。
+
+ 
+
+> 示例 1：
+>
+> 输入：["h","e","l","l","o"]
+> 输出：["o","l","l","e","h"]
+> 示例 2：
+>
+> 输入：["H","a","n","n","a","h"]
+> 输出：["h","a","n","n","a","H"]
+>
+
+```python
+class Solution:
+    def reverseString(self, s: List[str]) -> None:
+        """
+        Do not return anything, modify s in-place instead.
+        """
+        s[:] = s[::-1]
+```
+
+### 整数反转
+
+给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
+
+> 示例 1:
+>
+> 输入: 123
+> 输出: 321
+>  示例 2:
+>
+> 输入: -123
+> 输出: -321
+> 示例 3:
+>
+> 输入: 120
+> 输出: 21
+> 注意:
+>
+> 假设我们的环境只能存储得下 32 位的有符号整数，则其数值范围为 [−2^31,  2^31 − 1]。请根据这个假设，如果反转后整数溢出那么就返回 0。
+>
+
+```python
+class Solution:
+    def reverse(self, x: int) -> int:
+        result = int(str(x)[::-1]) if x >=0 else -1 * int(str(x)[1:][::-1])
+        if result  < -2 ** 31  or result > 2 ** 31 -1:
+            return 0
+        else:
+            return result
+```
+
+### 有效的字母异位词
+
+给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+
+> 示例 1:
+>
+> 输入: s = "anagram", t = "nagaram"
+> 输出: true
+> 示例 2:
+>
+> 输入: s = "rat", t = "car"
+> 输出: false
+> 说明:
+> 你可以假设字符串只包含小写字母。
+>
+> 进阶:
+> 如果输入字符串包含 unicode 字符怎么办？你能否调整你的解法来应对这种情况？
+>
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        # 1、Counter 大法好
+        # from collections import Counter
+        # c1 = Counter(s)
+        # c2 = Counter(t)
+        # return len(c1 - c2) == 0 and len(c2 - c1) == 0
+        
+        # 2、 sort 大法好
+        #return sorted(s) == sorted(t)
+
+				# 3、 哈希计数法
+        if len(s) != len(t):
+            return False
+        result_dict = dict()
+        for i in range(len(s)):
+            result_dict[s[i]] = result_dict.get(s[i],0) + 1
+            result_dict[t[i]] = result_dict.get(t[i],0) - 1
+        for k,v in result_dict.items():
+            if v != 0:
+                return False
+        return True
+```
+
+### 验证回文串
+
+给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
+
+说明：本题中，我们将空字符串定义为有效的回文串。
+
+> 示例 1:
+>
+> 输入: "A man, a plan, a canal: Panama"
+> 输出: true
+> 示例 2:
+>
+> 输入: "race a car"
+> 输出: false
+
+```python
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        if len(s) <= 1:
+            return True
+        i = 0
+        j = len(s)-1
+        while i < j:
+            while not s[i].isalnum():
+                i += 1
+                if i == j:
+                    return True
+            while not s[j].isalnum():
+                j -= 1
+                if i == j:
+                    return True
+            if s[i].lower() == s[j].lower():
+                i += 1
+                j -= 1
+            else:
+                return False
+        return True
+```
+
+### 字符串转换整数 (atoi)
+
+请你来实现一个 atoi 函数，使其能将字符串转换成整数。
+
+首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。接下来的转化规则如下：
+
+* 如果第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字字符组合起来，形成一个有符号整数。
+
+* 假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成一个整数。
+* 该字符串在有效的整数部分之后也可能会存在多余的字符，那么这些字符可以被忽略，它们对函数不应该造成影响。
+* 注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换，即无法进行有效转换。
+
+* 在任何情况下，若函数不能进行有效的转换时，请返回 0 。
+
+提示：
+
+本题中的空白字符只包括空格字符 ' ' 。
+假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−2^31,  2^31 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。
+
+>
+> 示例 1:
+>
+> 输入: "42"
+> 输出: 42
+> 示例 2:
+>
+> 输入: "   -42"
+> 输出: -42
+> 解释: 第一个非空白字符为 '-', 它是一个负号。
+>      我们尽可能将负号与后面所有连续出现的数字组合起来，最后得到 -42 。
+> 示例 3:
+>
+> 输入: "4193 with words"
+> 输出: 4193
+> 解释: 转换截止于数字 '3' ，因为它的下一个字符不为数字。
+> 示例 4:
+>
+> 输入: "words and 987"
+> 输出: 0
+> 解释: 第一个非空字符是 'w', 但它不是数字或正、负号。
+>      因此无法执行有效的转换。
+> 示例 5:
+>
+> 输入: "-91283472332"
+> 输出: -2147483648
+> 解释: 数字 "-91283472332" 超过 32 位有符号整数范围。 
+>      因此返回 INT_MIN (−231) 。
+>
+
+```python
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        new_s = s.lstrip()
+        if not new_s:
+            return 0
+
+        flag = 1
+        result = 0
+
+        if new_s[0] in ["+","-"]:
+            flag = -1 if new_s[0] == "-" else 1
+            new_s = list(new_s)[1:]
+        elif new_s[0].isdigit:
+            pass
+        else:
+            return 0
+
+        for i in new_s:
+            if i.isdigit():
+                result = result * 10 + int(i)
+            else:
+                break
+        result =  flag  * result
+        if result >= 2**31 -1:
+            return 2**31 -1 
+        elif result <= -1 * (2 ** 31):
+            return -1 * (2 ** 31)
+        else:
+            return result
+```
+
+### 实现 strStr()
+
+实现 strStr() 函数。
+
+给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。
+
+> 示例 1:
+>
+> 输入: haystack = "hello", needle = "ll"
+> 输出: 2
+> 示例 2:
+>
+> 输入: haystack = "aaaaa", needle = "bba"
+> 输出: -1
+> 说明:
+>
+> 当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。
+>
+> 对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。
+>
+
+```python
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        if not needle:
+            return 0
+        # 1、暴力法
+        # find_flag = False
+        # for i in range(len(haystack)-len(needle)+1):
+        #     t = i
+        #     for j in needle:
+        #         if t < len(haystack)  and haystack[t] == j:
+        #             t += 1
+        #             continue
+        #         else:
+        #             break
+        #     else:
+        #         find_flag = True
+            
+        #     if find_flag:
+        #         return i
+        # return -1
+
+				# 2、切片暴力法
+        l_h = len(haystack)
+        l_n = len(needle)
+        for i in range(l_h - l_n + 1):
+            if haystack[i:i+l_n] == needle:
+                return i
+        return -1
+```
+
+### 外观数列
+
+给定一个正整数 n ，输出外观数列的第 n 项。
+
+「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。
+
+你可以将其视作是由递归公式定义的数字字符串序列：
+
+countAndSay(1) = "1"
+countAndSay(n) 是对 countAndSay(n-1) 的描述，然后转换成另一个数字字符串。
+前五项如下：
+
+1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+第一项是数字 1 
+描述前一项，这个数是 1 即 “ 一 个 1 ”，记作 "11"
+描述前一项，这个数是 11 即 “ 二 个 1 ” ，记作 "21"
+描述前一项，这个数是 21 即 “ 一 个 2 + 一 个 1 ” ，记作 "1211"
+描述前一项，这个数是 1211 即 “ 一 个 1 + 一 个 2 + 二 个 1 ” ，记作 "111221"
+要 描述 一个数字字符串，首先要将字符串分割为 最小 数量的组，每个组都由连续的最多 相同字符 组成。然后对于每个组，先描述字符的数量，然后描述字符，形成一个描述组。要将描述转换为数字字符串，先将每组中的字符数量用数字替换，再将所有描述组连接起来。
+
+例如，数字字符串 "3322251" 的描述如下图：
+
+![图](../images/all/countandsay.png)
+
+>
+> 示例 1：
+>
+> 输入：n = 1
+> 输出："1"
+> 解释：这是一个基本样例。
+> 示例 2：
+>
+> 输入：n = 4
+> 输出："1211"
+> 解释：
+> countAndSay(1) = "1"
+> countAndSay(2) = 读 "1" = 一 个 1 = "11"
+> countAndSay(3) = 读 "11" = 二 个 1 = "21"
+> countAndSay(4) = 读 "21" = 一 个 2 + 一 个 1 = "12" + "11" = "1211"
+>
+>
+> 提示：
+>
+> 1 <= n <= 30
+
+```python
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        def count_say(strs):
+            result = []
+            pre = None
+            for i in strs:
+                if i == pre:
+                    result[-2] = str(int(result[-2]) + 1)
+                else:
+                    result.append("1")
+                    result.append(i)
+                    pre = i
+            return "".join(result)  
+
+        if n == 1:
+            return "1"
+        else:
+            return count_say(self.countAndSay(n-1))
+
+```
+
+
+
+### 最长公共前缀
+
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 ""。
+
+> 示例 1:
+>
+> 输入: ["flower","flow","flight"]
+> 输出: "fl"
+> 示例 2:
+>
+> 输入: ["dog","racecar","car"]
+> 输出: ""
+> 解释: 输入不存在公共前缀。
+> 说明:
+>
+> 所有输入只包含小写字母 a-z 。
+>
+
+```python
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+      	# 1、暴力法
+        # if len(strs) == 0:
+        #     return ""
+        # min_s = min(strs, key=lambda x: len(x))
+        # result = ""
+        # for i in min_s:
+        #     result += i
+        #     for item in strs:
+        #         if not item.startswith(result):
+        #             return result[:-1]
+        # return result
+				
+        # 2.纵向比对
+        if len(strs) == 0:
+            return ""
+        lenth, count = len(strs[0]), 0
+        for i in range(lenth):
+            c = strs[0][i]
+            if any(i == len(j) or j[i] != c for j in strs[1:]):
+                return strs[0][:i]
+        return strs[0]
+```
+
+# 链表
+
+## 反转链表
+
+反转一个单链表。
+
+> 示例:
+>
+> 输入: 1->2->3->4->5->NULL
+> 输出: 5->4->3->2->1->NULL
+> 进阶:
+> 你可以迭代或递归地反转链表。你能否用两种方法解决这道题？
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        # 1.迭代
+        # pre_node = None
+        # while head:
+        #     next_node = head.next
+        #     head.next = pre_node
+        #     pre_node = head
+        #     head = next_node
+        # return pre_node
+				
+        # 2.递归
+        if head is None or head.next is None:
+            return head
+        p = self.reverseList(head.next)
+        head.next.next = head
+        head.next = None
+        return p
+
+```
+
+# 其他
+
+## 判断IP
+
+给定一组字符串输入一个ip地址判断是否是正确的ip，输出正确的ip
+
+```python
+def isIpv4(self, s):
+  import re
+  pattern = r"(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])){3}"
+  if re.match(pattern, s):
+    return True
+  else:
+    return False
+```
