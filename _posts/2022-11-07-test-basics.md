@@ -1294,11 +1294,436 @@ dns协议（基于UDP + TCP：用户到服务器用UDP，DNS服务器之间通�
 
 to be
 
-## 底层原理：selenium
+## selenium
+
+### selenium中如何判断元素是否存在？
+
+selenium中没有提供原生的方法判断元素是否存在，一般我们可以通过定位元素+异常捕获的方式判断。
+
+```python
+# 判断元素是否存在
+try:
+	dr.find_element_by_id('none')
+except NoSuchElementException:
+	print 'element does not exist'
+```
+
+### selenium中hidden或者是display ＝ none的元素是否可以定位到？
+
+不可以，selenium不能定位不可见的元素。`display=none`的元素实际上是不可见元素。
+
+### selenium中如何保证操作元素的成功率？也就是说如何保证我点击的元素一定是可以点击的？
+
+- 当网速不好的情况下，使用合适的等待时间
+- 被点击的元素一定要占一定的空间，因为selenium默认会去点这个元素的中心点，不占空间的元素算不出来中心点;
+- 被点击的元素不能被其他元素遮挡;
+- 被点击的元素不能在viewport之外，也就是说如果元素必须是可见的或者通过滚动条操作使得元素可见;
+- 判断元素是否是可以被点击的
+
+### 如何提高selenium脚本的执行速度？
+
+- 使用更高配置的电脑和选择更快的网络环境
+- 使用效率更高的语言，比如java执行速度就快过python
+- 优化代码
+- 不要盲目的加`sleep`，尽量使用显式等待
+- 对于firefox，考虑使用测试专用的profile，因为每次启动浏览器的时候firefox会创建1个新的profile，对于这个新的profile，所有的静态资源都是从服务器直接下载，而不是从缓存里加载，这就导致网络不好的时候用例运行速度特别慢的问题
+- chrome浏览器和safari浏览器的执行速度看上去是最快的
+- 可以考虑分布式执行或者使用selenium grid
+
+###  用例在运行过程中经常会出现不稳定的情况，也就是说这次可以通过，下次就没办法通过了，如何去提升用例的稳定性？
+
+- 测试专属profile，尽量让静态资源缓存
+- 尽量使用显式等待
+- 尽量使用测试专用环境，避免其他类型的测试同时进行，对数据造成干扰
+
+### 自动化测试的时候是不是需要连接数据库做数据校验？
+
+  一般不需要，因为这是单元测试层做的事情，在自动化测试层尽量不要为单元测试层没做的工作还债。
+
+### id,name,clas,xpath, css selector这些属性，你最偏爱哪一种，为什么？
+
+xpath和css最为灵活，所以其他的答案都不够完美。
+
+### 如何去定位页面上动态加载的元素？
+
+显式等待
+
+### 如何去定位属性动态变化的元素？
+
+找出属性动态变化的规律，然后根据上下文生成动态属性。
+
+### selenium的原理是什么？
+
+selenium的原理涉及到3个部分，分别是
+
+- 浏览器
+- driver: 一般我们都会下载driver
+- client: 也就是我们写的代码
+
+client其实并不知道浏览器是怎么工作的，但是driver知道，在selenium启动以后，driver其实充当了服务器的角色，跟client和浏览器通信，client根据webdriver协议发送请求给driver，driver解析请求，并在浏览器上执行相应的操作，并把执行结果返回给client。这就是selenium工作的大致原理。
+
+### webdriver的协议是什么？
+
+client与driver之间的约定，无论client是使用java实现还是c#实现，只要通过这个约定，client就可以准确的告诉drier它要做什么以及怎么做。
+
+webdriver协议本身是http协议，数据传输使用json。
+
+### 启动浏览器的时候用到的是哪个webdriver协议？
+
+[New Session](https://www.w3.org/TR/webdriver/#new-session)，如果创建成功，返回sessionId和[capabilities](https://www.w3.org/TR/webdriver/#capabilities)。
+
+### 什么是page object设计模式？
+
+### 怎样去选择一个下拉框中的value＝xx的option？
+
+使用select类，具体看[这里](http://www.testclass.net/selenium_python/select/)
+
+
+
+### 什么是page factory?
+
+[Page Factory](https://github.com/SeleniumHQ/selenium/wiki/PageFactory)实际上是官方给出的java page object的工厂模式实现。
+
+### 如何在定位元素后高亮元素（以调试为目的）？
+
+使用javascript将元素的border或者背景改成黄色就可以了。
+
+### 什么是断言？
+
+可以简单理解为检查点，就是预期和实际的比较
+
+- 如果预期等于实际，断言通过，测试报告上记录pass
+- 如果预期不等于实际，断言失败，测试报告上记录fail
+
+### page object设置模式中，是否需要在page里定位的方法中加上断言？
+
+一般不要，除非是要判断页面是否正确加载。
+
+### page object设计模式中，如何实现页面的跳转？
+
+返回另一个页面的实例可以代表页面跳转。
+
+```java
+// The login page allows the user to submit the login form
+public HomePage submitLogin() {
+    // This is the only place that submits the login form and expects the destination to be the home page.
+    // A seperate method should be created for the instance of clicking login whilst expecting a login failure.
+    driver.findElement(loginButtonLocator).submit();
+
+    // Return a new page object representing the destination. Should the login page ever
+    // go somewhere else (for example, a legal disclaimer) then changing the method signature
+    // for this method will mean that all tests that rely on this behaviour won't compile.
+    return new HomePage(driver);
+}
+```
+
+ **什么是页面加载超时**
+
+ 
+
+Selenium中有一个 Page Load wait的方法，有时候，我们执行脚本的速度太快，但是网页程序还有一部分页面没有完全加载出来，就会遇到元素不可见或者元素找不到的异常。为了解决问题，让脚本流畅的运行，我们可以通过设置页面加载超时时间。具体代码是这个：driver.manage().timeouts().pageLoadTimeout(10,TimeUnit.SECONDS); 
+
+这行作用就是，如果页面加载超过10秒还没有完成，就抛出页面加载超时的异常。
+
+**在Selenium中如何实现截图，如何实现用例执行失败才截图**
+
+ 
+
+在Selenium中提供了一个TakeScreenShot这么一个接口，这个接口提供了一个getScreenshotAs（）方法可以实现全屏截图。然后我们通过java中的FileUtils来实现把这个截图拷贝到保存截图的路径。
+
+ 
+
+代码举例：
+
+File src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+try {
+// 拷贝到我们实际保存图片的路径
+
+FileUtils.copyFile(src,new File("C:/selenium/error.png"));
+}
+catch (IOException e)
+{
+System.out.println(e.getMessage());
+}
+
+ 
+
+   如果要实现执行用例发现失败就自动截图，那么我们需要把这个截图方法进行封装。然后在测试代码中的catch代码块去调用这个截图方法。这个我们在POM的框架中一般是把截图方法封装到BasePage这个文件中。
+
+ 
+
+**在Selenium中如何实现拖拽滚动条？**
+
+ 
+
+   在Selenium中通过元素定位会自动帮你拖拽到对应位置，所以是没有自带的scoll方法。但是这个是有限制，例如当前页面高度太长，默认是页上半部分，你定位的元素在页尾，这个时候可能就会报元素不可见的异常。我们就需要利用javaScript来实现拖拽页面滚动条。
+
+ 
+
+我们一般可以两个方法去拖拽，一个是根据拖拽的坐标（像素单位），另外一个是根据拖拽到一个参考元素附件。
+
+ 
+
+代码举例（根据元素坐标拖拽）：
+
+JavascriptExecutor jse= (JavascriptExecutor)driver;
+jse.executeScript("window.scrollBy(0,250)", "");
+
+ **如何实现文件上传？**
+
+ 
+
+我们在web页面实现文件上传过程中，可以直接把文件在磁盘完整路径，通过sendKeys方法实现上传。如果这种方法不能实现上传，我们就可能需要借助第三方工具，我用过一个第三方工具叫autoIT.
+
+**如何处理“不受信任的证书”的问题？**
+
+ 
+
+例如，在登录12306网站的时候，如果你没有下载和安装过这个网站的根证书，那么你就会遇到打开12306网站提示证书不受信任的拦截页面。
+
+ 
+
+下面举例火狐和谷歌上处理这个问题的基本代码
+
+ 
+
+火狐：
+
+// 创建firefoxprofile
+FirefoxProfile profile=new FirefoxProfile();
+// 点击继续浏览不安全的网站
+profile.setAcceptUntrustedCertificates(true);
+// 使用带条件的profile去创建一个driver对象
+WebDriver driver=new FirefoxDriver(profile);
+
+ 
+
+ 
+
+Chrome：
+
+// 创建类DesiredCapabilities的对象
+DesiredCapabilities cap=DesiredCapabilities.chrome();
+// 设置ACCEPT_SSL_CERTS 变量值为true
+cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+// 新建一个带capability的chromedriver对象
+WebDriver driver=new ChromeDriver(cap);
+
+**什么是JavaScript Executor，你什么时候会用到这个？**
+
+ 
+
+JavaScript Executor是一个接口，给driver对象提供一个执行javaScript并访问和修改前端元素属性和值。
+
+ 
+
+还是有比较多的场景，我们可能或者需要借助javaScript来实现：
+
+1.元素通过现有定位表达式不能够实现点击
+
+2.前端页面试用了ck-editor这个插件
+
+3.处理时间日期插件（可能）
+
+4.生成一个alert弹窗
+
+5.拖拽滚动条
+
+ 
+
+基本语法：
+
+JavascriptExecutor js =(JavascriptExecutor) driver;
+js.executeScript(Script,Arguments);
+
+**如何实现鼠标悬停，键盘事件和拖拽动作？**
+
+ 
+
+在Webdriver中，处理键盘事件和鼠标事件，一般使用Actions类提供的方法，包括鼠标悬停，拖拽和组合键输入。
+
+ 
+
+这里介绍几个方法
+
+ 
+
+方法：clickAndHold()
+
+使用场景：找到一个元素，点击鼠标左键，不放手。自己可以点击鼠标不松开试试这个场景。
+
+ 
+
+方法：contentClick()
+
+使用场景：模拟鼠标右键点击，一般右键会带出菜单来。
+
+ 
+
+方法：doubelClick()
+
+使用场景：模拟鼠标双击
+
+ 
+
+方法：dragAndDrop(source,target)
+
+使用场景：模拟从source这个位置，拖拽一个元素到target位置
+
+ 
+
+键盘事件方法:keyDown(keys.ALT), keyUp(keys.SHIFT)
+
+使用场景：点击键盘事件，分为两个动作，一个点击键盘，第二个动作是释放点击（松开）
 
 ## 底层原理：requests
 
-## 底层原理：jmeter
+### 请说一下urllib和requests的区别？
+
+1. urllib是python内置的包，不需要单独安装；requests是第三方库，需要单独安装（pip install requests）
+2.  requests库是在urllib的基础上封装的，比urllib更加好用&语义化
+3. requests可以直接构建常用的get、post请求并发送；urllib需要先构建请求，然后再发起请求
+4. 具体对比：
+
+|          | urllib包                                                     | requests库                                                   |
+| -------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 构建参数 | 需要使用urllib的urlencode方法进行编码预处理                  | 不要进行编码预处理                                           |
+| 请求头   | `urllib`的`reqeust`需要构造一个请求，再进行请求              | `requests`可以直接添加`headers`参数以设置请求头，因为请求头是在其内部已经构建了 |
+| 请求方法 | 发送请求时，用urlopen方式发起                                | 发送请求时用requests.get方式发起，更佳清晰、明了和语义化     |
+| 请求数据 | 按照url格式拼接URL请求字符串                                 | 顺序将请求的url和参数写好即可                                |
+| 处理响应 | 处理头部消息：info（）响应码状态：getcode（）响应正文：read（） | 头部信息：head（）响应码状态：status_code（）响应正文：text（）、content（） |
+| 连接方式 | 每次请求结束后都会关闭socket连接"connection":"close"         | 采用urllib3长连接方式，多次请求使用同一个socket，消耗资源更少"connection":"keep-alive" |
+| 编码方式 | requests库的编码方式Accept-Encoding更全                      |                                                              |
+
+## jmeter
+
+### 1.解释什么是jmeter?
+
+　　jmeter是一款java开源工具，用于性能负载测试。它旨在分析和衡量web应用程序和各种服务的性能和负载功能行为。
+
+### 2.说明jmeter的工作原理？
+
+　　jmeter就像一群将请求发送到目标服务器的用户一样。它收集来自目标服务器的响应以及其他统计数据，这些统计数据通过图形或表格显示应用程序或服务器的性能。
+
+### 3.说明可以在哪里使用函数和变量？
+
+　　变量和函数可以写入任何测试组件的任何字段。
+
+### 4.提到jmeter中的正则表达式是什么？
+
+　　根据模式（patterns），使用正则表达式搜索和操作文本。jmeter可用于解释在整个jmeter测试计划中使用的正则表达式或模式的形式。
+
+### 5.解释什么是采样器（Samplers）和线程组（Thread group）?
+
+　　线程组：对于任何测试计划，线程组元件都是JMeter的开始部分。这是JMeter的重要元件，你可以在其中设置多个用户和时间来加载线程组中给出的所有用户。
+　　采样器：采样器生成一个或多个采样结果；这些采样结果具有许多属性，例如经过时间、数据大小等。采样器允许JMeter通过采样器将特定类型的请求发送到服务器，线程组决定需要发出的请求类型。一些有用的采样器包括HTTP请求、FTP请求、JDBC请求等等。
+
+ 
+
+### 6、使用JMeter构建的测试计划是否依赖于操作系统？
+
+　　通常，测试计划以XML格式保存，因此与任何特定的操作系统都没有关系。它可以在JMeter可以运行的任何操作系统上运行。
+
+### 7、提到JMeter中处理器的类型是什么？
+
+　　JMeter中的处理器类型为：①预处理器；②后处理器。
+
+### 8、解释什么是预置处理器元件？列出一些预处理器元件？
+
+　　预置处理器是在采样器执行之前发生的事情。为了在执行采样请求之前对其进行配置，或者用于更新未从响应文本中提取的变量，需要使用预处理器元件。
+一些预处理器元件是：
+
+- HTTP URL重写修饰符
+- HTTP用户参数修饰符
+- HTML链接解析器
+- BeanShell PreProcessor
+
+### 9、是否提到测试元件的执行顺序？
+
+　　测试计划元件的执行顺序为：
+　　配置元件 -> 前置处理器 -> 计时器 -> 取样器 -> 后置处理器 -> 断言 -> 监听器
+
+### 10、正则表达式中的“包含”和“匹配”表示什么？
+
+　　在正则表达式中，contains表示正则表达式与目标的至少一部分匹配。匹配表示正则表达式匹配整个目标。如“alphabet”与“al.*t”匹配。
+
+### 11、解释什么是配置元件？
+
+　　配置元件与采样器并行工作。要设置默认值和变量以供采样器以后使用，可以使用配置元件。在合并范围的开始，将先处理这些元件，然后再处理同一合并范围中的任何采样器。
+
+### 12、说明JMeter中的计时器是什么，计时器的类型是什么？
+
+　　默认情况下，JMeter线程将连续发送请求而不会暂停。为了在请求之间暂停，使用了计时器。使用的一些计时器包括恒定计时器，高斯随机计时器，同步计时器，均匀随机计时器等。
+
+### 13、解释什么是测试片段？
+
+　　测试片段也是一种元件，例如“线程组”元件。唯一的区别是，除非模块控制器或包含控制器引用了测试片段，否则不会实现测试片段。
+
+### 14、解释什么是JMeter中的断言？断言的类型有哪些？
+
+　　断言有助于验证被测服务器是否返回了预期结果。
+　　JMeter中一些常用的断言是：
+
+- 响应断言
+- 持续时间断言
+- 大小断言（Size Assertion）
+- XML断言
+- HTML断言
+
+### 15、说明如何减少JMeter中的资源需求？
+
+　　①使用非GUI模式执行测试，如 jmeter –n –t test.jmx –l test.jtl
+　　②在加载期间，测试不使用“查看结果树”或“查看表中的结果”监听器，仅在脚本编写阶段使用它们；
+　　③不要使用功能模式；
+　　④与其使用大量相似的采样器，不如在循环中使用相同的采样器，并使用变量来改变采样；
+
+### 16、解释如何在JMeter中执行尖峰测试（Spike testing）？
+
+　　通过同步，可以实现计时器JMeter尖峰测试。同步计时器将阻塞线程，直到阻塞了特定数量的线程，然后将它们全部释放，从而产生了巨大的瞬时负载。
+小贴士：尖峰测试 也可以称为冲击测试，反复冲击服务器。指的是在某一瞬间或者多个频次下用户数和压力陡然增加的场景。
+
+### 17、解释如何在JMeter中捕获身份验证窗口的脚本？
+
+　　通常，可以通过录制来捕获脚本：
+　　首先，必须在Testplan（测试计划）中使用 Threadgroup，然后在 Workbench（工作台） 中使用HTTP代理服务器；
+　　之后，在“全局设置”框中设置端口号（如8911），然后在 IE高级选项>连接>局域网设置中 开启 代理设置，并将地址修改为localhost，端口改为8911。
+然后，HTTP代理服务器中选择 目标控制器 Testplan>Threadgroup，然后启动HTTP代理服务器并运行应用进行登录。
+
+### 18）列出几个JMeter监听器？
+
+　　一些JMeter监听器是：
+
+- 集合报告
+- 汇总报告
+- 查看结果树
+- 用表格查看结果
+- 图形结果
+- BeanShell Listener
+- 摘要报告等
+
+### 19、什么是分布式负载测试？如何实现？
+
+　　分布式负载测试是整个系统可以用来模拟大量用户负载的过程。通过使用主从配置，JMeter可以进行分布式负载测试。
+
+### 20、在JMeter中是否有必要显式调用嵌入式资源？
+
+　　你可以消除所有嵌入式资源的显式调用。请求底部有一个复选框，显示“检索嵌入式资源（retrieve embedded resources.）”。它会捕获所有CSS、JPG等。这是在Web应用中查找资源和断开链接的绝妙方法。
+
+### 21、解释计时器（Timer）在JMeter中的作用是什么？
+
+　　在计时器的帮助下，JMeter可以延迟线程发出的每个请求之间的时间。它可以解决服务器的过载问题。
+
+### 22、解释什么是后置处理器？
+
+　　要在发出请求后执行任何操作，则使用后处理器。例如，如果JMeter向Web服务器发送HTTP请求，并且如果你希望JMeter在Web服务器显示错误时停止发送请求，那么你将使用后处理器执行此操作。
+
+### 23、JMeter为性能测试提供什么好处？
+
+　　JMeter提供性能测试方面的优势，例如：
+
+- - 它可以用于测试静态资源和动态资源的性能；
+  - 它可用于测试网站最大并发用户数，从而分析定位网站瓶颈；
+  - 它提供了性能报告的图形化分析；
 
 ## 底层原理：pytest
 
@@ -1457,7 +1882,7 @@ def shell_sort(list):
 
 归并操作(归并算法)，指的是将两个已经排序的序列合并成一个序列的操作。归并排序算法依赖归并操作。
 
-![img](/Users/eqxiu/caozijun/gitrepo/Jaccorot.github.io/images/all/merge_sort.png)
+![img](../images/all/merge_sort.png)
 
 **步骤**
 
