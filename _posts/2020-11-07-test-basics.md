@@ -1914,7 +1914,7 @@ git merge提示冲突后，我们切换到对应文件，看看冲突内容哈�
 
 3. 修改完冲突文件内容，我们重新提交，冲突done
 
-![img](/Users/eqxiu/caozijun/gitrepo/Jaccorot.github.io/images/all/git_reflect2.png)
+![img](../images/all/git_reflect2.png)
 
 ## Git进阶之撤销与回退
 
@@ -2270,6 +2270,52 @@ jstack 13731 > thread_stack.log
 基于以上三个策略，构建稳定性持续运营体系。强调闭环，从质量度量与评价、到问题分析与解决，最终完成方法与工具的沉淀；过程中，通过平台建设来落地运营数据、完善运营工具，提升运营效率。
 
 ![img](../images/all/ceshi-yunying-tixi.png)
+
+## 问题定位分析
+
+现象 - 业务 -  实现
+
+* 快速止血-
+  * 发布问题：回滚
+  * 部分机器：隔离
+  * 入口流量：流控
+  * 下游依赖：降级
+  * 资源问题：重启
+
+* 保留现场-
+  * 应用、中间件日志
+    * --GC、内核日志
+    * --线程堆栈dump
+    * --堆内存映射dump
+    * 监控数据
+
+* 定位原因 -
+  * case by case:
+    * 关联近期变更
+    * 全链路追踪分析
+    * 还原事件时间线
+    * 找到root cause
+  * 问题分类
+    * 逻辑缺陷：e.g. NPE、死循环、边界情况未覆盖。
+    * 性能瓶颈：e.g. 接口 RT 陡增、吞吐率上不去。
+    * 内存异常：e.g. GC 卡顿、频繁 FGC、内存泄露、OOM
+    * 并发/分布式：e.g. 存在竞争条件、时钟不同步。
+    * 数据问题：e.g. 出现脏数据、序列化失败。
+    * 安全问题：e.g. DDoS 攻击、数据泄露。
+    * 环境故障：e.g. 宿主机宕机、网络不通、丢包。
+    * 操作失误：e.g. 配置推错、删库跑路
+  * 分析
+    * 监控、日志、链路
+      zabbix、nginx或waf日志、sw   ：Arthas
+    * 系统层面：tsar、top、iostat、vmstat
+    * 网络层面：iftop、tcpdump、wireshark
+    * 数据库层面：SQL explain
+    * 应用代码层面：jstack、Arthas、JProfiler
+
+* 解决问题
+  * 修复验证、对比、回归
+  * bugfix、简化、并行、异步、批量、时间空间互换、数据结构与算法优化、池化 & 局部化
+  * 故障review：避免问题发生、流程可以优化 ： 任务 ，设置人、期限
 
 ## 测试提效平台
 

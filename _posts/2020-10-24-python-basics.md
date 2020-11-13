@@ -1865,7 +1865,7 @@ finally:
 
   * 当服务端大量处于TIME_WAIT时，意味着服务端处于大量高并发状态
 
-  <img src="./img/tcp-handshakes.png" alt="三次握手" style="zoom:100%;" />
+  <img src="../images/all/tcp-handshakes.png" alt="三次握手" style="zoom:100%;" />
 
 * TCP协议的半连接池：
 
@@ -1905,7 +1905,7 @@ finally:
   * 递归  + 迭代
     * 浏览器DNS缓存->本地系统DNS缓存->本地计算机HOSTS文件->本地域名服务器 DNS缓存->迭代搜索（..根域名服务器）
 
-  ![dns](img/dns.png)
+  ![dns](../images/all/dns.png)
 
 #### TCP
 
@@ -2125,7 +2125,7 @@ phone.close()
 
 　　（3）阻塞(Blocked)状态正在执行的进程，由于等待某个事件发生而无法执行时，便放弃处理机而处于阻塞状态。引起进程阻塞的事件可有多种，例如，等待I/O完成、申请缓冲区不能满足、等待信件(信号)等。
 
-![进程三状态](../img/thread_status.png)
+![进程三状态](../images/all/thread_status.png)
 
 ### 同步异步
 
