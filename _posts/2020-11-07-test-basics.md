@@ -1753,6 +1753,188 @@ js.executeScript(Script,Arguments);
 
 # GIT
 
+[7000+ 字带你全面搞懂 Git 命令+原理！](https://mp.weixin.qq.com/s/pIZt-bbicxsmXJaAbnLMow)
+
+## Git的四大工作区域
+
+![img](../images/all/git_base.png)
+
+![img](../images/all/git_flow.png)
+
+- **Workspace**：你电脑本地看到的文件和目录，在Git的版本控制下，构成了工作区。
+- **Index/Stage**：暂存区，一般存放在 .git目录下，即.git/index,它又叫待提交更新区，用于临时存放你未提交的改动。比如，你执行git add，这些改动就添加到这个区域啦。
+- **Repository**：本地仓库，你执行git clone 地址，就是把远程仓库克隆到本地仓库。它是一个存放在本地的版本库，其中**HEAD指向最新放入仓库的版本**。当你执行git commit，文件改动就到本地仓库来了~
+- **Remote**：远程仓库，就是类似github，码云等网站所提供的仓库，可以理解为远程数据交换的仓库~
+
+## Git文件的四种状态
+
+根据一个文件是否已加入版本控制，可以把文件状态分为：Tracked(已跟踪)和Untracked(未跟踪)，而tracked(已跟踪)又包括三种工作状态：Unmodified，Modified，Staged
+
+![img](../images/all/git_4_status.png)
+
+- **Untracked**: 文件还没有加入到git库，还没参与版本控制，即未跟踪状态。这时候的文件，通过git add 状态，可以变为Staged状态
+
+- **Unmodified**：文件已经加入git库, 但是呢，还没修改, 就是说版本库中的文件快照内容与文件夹中还完全一致。Unmodified的文件如果被修改, 就会变为Modified. 如果使用git remove移出版本库, 则成为Untracked文件。
+
+- **Modified**：文件被修改了，就进入modified状态啦，文件这个状态通过stage命令可以进入staged状态
+
+- **staged**：暂存状态. 执行git commit则将修改同步到库中, 这时库中的文件和本地文件又变为一致, 文件为Unmodified状态.
+
+  
+
+## git 命令
+
+```
+git clone url  克隆远程版本库
+
+git checkout -b dev   创建开发分支dev，并切换到该分支下
+
+git add .	添加当前目录的所有文件到暂存区
+git add [dir]	添加指定目录到暂存区，包括子目录
+git add [file1]	添加指定文件到暂存区
+git add Hello.java  把HelloWorld.java文件添加到暂存区去
+
+git commit -m [message] 提交暂存区到仓库区,message为说明信息
+git commit [file1] -m [message] 提交暂存区的指定文件到本地仓库
+git commit --amend -m [message] 使用一次新的commit，替代上一次提交
+
+git status  查看当前工作区暂存区变动
+git status -s  查看当前工作区暂存区变动，概要信息
+git status  --show-stash 查询工作区中是否有stash（暂存的文件）
+
+git log  查看提交历史
+git log --oneline 以精简模式显示查看提交历史
+git log -p <file> 查看指定文件的提交历史
+git blame <file> 一列表方式查看指定文件的提交历史
+
+git diff 显示暂存区和工作区的差异
+git diff filepath   filepath路径文件中，工作区与暂存区的比较差异
+git diff HEAD filepath 工作区与HEAD ( 当前工作分支)的比较差异
+git diff branchName filepath 当前分支的文件与branchName分支的文件的比较差异
+git diff commitId filepath 与某一次提交的比较差异
+
+
+git pull  拉取远程仓库所有分支更新并合并到本地分支。
+git pull origin master 将远程master分支合并到当前本地分支
+git pull origin master:master 将远程master分支合并到当前本地master分支，冒号后面表示本地分支
+
+git fetch --all  拉取所有远端的最新代码
+git fetch origin master 拉取远程最新master分支代码
+
+git push origin master 将本地分支的更新全部推送到远程仓库master分支。
+git push origin -d <branchname>   删除远程branchname分支
+git push --tags 推送所有标签
+
+git checkout -b dev2  新建一个分支，并且切换到新的分支dev2
+git branch dev2 新建一个分支，但是仍停留在原来分支
+git branch    查看本地所有的分支
+git branch -r  查看所有远程的分支
+git branch -a  查看所有远程分支和本地分支
+git branch -D <branchname>  删除本地branchname分支
+git checkout master 切换到master分支
+
+
+git merge master  在当前分支上合并master分支过来
+git merge --no-ff origin/dev  在当前分支上合并远程分支dev
+git merge --abort 终止本次merge，并回到merge前的状态
+
+
+git reset HEAD --file
+回退暂存区里的某个文件，回退到当前版本工作区状态
+git reset –-soft 目标版本号 可以把版本库上的提交回退到暂存区，修改记录保留
+git reset –-mixed 目标版本号 可以把版本库上的提交回退到工作区，修改记录保留
+git reset –-hard  可以把版本库上的提交彻底回退，修改的记录全部revert。
+
+#与git reset不同的是，revert复制了那个想要回退到的历史版本，将它加在当前分支的最前端。
+git log  得到你需要回退一次提交的commit id
+git revert -n <commit_id>  撤销指定的版本，撤销也会作为一次提交进行保存
+
+git tag  列出所有tag
+git tag [tag] 新建一个tag在当前commit
+git tag [tag] [commit] 新建一个tag在指定commit
+git tag -d [tag] 删除本地tag
+git push origin [tag] 推送tag到远程
+git show [tag] 查看tag
+git checkout -b [branch] [tag] 新建一个分支，指向某个tag
+
+git rebase  #rebase又称为衍合，是合并的另外一种选择。
+
+假设有两个分支master和test
+
+      D---E test
+      /
+ A---B---C---F--- master
+执行 git merge test得到的结果
+
+       D--------E
+      /          \
+ A---B---C---F----G---   test, master
+执行git rebase test，得到的结果
+
+A---B---D---E---C‘---F‘---   test, master
+
+
+git stash  把当前的工作隐藏起来 等以后恢复现场后继续工作
+git stash list 显示保存的工作进度列表
+git stash pop stash@{num} 恢复工作进度到工作区
+git stash show ：显示做了哪些改动
+git stash drop stash@{num} ：删除一条保存的工作进度
+git stash clear 删除所有缓存的stash。
+
+git reflog 显示当前分支的最近几次提交
+
+git blame filepath  #git blame 记录了某个文件的更改历史和更改人，可以查看背锅人
+
+git remote   查看关联的远程仓库的名称
+git remote add url   添加一个远程仓库
+git remote show [remote] 显示某个远程仓库的信息
+
+```
+
+## git冲突管理
+
+Git 解决冲突步骤如下：
+
+- 查看冲突文件内容
+- 确定冲突内容保留哪些部分，修改文件
+- 重新提交，done
+
+1. 查看冲突文件内容
+
+git merge提示冲突后，我们切换到对应文件，看看冲突内容哈，，如下
+
+![img](../images/all/git_reflect.png)
+
+2. 确定冲突内容保留哪些部分，修改文件
+
+- Git用<<<<<<<，=======，>>>>>>>标记出不同分支的内容，
+- <<<<<<<HEAD是指主分支修改的内容，>>>>>>> dev是指dev分支上修改的内容
+
+所以呢，我们确定到底保留哪个分支内容，还是两个分支内容都保留呢，然后再去修改文件冲突内容~
+
+3. 修改完冲突文件内容，我们重新提交，冲突done
+
+![img](/Users/eqxiu/caozijun/gitrepo/Jaccorot.github.io/images/all/git_reflect2.png)
+
+## Git进阶之撤销与回退
+
+![img](../images/all/git_fallback.png)
+
+```
+# git add到暂存区，并未commit提交
+git reset HEAD file 取消暂存
+git checkout file 撤销修改
+
+#代码已经git commit了，但是还没有push
+git log  获取到想要回退的commit_id
+git reset --hard commit_id  想回到过去，回到过去的commit_id
+
+#代码已经push到远程仓库了呢，也可以使用reset回滚哦
+git log
+git reset --hard commit_id
+git push origin HEAD --force
+```
+
 ##### 1. 列举工作中常用的几个git命令？
 
 新增文件的命令：git add file或者git add .
@@ -1760,6 +1942,8 @@ js.executeScript(Script,Arguments);
 查看工作区状况：git status –s
 拉取合并远程分支的操作：git fetch/git merge或者git pull
 查看提交记录命令：git reflog
+
+![img](../images/all/git_common.png)
 
 ##### 2. 提交时发生冲突，你能解释冲突是如何产生的吗？你是如何解决的？
 
@@ -2010,11 +2194,11 @@ git push origin master
 
 # 经验
 
-# 线上Java程序占用 CPU 过高，请说一下排查方法？
+## 线上Java程序占用 CPU 过高，请说一下排查方法？
 
-## 排查步骤
+排查步骤
 
-### 第一步，使用 top 找到占用 CPU 最高的 Java 进程
+* 第一步，使用 top 找到占用 CPU 最高的 Java 进程
 
 在真实环境中，首先要确认是不是 Java 程序造成的，如果有系统监控工具，可能会直接在预警信息里告诉你是有哪个进程造成的，但也有可能不知道，需要我们手动排查。
 
@@ -2026,7 +2210,7 @@ git push origin master
 
 使用 `top`命令发现占用 CPU 99.7% 的线程是 Java 进程，进程 PID 为 `13731`。
 
-### 第二步，用 `top -Hp` 命令查看占用 CPU 最高的线程
+* 第二步，用 `top -Hp` 命令查看占用 CPU 最高的线程
 
 上一步用 `top`命令找到了那个 Java 进程。那一个进程中有那么多线程，不可能所有线程都一直占着 CPU 不放，这一步要做的就是揪出这个罪魁祸首，当然有可能不止一个。
 
@@ -2040,7 +2224,7 @@ git push origin master
 
 然后将 `13756`转换为 16 进制的，后面会用到，可以用在线进制转换的网站直接转换，转换结果为 `0x35bc`
 
-### 第三步，保存线程栈信息
+* 第三步，保存线程栈信息
 
 当前 Java 程序的所有线程信息都可以通过 `jstack`命令查看，我们用`jstack`命令将第一步找到的 Java 进程的线程栈保存下来。
 
@@ -2049,7 +2233,7 @@ jstack 13731 > thread_stack.log
 复制代码
 ```
 
-### 第四步，在线程栈中查找最贵祸首的线程
+* 第四步，在线程栈中查找最贵祸首的线程
 
 第二步已经找到了这个罪魁祸首的线程 PID，并把它转换成了 16 进制的，第三步保存下来的线程栈中有所有线程的 PID 16 进制信息，我们在线程栈中查找这个16进制的线程 id （`0x35bc`）。
 
@@ -2057,7 +2241,201 @@ jstack 13731 > thread_stack.log
 
 怎么样，现在一目了然了，线程名称、线程状态、以及哪行代码消耗了最多的 CPU 都很清楚了。
 
+## 自动化测试平台优化方向
 
+1. **为了减少开发成本**，使用比较常见的Jenkins+TestNG的脚本形式。
+2. **为了简化code操作**，使用DB进行测试用例存储，并抽象出用例摸版。
+3. **为了减低新建用例成本**，开发“用例维护页面”和“一键生成”等工具。
+4. **为了减低维护成本**，加跳转链接，维护一条用例成本在几分钟内。
+5. **为了增加用例健壮性**，设计了“参数化”、“前后置动作”等灵活的参数替换。
+6. **为了易用和兼容**，统一“返回结果”类型，统一“检查点”的使用。
+7. **为了接口自动化用例设计提供方向**，结合Jacoco做代码覆盖率统计，并开发相关配置工具
+8. **为了便于分析数据**，从DOM、Jenkins上爬各种数据，在页面上用图表展示。
+9. **为了优化用例**，提供“用例打分”、“线上调用量排行”等数据进行辅助。
+
+## 持续运营体系
+
+* 流程规范工具化，尽可能减少人为意识因素，降低人力沟通和维护成本。
+
+如：配置变更流程，将配置变更视同代码上线，以PR方式提交评审；代码规范检查落地到工具，尽可能将编码最佳实践抽取为规则，将人工检查演变为工具检查。
+
+* 质量度量可视化，提取指标、通过数据驱动相关问题的PDCA闭环
+
+如：我们与SRE、DBA进行合作，将线上系统运维中与稳定性相关的指标提取出来，类似数据库慢查询次数、核心服务接口响应时长等等，并对指标数据进行实时监控，进而推进相关问题的解决。
+
+* 演练压测常态化，降低演练和压测成本，具备常态化执行的能力
+
+如：通过自动化的触发演练报警，验证应急SOP在各团队实际执行中的效果。
+
+基于以上三个策略，构建稳定性持续运营体系。强调闭环，从质量度量与评价、到问题分析与解决，最终完成方法与工具的沉淀；过程中，通过平台建设来落地运营数据、完善运营工具，提升运营效率。
+
+![img](../images/all/ceshi-yunying-tixi.png)
+
+## 测试提效平台
+
+* 源代码监控分析平台
+
+  * commit 监控
+
+    * git commit msg 监控
+      * Bugfix/feature/docs
+
+  * sonarqube 展示
+
+    * 在开源平台sonarqube上定制符合部门需求的规则，通过jenkins集成定时对项目代码质量进行扫描，对单元测试和代码覆盖率进行统计、定制化邮件发送，让开发和测试同学可以发现项目源码的问题。
+    * bad smell/严重问题
+
+  * diff auto match
+
+    * git diff/log/show
+    * pull代码，通过行号、正则匹配，分析对应controller
+
+  * 测试准入检查
+
+    1. sonar检查通过
+
+    2. 环境部署健康检查通过
+    3. 冒烟测试用例通过
+    4. 钉钉消息
+
+* 接口自动化平台
+  * Git merge监控
+    * webhook   git push/comments/merge
+  * 接口文档扫描引擎
+    * 二次改造的swagger
+    * 对变化接口解析内容，url/请求头/请求体/响应，自动落库，并拼接xml文件生成jmx
+    * 测试用例管理平台展示
+    * 下载二次修改并上传
+
+* 测试工具平台
+  * 监控平台
+    * 服务有效性监控：
+      * jmeter + Jenkins 定时执行， influxDB + grafana数据展示，结合钉钉webhook
+    * 服务资源监控
+      * zabbix
+  * 数据平台
+    * 造数据
+      * 通过http接口
+      * 通过dubbo接口
+      * 通过数据库
+      * 通过MQ
+      * 通过redis
+  * 
+
+* BUG监控分析平台
+
+* | 度量指标                | 指标说明                           | 标准值                                  |
+  | :---------------------- | :--------------------------------- | :-------------------------------------- |
+  | 千行代码缺陷率          | （缺陷总数/代码行数）* 1000        | 移动端：< 0.45 前端：< 0.2 后端：< 0.15 |
+  | Sonar千行代码严重问题数 | （Sonar严重问题数/代码行数）* 1000 | Blocker：0 总数：< 0.1                  |
+  | 严重缺陷占比            | 严重缺陷总数/缺陷总数              | < 3.5%                                  |
+  | 需求缺陷占比            | 需求缺陷总数/缺陷总数              | < 10%                                   |
+  | 实现与文档不符缺陷占比  | 实现与文档不符缺陷总数/缺陷总数    | < 10%                                   |
+
+## 系统架构
+
+前端： angular、vue
+
+后端：springboot、dubbo、
+
+db：mysql、oracle、mongo、redis
+
+持续集成： git、Jenkins
+
+其他：nginx、docker、rabbitmq
+
+
+
+# 性能测试
+
+## 压测过程
+
+* 场景建模
+  * 挖掘需求、粗粒度测试标准
+    * 测试场景：业务流程角度    
+    * 业务指标：成功率、RT、QPS 、 最大并发    
+    * 服务器指标：内存、cpu、io
+  * 以便更真实的还原线上系统运行场景；
+  * 环境分析
+    * 测试环境是否可以支持期望的极限 
+      *  根据测试环境与生产环境的性能比做换算
+      * 硬件资源是否支持期望的极限：硬件、带宽
+      * 单个执行机不能满足时需要分布式、分布式要在同一局域网；
+
+* 测试方案设计：
+  *  人  ： 谁，什么时间，做什么、
+  * 事：哪些场景和接口，业务指标和服务器指标确认、
+  * 物：软硬件环境、测试工具、测试数据
+
+* 基础数据构造
+
+  * 应满足数据类型以及量级的要求，避免数据热点；
+
+    * 对于服务性能缺陷扫描、性能调优以及新上线服务、推荐构造 Fake 数据、来压测指定路径。
+    * 对于线上容量规划、性能能力验证以及性能 Diff、推荐使用线上真实流量、使压测结果更贴近真实情况。
+    * 对于涉及到用户账号，用户登录态保持的情况，推荐使用压测专属测试账号，避免影响线上真实用户。
+
+  * 基础数据构造
+
+    * CSV 文件：按列分割数据，字段名取 CSV 文件第一行。数据读取方式是按行递增循环。如果一个压测任务会拆分成多个 Job，那么数据文件也会拆分，避免 Job 之间的数据重复。
+
+      
+
+* 流量构建
+
+  * 读写流量构造或回放，同时对压测流量进行标记和脱敏；
+  * 服务压测改造
+    * 压测验证：对于存储服务，在不打开压测开关的前提下，通过压测请求，发送读写操作都是会被拒绝。如果没有拒绝，说明在操作存储服务时，没有带上压测 Context，需要进行改造。
+    * 压测改造：
+      * 尽量减少代码改动，并给出完整的指导手册及代码示例，减少 RD 的工作量，降低代码错误的可能性。
+      * 提供简单便捷的线上线下 HTTP&RPC 的压测请求 Debug 工具，方便代码改动的验证。
+      * 对于新项目，项目开始初期，就将压测改造加入项目开发规范中，减少后期的代码改动。
+  * 压测隔离:压测隔离中需要解决的压测流量隔离，以及压测数据的隔离。
+    * 压测流量隔离，主要是通过构建压测环境来解决，如线下压测环境，或泳道化/Set 化建设，将压测流量与线上流程完全隔离。
+      * 优点是压测流量与线上流量完全隔离，不会影响到线上用户。
+      * 缺点：机器资源及维护成本高，且压测结果需要经过一定的换算，才能得线上容量，结果准确性存在一定的问题。目前公司内压测都是在线上集群上完成的，线上泳道化正在建设
+    * 压测数据隔离，主要是通过对压测流量进行染色，让线上服务能识别哪些是压测流量，哪些是正常流量，然后对压测流量进行特殊处理，以达到数据隔离的目的。
+      * 压测标记：
+        * 压测流量染色
+          * 对于 RPC 协议，会在请求的头部中增加一个 Key：Value 的字段作为压测标记。
+          * 对于 HTTP 和其他协议，会在请求头，自动注入一个 Stress 标记(Key-Value) 。
+        * 压测标记透传
+          * 目前公司内各个基础组件、存储组件，以及 RPC 框架都已经支持了压测标记的透传。其原理是将压测标记的 KV 值存入 Context 中，然后在所有下游请求中都带上该 Context，下游服务可以根据 Context 中压测标记完成对压测流量的处理。在实际业务中，代码改造也非常简单，只需要透传 Context 即可。
+            - **Golang 服务**：将压测标记写入 Context 中。
+            - **Python 服务**：利用 threading.local()存储线程 Context。
+            - **Java 服务**：利用 ThreadLocal 存储线程 Context。
+      * 压测数据隔离
+        * 影子表，影子库，以及数据偏移
+      * ![img](../images/all/stress_data_seprate.png)
+        * MySQL、MongoDB：影子表。SDK 判断是否是压测流量，若是则根据配置映射至新表名。配置策略有两种，一是读写影子表，二是读线上表、写影子表。
+        * Redis：Redis Key 加上 Stress 前缀。如 Stress_Tag=Valuex，那么读写 Redis 的 Key=Valuex_Key。这样可以解决多个压测任务数据冲突的问题。压测结束后，只需要对 Prefix=Valuex 做清除或过期操作即可。
+        * MQ：对于消息队列，Rhino 平台有两种策略。一是直接丢弃，然后针对消息队列的性能，单独进行压测；二是在 Header 中透传压测标记，Consumer 根据压测标记和业务需求，再做特殊处理。默认走丢弃策略，业务方可根据需求进行配置。
+        * **其他存储，**如 ES，ClickHouse 等，都有压测集群。压测时，会将压测请求打到指定的压测集群中。
+
+* 压测执行
+
+  * 过程中收集链路各节点的业务运行状态、资源使用情况等；
+  * 脚本调试、基准测试
+  * 预热、 多次取平均、 短连接
+
+* 生成压测报告
+
+## 压测发现的问题
+
+* 基础设施优化
+  * 数据库主从严重：读写数据
+  * 核心服务数据库迁移到物理机：网络专线
+  * 跨机房调用严重：部署区域优化
+* 系统服务优化
+  * 线程数调整
+  * 超时接口逻辑优化
+  * 核心和非核心业务拆分
+  * 数据库拆分
+* 故障预案优化
+  * 限流阈值过低
+  * 策略值配置未及时变更
+  * 监控指标缺失
+  * 报警级别不合理
 
 # 算法
 
