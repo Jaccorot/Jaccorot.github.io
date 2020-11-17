@@ -1028,9 +1028,9 @@ def isIpv4(self, s):
 
 # 牛客
 
-# 最长公共子序列
+## 最长公共子序列
 
-# 最长公共子串
+## 最长公共子串
 
 题目描述
 
@@ -1057,4 +1057,521 @@ def isIpv4(self, s):
 ```
 1≤str1,str2≤5000
 ```
+
+```python
+#
+# longest common substring
+# @param str1 string字符串 the string
+# @param str2 string字符串 the string
+# @return string字符串
+#
+class Solution:
+    def LCS(self , str1 , str2 ):
+        # write code here
+        if len(str1) > len(str2):
+            str1, str2 = str2, str1
+        
+        max_len, res = 0, ''
+        
+        for i in range(len(str1)):
+            if str1[i-max_len: i + 1] in str2:
+                res = str1[i-max_len: i + 1]
+                max_len += 1
+        
+        if not res:
+            return '-1'
+        else:
+            return res
+```
+
+## 括号序列
+
+题目描述
+
+给出一个仅包含字符'(',')','{','}','['和']',的字符串，判断给出的字符串是否是合法的括号序列
+括号必须以正确的顺序关闭，"()"和"()[]{}"都是合法的括号序列，但"(]"和"([)]"不合法。
+
+示例1
+
+输入
+
+```
+"["
+```
+
+返回值
+
+```
+false
+```
+
+示例2
+
+输入
+
+```
+"[]"
+```
+
+返回值
+
+```
+true
+```
+
+```python
+#
+# 
+# @param s string字符串 
+# @return bool布尔型
+#
+class Solution:
+    def isValid(self , s ):
+        # write code here
+        temp = {
+            "]":"[",
+            "}":"{",
+            ")":"("
+        }
+        result = []
+        for i in s:
+            if i in temp:
+                if len(result) == 0:
+                    return False
+                elif temp.get(i) != result.pop():
+                    return False
+            else:
+                result.append(i)
+        return len(result) == 0
+```
+
+## 合并有序链表
+
+题目描述
+
+将两个有序的链表合并为一个新链表，要求新的链表是通过拼接两个链表的节点来生成的。
+
+示例1
+
+输入
+
+```
+{1},{}
+```
+
+返回值
+
+```
+{1}
+```
+
+示例2
+
+输入
+
+```
+{1},{1}
+```
+
+返回值
+
+```
+{1,1}
+```
+
+```python
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+#
+# 
+# @param l1 ListNode类 
+# @param l2 ListNode类 
+# @return ListNode类
+#
+class Solution:
+    def mergeTwoLists(self , l1 , l2 ):
+        # write code here
+        if l1 is None:
+            return l2
+        if l2 is None:
+            return l1
+
+        if l1.val <= l2.val:
+            start = l1
+            cur = l1
+            l1 = l1.next
+        else:
+            start = l2
+            cur = l2
+            l2 = l2.next
+        while l1 and l2:
+
+            if l1.val >= l2.val:
+                cur.next = l2
+                cur = cur.next
+                l2 = l2.next
+            else:
+                cur.next = l1
+                cur = cur.next
+                l1 = l1.next
+        if l1:
+            cur.next = l1
+        if l2:
+            cur.next =l2
+        return start
+```
+
+## 判断链表中是否有环
+
+判断给定的链表中是否有环
+
+```python
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+#
+# 
+# @param head ListNode类 
+# @return bool布尔型
+#
+class Solution:
+    def hasCycle(self , head ):
+        # write code here
+        if head is None:
+            return False
+        slow = head
+        fast = head.next
+        while slow and fast and fast.next:
+            if slow != fast:
+                slow = slow.next
+                fast = fast.next.next
+            else:
+                return True
+        return False
+          
+```
+
+## 链表中环的入口节点
+
+题目描述
+
+对于一个给定的链表，返回环的入口节点，如果没有环，返回null
+
+拓展：
+
+你能给出不利用额外空间的解法么？
+
+```python
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+#
+# 
+# @param head ListNode类 
+# @return ListNode类
+#
+class Solution:
+    def detectCycle(self , head ):
+        # write code here
+        if head is None:
+            return None
+        temp = []
+        while head:
+            if head not in temp:
+                temp.append(head)
+                head = head.next
+            else:
+                return head
+```
+
+## 岛屿数量
+
+题目描述
+
+给一个01矩阵，1代表是陆地，0代表海洋， 如果两个1相邻，那么这两个1属于同一个岛。我们只考虑上下左右为相邻。
+
+岛屿: 相邻陆地可以组成一个岛屿（相邻:上下左右） 判断岛屿个数。
+
+
+
+示例1
+
+输入
+
+```
+[[1,1,0,0,0],[0,1,0,1,1],[0,0,0,1,1],[0,0,0,0,0],[0,0,1,1,1]]
+```
+
+返回值
+
+```
+3
+```
+
+备注:
+
+```
+01矩阵范围<=200*200
+```
+
+```python
+#
+# 判断岛屿数量
+# @param grid char字符型二维数组 
+# @return int整型
+#
+class Solution:
+    def solve(self , grid ):
+        # write code here
+        l_r = len(grid)
+        if l_r == 0:
+            return 0
+        l_c = len(grid[0])
+        
+        
+        count = 0 
+        temp = []
+        for r in range(l_r):
+            for c in range(l_c):
+                if grid[r][c] == "1":
+                    count += 1
+                    temp.append((r,c))
+                    while temp:
+                        row,col = temp.pop()
+                        grid[row][col] = 0
+                        for i,j in [(row,col+1),(row,col-1),(row-1,col),(row+1,col)]:
+                            if 0<=i<l_r and 0<=j<l_c and grid[i][j] == "1":
+                                temp.append((i,j))
+                                grid[i][j] = 0
+        return count
+```
+
+## 链表中的节点每k个一组翻转
+
+题目描述
+
+将给出的链表中的节点每\ k *k* 个一组翻转，返回翻转后的链表
+如果链表中的节点数不是\ k *k* 的倍数，将最后剩下的节点保持原样
+你不能更改节点中的值，只能更改节点本身。
+要求空间复杂度 \ O(1) *O*(1)
+
+例如：
+
+给定的链表是1\to2\to3\to4\to51→2→3→4→5
+
+对于 \ k = 2 *k*=2, 你应该返回 2\to 1\to 4\to 3\to 52→1→4→3→5
+
+对于 \ k = 3 *k*=3, 你应该返回 3\to2 \to1 \to 4\to 53→2→1→4→5
+
+示例1
+
+输入
+
+```
+{1,2,3,4,5},2
+```
+
+返回值
+
+```
+{2,1,4,3,5}
+```
+
+```python
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+#
+# 
+# @param head ListNode类 
+# @param k int整型 
+# @return ListNode类
+#
+class Solution:
+    def reverseKGroup(self , head , k ):
+        # write code here
+        def reverse(a,b):
+            pre = None
+            cur = a
+            while cur != b:
+                next_node = cur.next
+                cur.next = pre
+                pre = cur
+                cur = next_node
+            return pre
+        a, b = head, head
+        for _ in range(k):
+            if not b:
+                return head
+            b = b.next
+        new_head = reverse(a,b)
+        a.next = self.reverseKGroup(b, k)
+        return new_head
+```
+
+## 验证IP地址
+
+题目描述
+
+编写一个函数来验证输入的字符串是否是有效的 IPv4 或 IPv6 地址
+
+IPv4 地址由十进制数和点来表示，每个地址包含4个十进制数，其范围为 0 - 255， 用(".")分割。比如，172.16.254.1；
+同时，IPv4 地址内的数不会以 0 开头。比如，地址 172.16.254.01 是不合法的。
+
+IPv6 地址由8组16进制的数字来表示，每组表示 16 比特。这些组数字通过 (":")分割。比如, 2001:0db8:85a3:0000:0000:8a2e:0370:7334 是一个有效的地址。而且，我们可以加入一些以 0 开头的数字，字母可以使用大写，也可以是小写。所以， 2001:db8:85a3:0:0:8A2E:0370:7334 也是一个有效的 IPv6 address地址 (即，忽略 0 开头，忽略大小写)。
+
+然而，我们不能因为某个组的值为 0，而使用一个空的组，以至于出现 (::) 的情况。 比如， 2001:0db8:85a3::8A2E:0370:7334 是无效的 IPv6 地址。
+同时，在 IPv6 地址中，多余的 0 也是不被允许的。比如， 02001:0db8:85a3:0000:0000:8a2e:0370:7334 是无效的。
+
+说明: 你可以认为给定的字符串里没有空格或者其他特殊字符。
+
+示例1
+
+输入
+
+```
+"172.16.254.1"
+```
+
+返回值
+
+```
+"IPv4"
+```
+
+说明
+
+```
+这是一个有效的 IPv4 地址, 所以返回 "IPv4"
+```
+
+示例2
+
+输入
+
+```
+"2001:0db8:85a3:0:0:8A2E:0370:7334"
+```
+
+返回值
+
+```
+"IPv6"
+```
+
+说明
+
+```
+这是一个有效的 IPv6 地址, 所以返回 "IPv6"
+```
+
+示例3
+
+输入
+
+```
+"256.256.256.256"
+```
+
+返回值
+
+```
+"Neither"
+```
+
+说明
+
+```
+这个地址既不是 IPv4 也不是 IPv6 地址
+```
+
+备注:
+
+```
+ip地址的类型，可能为
+IPv4,   IPv6,   Neither
+```
+
+```python
+#
+# 验证IP地址
+# @param IP string字符串 一个IP地址字符串
+# @return string字符串
+#
+class Solution:
+
+    def solve(self , IP ):
+        # write code here
+        def isIPv4(ip):
+            import re
+            pattern = r"([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}"
+            if re.match(pattern,ip):
+                return True
+            else:
+                return False
+        def isIPv6(ip):
+            import re
+            pattern = r"[0-9a-zA-Z]{1,4}(:[0-9a-zA-Z]{1,4}){7}"
+            if re.match(pattern, ip):
+                return True
+            else:
+                return False
+        if isIPv4(IP):
+            return "IPv4"
+        elif isIPv6(IP):
+            return "IPv6"
+        else:
+            return "Neither"
+```
+
+## 求平方根
+
+题目描述
+
+实现函数 int sqrt(int x).
+
+计算并返回x的平方根
+
+示例1
+
+输入
+
+```
+2
+```
+
+返回值
+
+```
+1
+```
+
+```python
+#
+# 
+# @param x int整型 
+# @return int整型
+#
+class Solution:
+    def sqrt(self , x ):
+        # write code here
+        if x<0:
+            return None
+        if 0<=x<1:
+            return 0
+        for i in range(x//2+2):
+            if (i-1)*(i-1) <x and (i+1)*(i+1)>x:
+                return i
+```
+
+## 加起来和为目标值的组合
 
