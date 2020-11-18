@@ -2306,7 +2306,7 @@ jstack 13731 > thread_stack.log
     * 操作失误：e.g. 配置推错、删库跑路
   * 分析
     * 监控、日志、链路
-      zabbix、nginx或waf日志、sw   ：Arthas
+      zabbix、nginx或waf日志、skywalking：Arthas
     * 系统层面：tsar、top、iostat、vmstat
     * 网络层面：iftop、tcpdump、wireshark
     * 数据库层面：SQL explain
@@ -2331,7 +2331,7 @@ jstack 13731 > thread_stack.log
     * 在开源平台sonarqube上定制符合部门需求的规则，通过jenkins集成定时对项目代码质量进行扫描，对单元测试和代码覆盖率进行统计、定制化邮件发送，让开发和测试同学可以发现项目源码的问题。
     * bad smell/严重问题
 
-  * diff auto match
+  * auto diff match
 
     * git diff/log/show
     * pull代码，通过行号、正则匹配，分析对应controller
@@ -2366,7 +2366,7 @@ jstack 13731 > thread_stack.log
       * 通过数据库
       * 通过MQ
       * 通过redis
-  * 
+      * 自定义脚本
 
 * BUG监控分析平台
 
@@ -2397,6 +2397,7 @@ db：mysql、oracle、mongo、redis
 ## 压测过程
 
 * 场景建模
+
   * 挖掘需求、粗粒度测试标准
     * 测试场景：业务流程角度    
     * 业务指标：成功率、RT、QPS 、 最大并发    
@@ -2455,7 +2456,7 @@ db：mysql、oracle、mongo、redis
       * ![img](../images/all/stress_data_seprate.png)
         * MySQL、MongoDB：影子表。SDK 判断是否是压测流量，若是则根据配置映射至新表名。配置策略有两种，一是读写影子表，二是读线上表、写影子表。
         * Redis：Redis Key 加上 Stress 前缀。如 Stress_Tag=Valuex，那么读写 Redis 的 Key=Valuex_Key。这样可以解决多个压测任务数据冲突的问题。压测结束后，只需要对 Prefix=Valuex 做清除或过期操作即可。
-        * MQ：对于消息队列，Rhino 平台有两种策略。一是直接丢弃，然后针对消息队列的性能，单独进行压测；二是在 Header 中透传压测标记，Consumer 根据压测标记和业务需求，再做特殊处理。默认走丢弃策略，业务方可根据需求进行配置。
+        * MQ：对于消息队列，一是直接丢弃，然后针对消息队列的性能，单独进行压测；二是在 Header 中透传压测标记，Consumer 根据压测标记和业务需求，再做特殊处理。默认走丢弃策略，业务方可根据需求进行配置。
         * **其他存储，**如 ES，ClickHouse 等，都有压测集群。压测时，会将压测请求打到指定的压测集群中。
 
 * 压测执行

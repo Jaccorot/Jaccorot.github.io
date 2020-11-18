@@ -1575,3 +1575,61 @@ class Solution:
 
 ## 加起来和为目标值的组合
 
+## 删除链表的倒数第n个节点
+
+题目描述
+
+给定一个链表，删除链表的倒数第n个节点并返回链表的头指针
+例如，
+
+```
+ 给出的链表为:1->2->3->4->5, n= 2.
+ 删除了链表的倒数第n个节点之后,链表变为1->2->3->5.
+```
+
+备注：
+
+题目保证n一定是有效的
+请给出请给出时间复杂度为\ O(n) *O*(*n*)的算法
+
+示例1
+
+输入
+
+```
+{1,2},2
+```
+
+返回值
+
+```
+{2}
+```
+
+```python
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+#
+# 
+# @param head ListNode类 
+# @param n int整型 
+# @return ListNode类
+#
+class Solution:
+    def removeNthFromEnd(self , head , n ):
+        # write code here
+        res = ListNode(0)
+        slow = fast = res
+        res.next = head
+        for _ in range(n):
+            fast = fast.next
+        while fast.next:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return res.next
+```
+
