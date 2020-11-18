@@ -971,6 +971,258 @@ class Solution:
 
 # 链表
 
+## 删除链表中的节点
+
+请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点。传入函数的唯一参数为 要被删除的节点 
+
+现有一个链表 -- head = [4,5,1,9]，它可以表示为:
+
+示例 1：
+
+输入：head = [4,5,1,9], node = 5
+输出：[4,1,9]
+解释：给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
+示例 2：
+
+输入：head = [4,5,1,9], node = 1
+输出：[4,5,9]
+解释：给定你链表中值为 1 的第三个节点，那么在调用了你的函数之后，该链表应变为 4 -> 5 -> 9.
+
+
+提示：
+
+链表至少包含两个节点。
+链表中所有节点的值都是唯一的。
+给定的节点为非末尾节点并且一定是链表中的一个有效节点。
+不要从你的函数中返回任何结果。
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def deleteNode(self, node):
+        """
+        :type node: ListNode
+        :rtype: void Do not return anything, modify node in-place instead.
+        """
+        node.val = node.next.val
+        node.next = node.next.next
+```
+
+## 删除链表的倒数第N个节点
+
+给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+
+示例：
+
+给定一个链表: 1->2->3->4->5, 和 n = 2.
+
+当删除了倒数第二个节点后，链表变为 1->2->3->5.
+说明：
+
+给定的 n 保证是有效的。
+
+进阶：
+
+你能尝试使用一趟扫描实现吗？
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        if head is None:
+            return None
+        
+        fast = slow = head
+        count = 0
+        while fast.next:
+            if count == n:
+                slow = slow.next
+                fast = fast.next
+            else:
+                count += 1
+                fast = fast.next
+        if fast == slow:
+            return None
+        elif count != n:
+            return head.next
+        else:
+            slow.next = slow.next.next
+            return head
+```
+
+## 合并两个有序链表
+
+将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+
+ 
+
+示例：
+
+输入：1->2->4, 1->3->4
+输出：1->1->2->3->4->4
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        if l1 is None:
+            return l2
+        if l2 is None:
+            return l1
+        if l1.val > l2.val:
+            l1, l2 = l2 ,l1
+        start = l1
+        while l1.next and l2:
+            if l1.next.val <= l2.val:
+                l1 = l1.next
+            else:
+                l1_next = l1.next
+                cur_l2 = l2
+                l2 = l2.next
+                l1.next = cur_l2
+                l1  = l1.next
+                l1.next = l1_next
+        if l2:
+            l1.next = l2
+        return start
+```
+
+## 回文链表
+
+请判断一个链表是否为回文链表。
+
+示例 1:
+
+输入: 1->2
+输出: false
+示例 2:
+
+输入: 1->2->2->1
+输出: true
+进阶：
+你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
+
+```PYTHON
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def isPalindrome(self, head: ListNode) -> bool:
+        # result = []
+        # while head:
+        #     result.append(head.val)
+        #     head = head.next
+        # return result == result[::-1]
+        def get_half_node(head):
+            slow = fast = head
+            while fast and fast.next:
+                fast = fast.next.next
+                slow = slow.next
+            return slow
+
+        def reverse_link(head):
+            pre = None
+            while head:
+                next_node = head.next
+                head.next = pre
+                pre = head
+                head = next_node
+            return pre
+        
+        start = head
+        half_node = get_half_node(head)
+        end = reverse_link(half_node)
+
+        while start and end:
+            if start.val != end.val:
+                return False
+            start = start.next
+            end = end.next
+        return True
+
+```
+
+## 环形链表
+
+给定一个链表，判断链表中是否有环。
+
+如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
+
+如果链表中存在环，则返回 true 。 否则，返回 false 。
+
+ 
+
+进阶：
+
+你能用 O(1)（即，常量）内存解决此问题吗？
+
+ 
+
+示例 1：
+
+
+
+输入：head = [3,2,0,-4], pos = 1
+输出：true
+解释：链表中有一个环，其尾部连接到第二个节点。
+示例 2：
+
+
+
+输入：head = [1,2], pos = 0
+输出：true
+解释：链表中有一个环，其尾部连接到第一个节点。
+示例 3：
+
+
+
+输入：head = [1], pos = -1
+输出：false
+解释：链表中没有环。
+
+
+提示：
+
+链表中节点的数目范围是 [0, 104]
+-105 <= Node.val <= 105
+pos 为 -1 或者链表中的一个 有效索引 。
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        slow = fast = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if slow == fast:
+                return True
+        return False
+```
+
+
+
 ## 反转链表
 
 反转一个单链表。
@@ -1010,7 +1262,1154 @@ class Solution:
 
 ```
 
+# 树
+
+## 二叉树的最大深度
+
+给定一个二叉树，找出其最大深度。
+
+二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+
+说明: 叶子节点是指没有子节点的节点。
+
+示例：
+给定二叉树 [3,9,20,null,null,15,7]，
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回它的最大深度 3 。
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def maxDepth(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        return max(self.maxDepth(root.left)+1 , self.maxDepth(root.right) +1)
+```
+
+
+
+## 验证二叉搜索树
+
+给定一个二叉树，判断其是否是一个有效的二叉搜索树。
+
+假设一个二叉搜索树具有如下特征：
+
+节点的左子树只包含小于当前节点的数。
+节点的右子树只包含大于当前节点的数。
+所有左子树和右子树自身必须也是二叉搜索树。
+示例 1:
+
+输入:
+    2
+   / \
+  1   3
+输出: true
+示例 2:
+
+输入:
+    5
+   / \
+  1   4
+     / \
+    3   6
+输出: false
+解释: 输入为: [5,1,4,null,null,3,6]。
+     根节点的值为 5 ，但是其右子节点值为 4 。
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        def helper(root, min_val, max_val):
+            if root is None:
+                return True
+            if min_val< root.val < max_val:
+                return helper(root.left, min_val, root.val) and helper(root.right, root.val, max_val)
+            else:
+                return False
+        return helper(root, float(-inf), float(inf))
+
+```
+
+## 对称二叉树
+
+给定一个二叉树，检查它是否是镜像对称的。
+
+ 
+
+例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
+
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+
+
+但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
+
+    1
+   / \
+  2   2
+   \   \
+   3    3
+
+
+进阶：
+
+你可以运用递归和迭代两种方法解决这个问题吗？
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+        result = []
+        temp = [root, root]
+        while temp:
+            n1 = temp.pop()
+            n2 = temp.pop()
+            if n1 is None and n2 is None:
+                continue
+            if n1 is None and n2:
+                return False
+            if n2 is None and n1:
+                return False
+            if n1 and n2 and n1.val != n2.val:
+                return False
+            temp.append(n1.left)
+            temp.append(n2.right)
+            temp.append(n1.right)
+            temp.append(n2.left)
+        return True
+
+
+
+        # def is_mirror(node1, node2):
+        #     if node1 is None and node2 is None:
+        #         return True
+        #     if node1 is None and node2:
+        #         return False
+        #     if node2 is None and node1:
+        #         return False
+            
+        #     return node1.val == node2.val  and is_mirror(node1.left, node2.right) and is_mirror(node1.right, node2.left)
+        
+        # return is_mirror(root, root)
+
+
+```
+
+## 二叉树的层序遍历
+
+给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
+
+ 
+
+示例：
+二叉树：[3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其层次遍历结果：
+
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if root is None:
+            return []
+        result = []
+        temp = [root]
+        while temp:
+            level_content = []
+            val_content = []
+            while temp:
+                t = temp.pop(0)
+                if t:
+                    val_content.append(t.val)
+
+                    if t.left:
+                        level_content.append(t.left)
+                    if t.right:
+                        level_content.append(t.right)
+            result.append(val_content)
+            temp = level_content
+        return result
+```
+
+## 将有序数组转换为二叉搜索树
+
+将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。
+
+本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。
+
+示例:
+
+给定有序数组: [-10,-3,0,5,9],
+
+一个可能的答案是：[0,-3,9,-10,null,5]，它可以表示下面这个高度平衡二叉搜索树：
+
+           0
+          / \
+        -3   9
+       /   /
+     -10  5
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        l_nums = len(nums)
+        if l_nums == 0:
+            return None
+        if l_nums == 1:
+            return TreeNode(nums[0])
+        mid = l_nums // 2
+        root = TreeNode(nums[mid])
+        root.left = self.sortedArrayToBST(nums[:mid])
+        root.right = self.sortedArrayToBST(nums[mid+1:])
+        return root
+```
+
+# 排序和搜索
+
+合并两个有序数组
+给你两个有序整数数组 nums1 和 nums2，请你将 nums2 合并到 nums1 中，使 nums1 成为一个有序数组。
+
+ 
+
+说明：
+
+初始化 nums1 和 nums2 的元素数量分别为 m 和 n 。
+你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。
+
+
+示例：
+
+输入：
+nums1 = [1,2,3,0,0,0], m = 3
+nums2 = [2,5,6],       n = 3
+
+输出：[1,2,2,3,5,6]
+
+
+提示：
+
+-10^9 <= nums1[i], nums2[i] <= 10^9
+nums1.length == m + n
+nums2.length == n
+
+```python
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+
+        l_nums1 = len(nums1)
+        l_nums2 = len(nums2)       
+        i = m-1
+        j = n-1
+        cur = m + n -1
+
+        while i > -1 and j > -1:
+            if nums1[i] >= nums2[j]:
+                nums1[cur] = nums1[i]
+                cur -= 1
+                i -= 1
+            else:
+                nums1[cur] = nums2[j]
+                cur -= 1
+                j -= 1
+        if j > -1:
+            nums1[:cur+1] = nums2[:j+1]
+
+        return nums1
+```
+
+## 第一个错误的版本
+
+你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。
+
+假设你有 n 个版本 [1, 2, ..., n]，你想找出导致之后所有版本出错的第一个错误的版本。
+
+你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。
+
+示例:
+
+给定 n = 5，并且 version = 4 是第一个错误的版本。
+
+调用 isBadVersion(3) -> false
+调用 isBadVersion(5) -> true
+调用 isBadVersion(4) -> true
+
+所以，4 是第一个错误的版本。 
+
+```python
+# The isBadVersion API is already defined for you.
+# @param version, an integer
+# @return an integer
+# def isBadVersion(version):
+
+class Solution:
+    def firstBadVersion(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        left = 1
+        right = n
+        while left < right:
+            mid = (left + right) //2
+            if isBadVersion(mid):
+                right = mid
+            else:
+                left = mid + 1
+        return left
+```
+
+# 动态规划
+
+爬楼梯
+假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+
+每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+
+注意：给定 n 是一个正整数。
+
+示例 1：
+
+输入： 2
+输出： 2
+解释： 有两种方法可以爬到楼顶。
+1.  1 阶 + 1 阶
+2.  2 阶
+示例 2：
+
+输入： 3
+输出： 3
+解释： 有三种方法可以爬到楼顶。
+1.  1 阶 + 1 阶 + 1 阶
+2.  1 阶 + 2 阶
+3.  2 阶 + 1 阶
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        result = {}
+        result[1] = 1
+        result[2] = 2
+        for i in range(3, n+1):
+            result[i] = result[i-1] + result[i-2]
+        return result[n]
+```
+
+## 买卖股票的最佳时机
+
+给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
+
+如果你最多只允许完成一笔交易（即买入和卖出一支股票一次），设计一个算法来计算你所能获取的最大利润。
+
+注意：你不能在买入股票前卖出股票。
+
+ 
+
+示例 1:
+
+输入: [7,1,5,3,6,4]
+输出: 5
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
+示例 2:
+
+输入: [7,6,4,3,1]
+输出: 0
+解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        # max_pro = 0
+        # for i in range(1,len(prices)):
+        #     min_val = min(prices[:i])
+        #     if max_pro < prices[i] - min_val:
+        #         max_pro = prices[i] - min_val
+        # return max_pro
+        if not prices:
+            return 0
+        min_price = max(prices)
+        max_pro = 0
+        for i in prices:
+            if i<min_price:
+                min_price = i
+            elif i - min_price > max_pro:
+                max_pro = i - min_price
+        return max_pro
+```
+
+## 最大子序和
+
+给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+示例:
+
+输入: [-2,1,-3,4,-1,2,1,-5,4]
+输出: 6
+解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+进阶:
+
+如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的分治法求解。
+
+```python
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        l_nums = len(nums)
+        dp = [0 for i in range(l_nums)]
+        
+        dp[0] = nums[0]
+        for i in range(1,len(nums)):
+            dp[i] = max(dp[i-1] + nums[i], nums[i])
+        return max(dp)
+```
+
+## 打家劫舍
+
+你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+
+给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
+
+ 
+
+示例 1：
+
+输入：[1,2,3,1]
+输出：4
+解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
+     偷窃到的最高金额 = 1 + 3 = 4 。
+示例 2：
+
+输入：[2,7,9,3,1]
+输出：12
+解释：偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。
+     偷窃到的最高金额 = 2 + 9 + 1 = 12 。
+
+
+提示：
+
+0 <= nums.length <= 100
+0 <= nums[i] <= 400
+
+```python
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+        l_nums = len(nums)
+        dp = [0 for _ in range(l_nums)]
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+        for i in range(2, l_nums):
+            dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+        return dp[-1]
+```
+
+## 设计问题
+
+打乱数组
+给你一个整数数组 nums ，设计算法来打乱一个没有重复元素的数组。
+
+实现 Solution class:
+
+Solution(int[] nums) 使用整数数组 nums 初始化对象
+int[] reset() 重设数组到它的初始状态并返回
+int[] shuffle() 返回数组随机打乱后的结果
+
+
+示例：
+
+输入
+["Solution", "shuffle", "reset", "shuffle"]
+[[[1, 2, 3]], [], [], []]
+输出
+[null, [3, 1, 2], [1, 2, 3], [1, 3, 2]]
+
+解释
+Solution solution = new Solution([1, 2, 3]);
+solution.shuffle();    // 打乱数组 [1,2,3] 并返回结果。任何 [1,2,3]的排列返回的概率应该相同。例如，返回 [3, 1, 2]
+solution.reset();      // 重设数组到它的初始状态 [1, 2, 3] 。返回 [1, 2, 3]
+solution.shuffle();    // 随机返回数组 [1, 2, 3] 打乱后的结果。例如，返回 [1, 3, 2]
+
+
+提示：
+
+1 <= nums.length <= 200
+-106 <= nums[i] <= 106
+nums 中的所有元素都是 唯一的
+最多可以调用 5 * 104 次 reset 和 shuffle
+
+```python
+import random
+class Solution:
+
+    def __init__(self, nums: List[int]):
+        self.array = nums
+        self.origin = nums[:]
+        
+
+    def reset(self) -> List[int]:
+        """
+        Resets the array to its original configuration and return it.
+        """
+        self.array = self.origin[:]
+        return self.array
+
+
+    def shuffle(self) -> List[int]:
+        """
+        Returns a random shuffling of the array.
+        """
+        for i in range(len(self.array)):
+            ran_index = random.randrange(i, len(self.array))
+            self.array[i] ,self.array[ran_index] = self.array[ran_index], self.array[i]
+        return self.array
+
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(nums)
+# param_1 = obj.reset()
+# param_2 = obj.shuffle()
+```
+
+## 最小栈
+
+设计一个支持 push ，pop ，top 操作，并能在常数时间内检索到最小元素的栈。
+
+push(x) —— 将元素 x 推入栈中。
+pop() —— 删除栈顶的元素。
+top() —— 获取栈顶元素。
+getMin() —— 检索栈中的最小元素。
+
+
+示例:
+
+输入：
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+
+输出：
+[null,null,null,null,-3,null,0,-2]
+
+解释：
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> 返回 -3.
+minStack.pop();
+minStack.top();      --> 返回 0.
+minStack.getMin();   --> 返回 -2.
+
+
+提示：
+
+pop、top 和 getMin 操作总是在 非空栈 上调用。
+
+```python
+class MinStack:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.ele = []
+        self.mins = []
+
+    def push(self, x: int) -> None:
+        self.ele.append(x)
+        if len(self.mins) == 0:
+            self.mins.append(x)
+        else:
+            self.mins.append( min(x, self.mins[-1]))
+
+
+    def pop(self) -> None:
+        self.ele.pop()
+        self.mins.pop()
+
+
+    def top(self) -> int:
+        return self.ele[-1]
+
+
+    def getMin(self) -> int:
+        return self.mins[-1]
+
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(x)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
+```
+
+
+
+# 数学
+
+## Fizz Buzz
+
+写一个程序，输出从 1 到 n 数字的字符串表示。
+
+1. 如果 n 是3的倍数，输出“Fizz”；
+
+2. 如果 n 是5的倍数，输出“Buzz”；
+
+3.如果 n 同时是3和5的倍数，输出 “FizzBuzz”。
+
+示例：
+
+n = 15,
+
+返回:
+[
+    "1",
+    "2",
+    "Fizz",
+    "4",
+    "Buzz",
+    "Fizz",
+    "7",
+    "8",
+    "Fizz",
+    "Buzz",
+    "11",
+    "Fizz",
+    "13",
+    "14",
+    "FizzBuzz"
+]
+
+```python
+class Solution:
+    def fizzBuzz(self, n: int) -> List[str]:
+        result = []
+        for i in range(1, n+1):
+            if i % 3 == 0 and i % 5 == 0:
+                result.append("FizzBuzz")
+            elif i % 3 == 0:
+                result.append("Fizz")
+            elif i % 5 == 0:
+                result.append("Buzz")
+            else:
+                result.append(str(i))
+        return result
+```
+
+
+
+## 3的幂
+
+给定一个整数，写一个函数来判断它是否是 3 的幂次方。如果是，返回 true ；否则，返回 false 。
+
+整数 n 是 3 的幂次方需满足：存在整数 x 使得 n == 3x
+
+示例 1：
+
+输入：n = 27
+输出：true
+示例 2：
+
+输入：n = 0
+输出：false
+示例 3：
+
+输入：n = 9
+输出：true
+示例 4：
+
+输入：n = 45
+输出：false
+
+
+提示：
+
+-231 <= n <= 231 - 1
+
+```python
+class Solution:
+    def isPowerOfThree(self, n: int) -> bool:
+        if n == 0:
+            return False
+        
+        while n % 3 == 0:
+            n = n // 3
+
+        return n == 1
+```
+
+## 计数质数
+
+统计所有小于非负整数 n 的质数的数量。
+
+ 
+
+示例 1：
+
+输入：n = 10
+输出：4
+解释：小于 10 的质数一共有 4 个, 它们是 2, 3, 5, 7 。
+示例 2：
+
+输入：n = 0
+输出：0
+示例 3：
+
+输入：n = 1
+输出：0
+
+
+提示：
+
+0 <= n <= 5 * 106
+
+```python
+import math
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        import math
+        if n < 3:
+            return 0
+        count = 1
+        for i in range(3, n):
+            if i % 2 == 0:
+                continue
+            for j in range(3,int(math.sqrt(i))+1,2):
+                if i % j == 0:
+                    break
+            else:
+                count += 1
+        return count
+```
+
+## 罗马数字转整数
+
+罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
+
+字符          数值
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。
+
+通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：
+
+I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。
+X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 
+C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
+给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。
+
+ 
+
+示例 1:
+
+输入: "III"
+输出: 3
+示例 2:
+
+输入: "IV"
+输出: 4
+示例 3:
+
+输入: "IX"
+输出: 9
+示例 4:
+
+输入: "LVIII"
+输出: 58
+解释: L = 50, V= 5, III = 3.
+示例 5:
+
+输入: "MCMXCIV"
+输出: 1994
+解释: M = 1000, CM = 900, XC = 90, IV = 4.
+
+
+提示：
+
+题目所给测试用例皆符合罗马数字书写规则，不会出现跨位等情况。
+IC 和 IM 这样的例子并不符合题目要求，49 应该写作 XLIX，999 应该写作 CMXCIX 。
+关于罗马数字的详尽书写规则，可以参考 罗马数字 - Mathematics 。
+
+```python
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        num_transfer = {"I":1,
+        "V":5,
+        "X":10,
+        "L":50,
+        "C":100,
+        "D":500,
+        "M":1000,
+        "IV": 4,
+        "IX": 9,
+        "XL": 40,
+        "XC": 90,
+        "CD": 400,
+        "CM": 900
+        }
+        result = 0
+        index = 0
+        for _ in range(len(s)):
+            if index >= len(s):
+                break
+            if index + 1  == len(s):
+                result += num_transfer[s[index]]
+                index += 1
+            else:
+                if s[index:index+2] in num_transfer.keys():
+                    result += num_transfer[s[index:index+2]]
+                    index += 2
+                else:
+                    result += num_transfer[s[index]]
+                    index += 1
+        return result
+```
+
+
+
 # 其他
+
+## 位1的个数
+
+编写一个函数，输入是一个无符号整数（以二进制串的形式），返回其二进制表达式中数字位数为 '1' 的个数（也被称为汉明重量）。
+
+ 
+
+提示：
+
+请注意，在某些语言（如 Java）中，没有无符号整数类型。在这种情况下，输入和输出都将被指定为有符号整数类型，并且不应影响您的实现，因为无论整数是有符号的还是无符号的，其内部的二进制表示形式都是相同的。
+在 Java 中，编译器使用二进制补码记法来表示有符号整数。因此，在上面的 示例 3 中，输入表示有符号整数 -3。
+
+
+进阶：
+
+如果多次调用这个函数，你将如何优化你的算法？
+
+
+示例 1：
+
+输入：00000000000000000000000000001011
+输出：3
+解释：输入的二进制串 00000000000000000000000000001011 中，共有三位为 '1'。
+示例 2：
+
+输入：00000000000000000000000010000000
+输出：1
+解释：输入的二进制串 00000000000000000000000010000000 中，共有一位为 '1'。
+示例 3：
+
+输入：11111111111111111111111111111101
+输出：31
+解释：输入的二进制串 11111111111111111111111111111101 中，共有 31 位为 '1'。
+
+
+提示：
+
+输入必须是长度为 32 的 二进制串 。
+
+```python
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        count = 0
+        while n:
+            if n & 1:
+                count += 1
+            n = n >> 1
+        return count
+```
+
+
+
+## 汉明距离
+
+两个整数之间的汉明距离指的是这两个数字对应二进制位不同的位置的数目。
+
+给出两个整数 x 和 y，计算它们之间的汉明距离。
+
+注意：
+0 ≤ x, y < 231.
+
+示例:
+
+输入: x = 1, y = 4
+
+输出: 2
+
+解释:
+1   (0 0 0 1)
+4   (0 1 0 0)
+       ↑   ↑
+
+上面的箭头指出了对应二进制位不同的位置。
+
+```PYTHON
+class Solution:
+    def hammingDistance(self, x: int, y: int) -> int:
+        t = x ^ y
+        count = 0
+        while True:
+            if t == 0 :
+                return count
+            if t == 1 :
+                count += 1
+                return count
+            if t % 2 != 0:
+                t = t >> 1
+                count += 1
+            else:
+                t = t >> 1
+
+
+        # xor = x ^ y
+        # distance = 0
+        # while xor:
+        #     # mask out the rest bits
+        #     if xor & 1:
+        #         distance += 1
+        #     xor = xor >> 1
+        # return distance
+```
+
+## 颠倒二进制位
+
+颠倒给定的 32 位无符号整数的二进制位。
+
+ 
+
+示例 1：
+
+输入: 00000010100101000001111010011100
+输出: 00111001011110000010100101000000
+解释: 输入的二进制串 00000010100101000001111010011100 表示无符号整数 43261596，
+     因此返回 964176192，其二进制表示形式为 00111001011110000010100101000000。
+示例 2：
+
+输入：11111111111111111111111111111101
+输出：10111111111111111111111111111111
+解释：输入的二进制串 11111111111111111111111111111101 表示无符号整数 4294967293，
+     因此返回 3221225471 其二进制表示形式为 10111111111111111111111111111111 。
+
+
+提示：
+
+请注意，在某些语言（如 Java）中，没有无符号整数类型。在这种情况下，输入和输出都将被指定为有符号整数类型，并且不应影响您的实现，因为无论整数是有符号的还是无符号的，其内部的二进制表示形式都是相同的。
+在 Java 中，编译器使用二进制补码记法来表示有符号整数。因此，在上面的 示例 2 中，输入表示有符号整数 -3，输出表示有符号整数 -1073741825。
+
+
+进阶:
+如果多次调用这个函数，你将如何优化你的算法？
+
+```python
+class Solution:
+    def reverseBits(self, n: int) -> int:
+        result = 0 
+        count = 31
+        while n:
+            result +=   (n &1)<<count
+            n = n>>1
+            count -= 1
+        return result
+```
+
+## 缺失数字
+
+给定一个包含 [0, n] 中 n 个数的数组 nums ，找出 [0, n] 这个范围内没有出现在数组中的那个数。
+
+ 
+
+进阶：
+
+你能否实现线性时间复杂度、仅使用额外常数空间的算法解决此问题?
+
+
+示例 1：
+
+输入：nums = [3,0,1]
+输出：2
+解释：n = 3，因为有 3 个数字，所以所有的数字都在范围 [0,3] 内。2 是丢失的数字，因为它没有出现在 nums 中。
+示例 2：
+
+输入：nums = [0,1]
+输出：2
+解释：n = 2，因为有 2 个数字，所以所有的数字都在范围 [0,2] 内。2 是丢失的数字，因为它没有出现在 nums 中。
+示例 3：
+
+输入：nums = [9,6,4,2,3,5,7,0,1]
+输出：8
+解释：n = 9，因为有 9 个数字，所以所有的数字都在范围 [0,9] 内。8 是丢失的数字，因为它没有出现在 nums 中。
+示例 4：
+
+输入：nums = [0]
+输出：1
+解释：n = 1，因为有 1 个数字，所以所有的数字都在范围 [0,1] 内。1 是丢失的数字，因为它没有出现在 nums 中。
+
+
+提示：
+
+n == nums.length
+1 <= n <= 104
+0 <= nums[i] <= n
+nums 中的所有数字都 独一无二
+
+```python
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        l_n =len(nums)
+        # sum_n  =  l_n * (l_n +1) //2
+        # for i in nums:
+        #     sum_n -= i
+        # return sum_n
+        
+        for i,n in enumerate(nums):
+            l_n ^= i^n
+        return l_n
+```
+
+
+
+## 杨辉三角
+
+给定一个非负整数 numRows，生成杨辉三角的前 numRows 行。
+
+
+
+在杨辉三角中，每个数是它左上方和右上方的数的和。
+
+示例:
+
+输入: 5
+输出:
+[
+     [1],
+    [1,1],
+   [1,2,1],
+  [1,3,3,1],
+ [1,4,6,4,1]
+]
+
+```python
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        result = []
+        for i in range(1,numRows+1):
+            temp = [1 for _ in range(i)]
+            for j in range(1,i-1):
+                temp[j] = result[i-2][j] + result[i-2][j-1]
+            result.append(temp)
+        return result
+```
+
+
+
+## 有效的括号
+
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+
+有效字符串需满足：
+
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+注意空字符串可被认为是有效字符串。
+
+示例 1:
+
+输入: "()"
+输出: true
+示例 2:
+
+输入: "()[]{}"
+输出: true
+示例 3:
+
+输入: "(]"
+输出: false
+示例 4:
+
+输入: "([)]"
+输出: false
+示例 5:
+
+输入: "{[]}"
+输出: true
+
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
+        temp = {"}":"{", ")":"(", "]":"["}
+        stacks = []
+        for t in s:
+            if t not in temp.keys():
+                stacks.append(t)
+            else:
+                if not stacks or temp[t] != stacks.pop():
+                    return False
+        return len(stacks) == 0
+```
+
+
 
 ## 判断IP
 
