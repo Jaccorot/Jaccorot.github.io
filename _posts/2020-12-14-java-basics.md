@@ -337,3 +337,43 @@ int age = scan.nextInt();
 System.out.println(name);
 ```
 
+## switch
+
+* switch表达式中的值依次匹配各个case中的常量
+* 表达式类型： byte/ short/ char/ int/ 枚举 (jdk 5.0 +)/ String （Jdk 7.0)
+* case只能声明常量，不能声明范围
+
+```java
+int number =1;
+switch(number){
+    case 0:
+        System.out.println("0");
+        break;
+    case 1:
+        System.out.println("1");
+        break;
+    case 2:
+    case 3:
+        System.out.println("2 or 3");
+    default:
+        System.out.println("default");
+}
+
+// month月day日是该年的第几天
+int day = 20;
+int month = 8;
+int days = 0;
+switch (month) {
+    case 12:
+        days += 31;
+    case 11:
+        days += 30;
+    case 10:
+        days += 31;
+        // 9,8,7,6,5,4,3,2
+    case 1:
+        days += day;
+}
+System.out.println(month + "月" + day + "日是当年的第" + days + "天");
+```
+
