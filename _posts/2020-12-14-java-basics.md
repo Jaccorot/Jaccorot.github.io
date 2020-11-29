@@ -377,3 +377,479 @@ switch (month) {
 System.out.println(month + "月" + day + "日是当年的第" + days + "天");
 ```
 
+## 循环
+
+```java
+        label:for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if(j % 4==0){
+                    break;   // break 当层
+                    //break label;  // break外层
+                    //continue;  // continue 当层
+                    //continue label; // continue 外层
+                }
+            }
+            System.out.println(i);
+        }
+```
+
+## 数组
+
+* 特点：
+  * 有序
+  * 引用类型
+  * 内存中是一块连续的空间
+  * 长度一旦初始化时确定，不能修改
+* 默认值：
+  * 一维数组
+    * 基本类型
+      * 整型：0
+      * 浮点：0.0
+      * char："\u0000"  ， '0'
+      * bool: fasle
+    * 引用数据类型：null
+      * 数组：null
+  * 二维数组
+    * 指定大小动态初始化或静态初始化 （new int[4\][3\])
+      * 第一层初始值为地址空间
+      * 第二层初始值为：同一维数组初始化相同
+    * 未指定大小的动态初始化(new int[4\][\])
+      * 第一层初始值为null
+      * 第二层不存在，访问会报空指针
+* 内存：
+  * 栈：数组变量
+  * 堆：数组对象（二维数组的第一层）
+  * 方法区
+    * 常量池
+    * 静态空间
+
+```java
+int[] ids = new int[]{1, 2, 3, 4}; //静态初始化：数组的初始化和元素的赋值同时进行
+String[] names = new String[5]; // 动态初始化：数组的初始化和元素赋值分开
+String[] names2 = {"a","b","c"}; // 类型推断，可以不用显式创建
+names[0] = "a";
+for (int i = 0; i < names.length; i++) {
+    System.out.println(names[i]);
+}
+for (String name : names) {
+    System.out.println(name);
+}
+char[] c = new char[1];
+System.out.println(c[0] == 0); //true
+
+//二维数组
+int[][] arr21 = new int[][]{{1,2,3},{4,5},{6,7,8}};
+String[][] arr22 = new String[3][2]; //动态初始化1,内存中第一层默认为地址值（[I@15db9742），第二层默认值为0
+String[][] arr23 = new String[3][];  //动态初始化2,未指定第二层大小时不会创建，内存中第一层为null，第二层不存在，访问会空指针
+String[] arr24[] = new String[][]{{"a","b"},{"c","d","e"}}; //内存中第一层为地址值([Ljava.lang.String;@7852e922)，第二层默认值为null
+String[] arr25[] = {{"a","b"},{"c","d","e"}};
+for (int i = 0; i < arr25.length; i++) {
+    for (int j = 0; j < arr25[i].length; j++) {
+        System.out.print(arr25[i][j] + " ");
+    }
+    System.out.println();
+
+}
+```
+
+```java
+String[] strings = new String[]{"a","b","c"};
+System.out.println(strings);   //[Ljava.lang.String;@1540e19d  
+char[] chars = new char[]{'a', 'b', 'c'};
+System.out.println(chars);    //abc  println(char[])特殊处理，遍历输出内容
+```
+
+
+
+### Arrays 工具类
+
+* equals 
+* fill
+* sort
+  * quick sort
+* toString
+* binarySearch
+
+```java
+        int[] arr = new int[]{1, 5, 4, 2, 6, -1, 0, 9};
+        boolean b = Arrays.equals(arr,arr);
+        System.out.println(b);
+//        Arrays.fill(arr,2);
+        Arrays.sort(arr);
+        System.out.println(Arrays.toString(arr));
+        System.out.println(Arrays.binarySearch(arr, -1));
+```
+
+### 异常
+
+* ArrayIndexOutOfBoundsException
+* NullPointerException
+
+# 面向对象
+
+## 三大特性
+
+* 封装
+  * 通过四种权限修饰符实现
+  * 隐藏内部实现，提供对外访问
+    * 将类的属性私有化，提供公共的方法来获取和设置属性的值
+    * 不对外暴露的私有方法
+    * 单例模式（构造器私有化）
+* 继承
+  * 类单继承；接口多继承
+* 多态
+  * 父类引用指向子类对象
+  * 属性：属性不适用多态
+    * 编译和运行都是父类的属性，即使用父类的属性
+  * 方法：调用父类的方法，子类有重写时优先使用子类重写后的方法
+    * 虚拟方法调用：运行时行为
+      * 编译期只能调用父类声明的方法：编译看左边
+      * 运行期实际使用子类重写方法：运行看右边
+      * 动态绑定
+
+## 关键字
+
+* package
+
+* import
+
+  * 导入
+    * import 导入指定包下类或接口
+    * import static 导致入定类或接口中的静态结构：属性或方法
+  * 如果在源文件中实用了不同包下同名的类，需要使用全类名的形式导入
+
+  > com.eqxiu.User user = new com.eqxiu.User()
+
+* instanceof
+  * a instanceof A 
+    * 判断对象a是否是类A 或者 A父类的实例，返回boolean
+
+## 类
+
+### 内存分布
+
+![image-20201128122434982](../images/all/java-vm.png)
+
+### 属性：成员变量 vs 局部变量
+
+相同点：
+
+* 定义变量的格式： 数据类型  变量名 = 变量值；
+* 先声明，后使用；
+* 变量都有其对应作用域；
+
+不同：
+
+1. 声明位置不同
+   * 成员变量：类内
+   * 局部变量：方法内、方法形参、构造器内、构造器形参
+
+2. 权限修饰符规则不同
+   * 成员变量：private/public/缺省/protected （默认使用缺省）
+   * 局部变量：不允许使用权限修饰符
+
+3. 默认初始化值不同
+   * 成员变量：根据其类型，都有默认初始化值；
+     * 基本：0，0.0，false,0('\u0000')
+     * 引用：null
+   * 局部变量：无默认初始化值；
+
+4. 内存中加载的位置不同
+   * 成员变量：加载到堆空间（非static）
+   * 局部变量：加载到栈空间
+
+### 方法
+
+> 权限修饰符  返回值类型  方法名（形参）{
+>
+> ​	方法体
+>
+> }
+>
+
+#### 匿名对象
+
+* 创建的对象，没有显示的赋值给一个变量名，即为匿名对象
+* 匿名对象只能使用一次
+
+#### 方法重载
+
+* 在一个类中，方法名相同，参数列表不同（参数个数 或 参数类型）
+
+* 方法的权限修饰符、返回值类型、抛出不同异常 可以不相同，重载和这些无关
+
+* 可变参数与普通参数之间也构成重载，可变参数和数组参数不构成重载
+
+  ```java
+  //1和2不构成重载，编译器认为是同一个方法
+  // 1和3  或者 2 和3 构成重载
+  public void show(String... strs) {
+      System.out.println(1);
+  }
+  
+  public void show(String[] strs) {
+      System.out.println(2);
+  }
+  public void show(String s) {
+      System.out.println(3);
+  }
+  ```
+
+  
+
+```java
+public static void main(String[] args) {
+        Main m = new Main();
+        int a = 1;
+        int b = 2;
+        m.getSum(a,b);   // sout 2    变量自动提升
+    }
+
+//    public void getSum(int i, int j) {
+//        System.out.println(1);
+//    }
+
+    public void getSum(double i, double j) {
+        System.out.println(2);
+    }
+```
+
+#### 方法重写
+
+* 子类继承父类后，对父类中的同名参数的方法进行覆盖操作
+* 重写后，默认调用子类的重写方法；
+* 规则：
+  * 重写方法的方法名和形参列表应与父类相同
+  * 权限修饰符
+    * 子类重写方法的权限修饰符应大于等于父类
+    * 子类不能重写父类声明为private的方法
+  * 返回值类型
+    * 父类被重写的方法返回值类型是void，子类只能是void
+    * 父类被重写的方法返回值类型是基本数据类型，子类必须是相同的基本数据类型
+    * 父类被重写的方法返回值类型是A类型，子类可以是A类 或A类的子类
+  * 异常
+    * 父类被重写的方法返回值类型A，子类抛出的异常是A类或 A类的子类（大于等于子类重写方法）
+  * 静态方法不允许被覆盖
+    * 子类和父类中的同名同参数方法，要么都声明非static （考虑重写）
+    * 要么都声明为static(不是重写)
+
+#### 可变形参
+
+* jdk5.0新增
+  * 5.0之前   public static void test(int a, String[] books);
+  * 5.0之后   public static void test(int a, String ...  books);
+* 允许直接定义能和多个实参相匹配的形参，从而更简单的传递个数可变的实参。（0个或多个）
+* 优先考虑精准匹配
+* 在方法的声明中，只能声明在末尾
+* 同一个方法，最多只能声明一个可变形参
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        new Main().show("a", "b", "c");   // a b c 
+        new Main().show();   // 空，也走可变形参
+        new Main().show("a");   // 2 ，优先精准匹配
+    }
+    
+    // 可以以  .show("a", "b", "c") 访问
+    //也可以以  .show(new arr[]{"a","b","c"}) 访问'
+    // 都会放在数组变量 strs中
+    public void show(String... strs) {
+        for(int i = 0; i < strs.length;i++){
+            System.out.print(strs[i]+ " ");
+        }
+    }
+    public void show(String s) {
+        System.out.println(2);
+    }
+    public void show(int i, String... s) {
+        System.out.println(2);
+    }
+}
+```
+
+#### 方法参数的值传递
+
+* 变量赋值
+  * 基本数据类型的变量，赋值的是变量所保存的数据值；
+  * 引用数据类型的变量，赋值的是变量所保存的数据地址值；
+* 形参传递机制
+  * 形参是基本数据类型，将实参基本数据类型变量的“数据值”传递给形参
+  * 形参是引用数据类型，将实参引用数据类型变量的“地址值”传递给形参
+
+#### 权限修饰符
+
+* 类
+  * public
+  * 缺省
+
+* 类的内部结构：属性、方法、构造器、内部类
+  * private
+  * 缺省
+  * protected
+  * public
+
+  ![image-20201128185214883](../images/all/visit-priviledge.png)
+
+#### 向下转型
+
+多态强制转换
+
+* 可使用 instanceof 判断
+
+### 构造器
+
+* 没有显式定义类的构造器时，系统默认提供一个空参的构造器
+
+* 一旦显示的定义了类的构造器，系统就不再提供空参构造器
+
+* 一个类可以定义多个构造器，构成重载
+
+* 默认构造器权限和类的权限相同
+
+* 格式：   
+
+  > 权限修饰符  类名（形参列表）{
+  >
+  > }
+
+#### this
+
+* 当前对象
+
+  * this.属性  //形参和属性不一致时可省略
+
+  * this.方法()  
+
+  * this(...);   //构造器
+
+    * 必须放在首行
+    * 显式调用其他构造器，不能调用自己
+    * 避免循环递归调用（编译不通过）
+
+    ```java
+        public Person(){
+            System.out.println("init");
+        }
+    
+    
+        public Person(int age){
+            this();  // 调用无参构造器
+            this.age = age;
+            System.out.println("init age " + age);
+        }
+    
+        public Person(String name, int age) {
+            this(age); //调用  (int age) 构造器
+            this.name = name;
+            System.out.println("init age and name");
+        }
+    ```
+
+#### super
+
+* 属性或方法
+  * 在子类中显式的调用父类的属性或方法
+    * super.属性
+    * super.方法()
+* 构造器
+  * 调用父类指定构造器：
+    * super(形参列表)
+    * 在子类构造器的首行
+    * 在类的构造器中， this 或者super 只能用一个
+    * 在子类构造器首行没有显式调用super，则默认调用super()，即父类空构造器
+
+### Object
+
+* 无属性
+
+* 空参构造器
+
+* 方法
+
+  * clone() ： 复制
+    * 返回Object
+  * equals(Object obj)
+    * 返回boolean
+
+  > 在Java中，equals和==都是用于检测两个字符串是否相等，返回类型也都是boolean值，但是二者内部处理却不一样。
+  >
+  > 1）对于==，比较的是值是否相等
+  >
+  > ​	如果作用于基本数据类型的变量，则直接比较其存储的 “值”是否相等；
+  >
+  > ​	如果作用于引用类型的变量，则比较的是所指向的对象的地址
+  >
+  > 2）对于equals方法，注意：equals方法不能作用于基本数据类型的变量，equals继承Object类，比较的是是否是同一个对象
+  >
+  > ​    如果没有对equals方法进行重写，则比较的是引用类型的变量所指向的对象的地址；
+  >
+  > ​	诸如String、Date等类对equals方法进行了重写的话，比较的是所指向的对象的内容。
+
+  ```java
+      @Override
+      public boolean equals(Object o) {
+          if (this == o) return true;
+          if (o == null || getClass() != o.getClass()) return false;
+          ManKind manKind = (ManKind) o;
+          return sex == manKind.sex &&
+                  salary == manKind.salary;
+      }
+  ```
+
+  
+
+  * hashCode
+  * toString()
+  * getClass()
+  * finalize()
+    * void
+    * 对象在被回收前被调用
+  * notify()
+  * notifyAll()
+  * wait()/   wait(long timeout)  /   wait(long  timeout, int nanos)
+
+### 包装类
+
+* 数值型包装类 均继承自 Number类
+
+* 自动装箱与自动拆箱    jdk  5.0 +
+
+  ```java
+  int num2 = 10;
+  Integer num3 = num2;   //自动装箱
+  int num4 = num3;   // 自动拆箱
+  ```
+
+* 转化
+
+  * Integer =   Integer.paserInt(String)
+  * String =  String.valueOf(Integer)
+
+![image-20201129215417308](../images/all/baozhuanglei-transfer.png)
+
+* Integer
+
+  * 内部有IntegerCache，保存了 [-128 , 127]的整数，范围内的数字可以直接使用数组内的元素，不会new
+
+  ```java
+  Integer i1 = 1;
+  Integer i2 = 1;
+  System.out.println(i1 == i2);   //true   IntegerCache，使用已有对象，地址空间一致
+  
+  
+  Integer i3 = 128;
+  Integer i4 = 128;
+  System.out.println(i3 == i4);   // false    超过IntegerCache，新建对象
+  
+  
+  Integer i5 = new Integer(1);
+  Integer i6 = new Integer(1);  // false   新建对象，地址空间不一致
+  
+  public static Integer valueOf(int i) {
+      if (i >= IntegerCache.low && i <= IntegerCache.high)
+          return IntegerCache.cache[i + (-IntegerCache.low)];
+      return new Integer(i);
+  ```
+
+  
