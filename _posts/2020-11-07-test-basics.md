@@ -2391,24 +2391,24 @@ db：mysql、oracle、mongo、redis
 其他：nginx、docker、rabbitmq
 
 ## 遇到的某个难点是什么？如何解决的？
-
 * 业务：
-  在测试快速迭代的项目时候，无法保证整体的质量：
+ 在测试快速迭代的项目时候，无法保证整体的质量：
 
-  * 遗漏：时间紧导致跳过、历史业务兼容
+ * 遗漏：时间紧导致跳过、历史业务兼容
     * 1、分析每次迭代都修改了那些内容，对修改的内容，以及和内容相关的功能都着重测试；
-    * 2，引入自动化测试，在每次上线之前，先跑一边自动化，分析自动化报告中fail的用例，直到和开发对齐所有的case都通过；
-    * 3、checklist：对于快速迭代的项目，每次上线之前，制定最重要的功能用例（有些企业比如华为称之为高压线用例），上线之前要验证这个，有一条不通过不允许上线；
-  * 盲点
+  * 2，引入自动化测试，在每次上线之前，先跑一边自动化，分析自动化报告中fail的用例，直到和开发对齐所有的case都通过；
+  * 3、checklist：对于快速迭代的项目，每次上线之前，制定最重要的功能用例（有些企业比如华为称之为高压线用例），上线之前要验证这个，有一条不通过不允许上线；
+ * 盲点
     * 4、培训分享
     * 5、完善监控，第一时间发现问题，sentry
     * 6、全面贯彻灰度机制
 
 * 管理
 
-  测试没有存在感
+ 测试没有存在感
 
 认可，尊重，价值；
+
 >职业素养：本职工作，给团队信心；
 >思想分享：分享培训，给团队成长；
 >价值产出：提高工作体验，给团队赋能；
@@ -2557,6 +2557,26 @@ def bubble_sort_flag(list):
             # 没有发生交换，直接返回list
             return list
     return list
+```
+
+```java
+    public static void bubbleSort(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            boolean flag = false;
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    flag = true;
+                }
+            }
+            if (flag == false) {
+                break;
+            }
+        }
+
+    }
 ```
 
 
@@ -2719,6 +2739,8 @@ def merge(left, right):
 
 ![img](../images/all/quick-sort.png)
 
+![image-20201128104627388](../images/all/quick-2.png)
+
 **步骤**
 
 1. 从数列中挑出一个元素，称为”基准”（pivot），
@@ -2762,6 +2784,44 @@ def qsort(arr):
         greater = [x for x in arr[1:] if x >= pivot]
         return qsort(less) + [pivot] + qsort(greater)
 ```
+
+```java
+    private static void quickSort(int[] data) {
+        subSort(data, 0, data.length - 1);
+    }
+
+
+    private static void swap(int[] data, int i, int j) {
+        int temp = data[i];
+        data[i] = data[j];
+        data[j] = temp;
+    }
+    private static void subSort(int[] data, int start, int end) {
+        if (start < end) {
+            int base = data[start];
+            int low = start;
+            int high = end + 1;
+            while (true) {
+                while (low < end && data[++low] < base) {
+
+                }
+                while (high > start && data[--high] > base) {
+
+                }
+                if (low < high) {
+                    swap(data, low, high);
+                } else {
+                    break;
+                }
+            }
+            swap(data, start, high);
+            subSort(data, start, high - 1);
+            subSort(data, high + 1, end);
+        }
+    }
+```
+
+
 
 ### 堆排序
 
