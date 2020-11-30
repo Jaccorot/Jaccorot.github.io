@@ -2519,7 +2519,7 @@ class Solution:
 "123456"和“12C4B6”都是最长公共子序列，任意输出一个。
 ```
 
-$c[i,j] = \left\{ {\matrix{   0 & {{i = 0 \rm{\ or \ }j = 0}}  \cr    {c[i - 1,j - 1] + 1} & {{i, j  >  0 \rm{\ and\ } \ }{{x}}_i} = {y_j}  \cr    {\max ({c[i, j  - 1], c[i - 1, j])}} & {{i, j  >  0 \rm{\ and\ }}{{\rm{x}}_i} \ne {y_j}}  \cr  } } \right.$
+![image-20201130101558566](../images/all/lcs-01.png)
 
 
 
@@ -2601,7 +2601,7 @@ class Solution:
 
 得到转移方程：
 
-$c[i,j] = \left\{ {\matrix{   0 & {i = 0 \rm{\ or\ }j = 0}  \cr    {c[i - 1,j - 1]+1} & {{x_i} = {y_j}}  \cr    0 & {{x_i} \ne {y_j}}  \cr  } } \right.$
+![image-20201130101649224](../images/all/lcs02.png)
 
 
 
