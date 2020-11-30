@@ -438,11 +438,11 @@ char[] c = new char[1];
 System.out.println(c[0] == 0); //true
 
 //二维数组
-int[][] arr21 = new int[][]{{1,2,3},{4,5},{6,7,8}};
+int[][] arr21 = new int[][]{ \{1,2,3},{4,5},{6,7,8\} };
 String[][] arr22 = new String[3][2]; //动态初始化1,内存中第一层默认为地址值（[I@15db9742），第二层默认值为0
 String[][] arr23 = new String[3][];  //动态初始化2,未指定第二层大小时不会创建，内存中第一层为null，第二层不存在，访问会空指针
-String[] arr24[] = new String[][]{{"a","b"},{"c","d","e"}}; //内存中第一层为地址值([Ljava.lang.String;@7852e922)，第二层默认值为null
-String[] arr25[] = {{"a","b"},{"c","d","e"}};
+String[] arr24[] = new String[][]{\{"a","b"},{"c","d","e"\}}; //内存中第一层为地址值([Ljava.lang.String;@7852e922)，第二层默认值为null
+String[] arr25[] = {\{"a","b"},{"c","d","e"\}};
 for (int i = 0; i < arr25.length; i++) {
     for (int j = 0; j < arr25[i].length; j++) {
         System.out.print(arr25[i][j] + " ");
