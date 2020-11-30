@@ -523,6 +523,13 @@ System.out.println(chars);    //abc  println(char[])特殊处理，遍历输出�
 * instanceof
   * a instanceof A 
     * 判断对象a是否是类A 或者 A父类的实例，返回boolean
+  
+* static
+
+  * 属性
+  * 方法
+  * 代码块
+  * 内部类
 
 ## 类
 
