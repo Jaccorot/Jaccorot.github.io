@@ -969,9 +969,9 @@ class Solution:
         return strs[0]
 ```
 
-# 链表
+## 链表
 
-## 删除链表中的节点
+### 删除链表中的节点
 
 请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点。传入函数的唯一参数为 要被删除的节点 
 
@@ -1013,7 +1013,7 @@ class Solution:
         node.next = node.next.next
 ```
 
-## 删除链表的倒数第N个节点
+### 删除链表的倒数第N个节点
 
 给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
 
@@ -1059,7 +1059,7 @@ class Solution:
             return head
 ```
 
-## 合并两个有序链表
+### 合并两个有序链表
 
 将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
 
@@ -1100,7 +1100,7 @@ class Solution:
         return start
 ```
 
-## 回文链表
+### 回文链表
 
 请判断一个链表是否为回文链表。
 
@@ -1158,7 +1158,7 @@ class Solution:
 
 ```
 
-## 环形链表
+### 环形链表
 
 给定一个链表，判断链表中是否有环。
 
@@ -1223,7 +1223,7 @@ class Solution:
 
 
 
-## 反转链表
+### 反转链表
 
 反转一个单链表。
 
@@ -1262,9 +1262,9 @@ class Solution:
 
 ```
 
-# 树
+## 树
 
-## 二叉树的最大深度
+### 二叉树的最大深度
 
 给定一个二叉树，找出其最大深度。
 
@@ -1299,7 +1299,7 @@ class Solution:
 
 
 
-## 验证二叉搜索树
+### 验证二叉搜索树
 
 给定一个二叉树，判断其是否是一个有效的二叉搜索树。
 
@@ -1348,7 +1348,7 @@ class Solution:
 
 ```
 
-## 对称二叉树
+### 对称二叉树
 
 给定一个二叉树，检查它是否是镜像对称的。
 
@@ -1422,7 +1422,7 @@ class Solution:
 
 ```
 
-## 二叉树的层序遍历
+### 二叉树的层序遍历
 
 给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
 
@@ -1474,7 +1474,7 @@ class Solution:
         return result
 ```
 
-## 将有序数组转换为二叉搜索树
+### 将有序数组转换为二叉搜索树
 
 将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。
 
@@ -1513,9 +1513,10 @@ class Solution:
         return root
 ```
 
-# 排序和搜索
+## 排序和搜索
 
-合并两个有序数组
+### 合并两个有序数组
+
 给你两个有序整数数组 nums1 和 nums2，请你将 nums2 合并到 nums1 中，使 nums1 成为一个有序数组。
 
  
@@ -1569,7 +1570,7 @@ class Solution:
         return nums1
 ```
 
-## 第一个错误的版本
+### 第一个错误的版本
 
 你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。
 
@@ -1610,7 +1611,7 @@ class Solution:
         return left
 ```
 
-# 动态规划
+## 动态规划
 
 爬楼梯
 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
@@ -1646,7 +1647,7 @@ class Solution:
         return result[n]
 ```
 
-## 买卖股票的最佳时机
+### 买卖股票的最佳时机
 
 给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
 
@@ -1689,7 +1690,7 @@ class Solution:
         return max_pro
 ```
 
-## 最大子序和
+### 最大子序和
 
 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
 
@@ -1716,7 +1717,7 @@ class Solution:
         return max(dp)
 ```
 
-## 打家劫舍
+### 打家劫舍
 
 你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
 
@@ -1761,7 +1762,8 @@ class Solution:
 
 ## 设计问题
 
-打乱数组
+### 打乱数组
+
 给你一个整数数组 nums ，设计算法来打乱一个没有重复元素的数组。
 
 实现 Solution class:
@@ -1827,7 +1829,7 @@ class Solution:
 # param_2 = obj.shuffle()
 ```
 
-## 最小栈
+### 最小栈
 
 设计一个支持 push ，pop ，top 操作，并能在常数时间内检索到最小元素的栈。
 
@@ -1903,9 +1905,9 @@ class MinStack:
 
 
 
-# 数学
+## 数学
 
-## Fizz Buzz
+### Fizz Buzz
 
 写一个程序，输出从 1 到 n 数字的字符串表示。
 
@@ -1956,7 +1958,7 @@ class Solution:
 
 
 
-## 3的幂
+### 3的幂
 
 给定一个整数，写一个函数来判断它是否是 3 的幂次方。如果是，返回 true ；否则，返回 false 。
 
@@ -1996,7 +1998,7 @@ class Solution:
         return n == 1
 ```
 
-## 计数质数
+### 计数质数
 
 统计所有小于非负整数 n 的质数的数量。
 
@@ -2040,7 +2042,7 @@ class Solution:
         return count
 ```
 
-## 罗马数字转整数
+### 罗马数字转整数
 
 罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
 
@@ -2130,9 +2132,9 @@ class Solution:
 
 
 
-# 其他
+## 其他
 
-## 位1的个数
+### 位1的个数
 
 编写一个函数，输入是一个无符号整数（以二进制串的形式），返回其二进制表达式中数字位数为 '1' 的个数（也被称为汉明重量）。
 
@@ -2183,7 +2185,7 @@ class Solution:
 
 
 
-## 汉明距离
+### 汉明距离
 
 两个整数之间的汉明距离指的是这两个数字对应二进制位不同的位置的数目。
 
@@ -2233,7 +2235,7 @@ class Solution:
         # return distance
 ```
 
-## 颠倒二进制位
+### 颠倒二进制位
 
 颠倒给定的 32 位无符号整数的二进制位。
 
@@ -2274,7 +2276,7 @@ class Solution:
         return result
 ```
 
-## 缺失数字
+### 缺失数字
 
 给定一个包含 [0, n] 中 n 个数的数组 nums ，找出 [0, n] 这个范围内没有出现在数组中的那个数。
 
@@ -2330,7 +2332,7 @@ class Solution:
 
 
 
-## 杨辉三角
+### 杨辉三角
 
 给定一个非负整数 numRows，生成杨辉三角的前 numRows 行。
 
@@ -2364,7 +2366,7 @@ class Solution:
 
 
 
-## 有效的括号
+### 有效的括号
 
 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
 
@@ -2411,7 +2413,7 @@ class Solution:
 
 
 
-## 判断IP
+### 判断IP
 
 给定一组字符串输入一个ip地址判断是否是正确的ip，输出正确的ip
 
@@ -2425,11 +2427,151 @@ def isIpv4(self, s):
     return False
 ```
 
+# 算法面试题汇总
+
+## [开始之前](https://leetcode-cn.com/leetbook/read/top-interview-questions/xm9q96/)
+
+### 只出现一次的数字
+
+给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+
+说明：
+
+你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+
+示例 1:
+
+输入: [2,2,1]
+输出: 1
+示例 2:
+
+输入: [4,1,2,1,2]
+输出: 4
+
+```python
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        res = 0
+        for i in nums:
+            res ^= i
+        return res
+```
+
+### 多数元素
+
+给定一个大小为 n 的数组，找到其中的多数元素。多数元素是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
+
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+ 
+
+示例 1:
+
+输入: [3,2,3]
+输出: 3
+示例 2:
+
+输入: [2,2,1,1,1,2,2]
+输出: 2
+
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        res = {}
+        for i in nums:
+            res[i] = res.get(i,0) + 1
+        max_count = 0
+        max_key = None
+        for k,v in res.items():
+            if v > max_count:
+                max_count = v
+                max_key = k
+        return max_key
+```
+
+
+
 # 牛客
 
-## 最长公共子序列
+### 最长公共子序列
 
-## 最长公共子串
+题目描述
+
+给定两个字符串str1和str2，输出连个字符串的最长公共子序列。如过最长公共子序列为空，则输出-1。
+
+示例1
+
+输入
+
+```
+"1A2C3D4B56","B1D23CA45B6A"
+```
+
+返回值
+
+```
+"123456"
+```
+
+说明
+
+```
+"123456"和“12C4B6”都是最长公共子序列，任意输出一个。
+```
+
+$c[i,j] = \left\{ {\matrix{   0 & {{i = 0 \rm{\ or \ }j = 0}}  \cr    {c[i - 1,j - 1] + 1} & {{i, j  >  0 \rm{\ and\ } \ }{{x}}_i} = {y_j}  \cr    {\max ({c[i, j  - 1], c[i - 1, j])}} & {{i, j  >  0 \rm{\ and\ }}{{\rm{x}}_i} \ne {y_j}}  \cr  } } \right.$
+
+
+
+![img](../images/all/lcs-results.png)
+
+```python
+#
+# longest common subsequence
+# @param s1 string字符串 the string
+# @param s2 string字符串 the string
+# @return string字符串
+#
+class Solution:
+    def LCS(self, s1, s2):
+        l_s1 = len(s1)
+        l_s2 = len(s2)
+        if l_s1 == 0 or l_s2 == 0:
+            return -1
+
+        matrix = [[0 for t in range(l_s1 + 1)] for t2 in range(l_s2 + 1)]
+        for i in range(l_s1):
+            for j in range(l_s2):
+                if s1[i] == s2[j]:
+                    matrix[j + 1][i + 1] = matrix[j][i] + 1
+                else:
+                    matrix[j+1][i + 1] = max(matrix[j][i + 1], matrix[j + 1][i])
+        # matrix[-1][-1]为最大子序列长度
+        if matrix[-1][-1] == 0:
+            return -1
+        result = []
+        row,col = l_s2,l_s1
+				# 求具体子序列
+        while row and col:
+            if s2[row-1] == s1[col-1]:
+                result.append(s2[row-1])
+                row -= 1
+                col -= 1
+            else:
+                if matrix[row-1][col] >= matrix[row][col-1]:
+                # if matrix[row-1][col] > matrix[row][col-1]:  # 可能是另一个符合条件的子序列
+                    row -= 1
+                else:
+                    col -= 1
+        return "".join(result[::-1])
+            
+```
+
+[java题解，包含示例图](https://www.cnblogs.com/huangxincheng/archive/2012/11/11/2764625.html)
+
+[参考博客：https://www.cnblogs.com/en-heng/p/3963803.html](https://www.cnblogs.com/en-heng/p/3963803.html)
+
+### 最长公共子串
 
 题目描述
 
@@ -2457,6 +2599,12 @@ def isIpv4(self, s):
 1≤str1,str2≤5000
 ```
 
+得到转移方程：
+
+$c[i,j] = \left\{ {\matrix{   0 & {i = 0 \rm{\ or\ }j = 0}  \cr    {c[i - 1,j - 1]+1} & {{x_i} = {y_j}}  \cr    0 & {{x_i} \ne {y_j}}  \cr  } } \right.$
+
+
+
 ```python
 #
 # longest common substring
@@ -2483,7 +2631,7 @@ class Solution:
             return res
 ```
 
-## 括号序列
+### 括号序列
 
 题目描述
 
@@ -2544,7 +2692,7 @@ class Solution:
         return len(result) == 0
 ```
 
-## 合并有序链表
+### 合并有序链表
 
 题目描述
 
@@ -2623,7 +2771,7 @@ class Solution:
         return start
 ```
 
-## 判断链表中是否有环
+### 判断链表中是否有环
 
 判断给定的链表中是否有环
 
@@ -2655,7 +2803,7 @@ class Solution:
           
 ```
 
-## 链表中环的入口节点
+### 链表中环的入口节点
 
 题目描述
 
@@ -2690,7 +2838,7 @@ class Solution:
                 return head
 ```
 
-## 岛屿数量
+### 岛屿数量
 
 题目描述
 
@@ -2752,7 +2900,7 @@ class Solution:
         return count
 ```
 
-## 链表中的节点每k个一组翻转
+### 链表中的节点每k个一组翻转
 
 题目描述
 
@@ -2817,7 +2965,7 @@ class Solution:
         return new_head
 ```
 
-## 验证IP地址
+### 验证IP地址
 
 题目描述
 
@@ -2932,7 +3080,7 @@ class Solution:
             return "Neither"
 ```
 
-## 求平方根
+### 求平方根
 
 题目描述
 
@@ -2972,9 +3120,9 @@ class Solution:
                 return i
 ```
 
-## 加起来和为目标值的组合
+### 加起来和为目标值的组合
 
-## 删除链表的倒数第n个节点
+### 删除链表的倒数第n个节点
 
 题目描述
 
@@ -3030,5 +3178,194 @@ class Solution:
             slow = slow.next
         slow.next = slow.next.next
         return res.next
+```
+
+### 最长回文子串
+
+题目描述
+
+对于一个字符串，请设计一个高效算法，计算其中最长回文子串的长度。
+
+给定字符串**A**以及它的长度**n**，请返回最长回文子串的长度。
+
+示例1
+
+输入
+
+```
+"abc1234321ab",12
+```
+
+返回值
+
+```
+7
+```
+
+```python
+# -*- coding:utf-8 -*-
+
+class Palindrome:
+    def getLongestPalindrome(self, A, n):
+        # write code here
+        max_temp = 0
+        for i in range(n):
+            temp = 0
+            while i-temp >= 0 and i + temp +1 <=n:
+                if A[i-temp:i+1] == A[i:i+temp+1][::-1]:
+                    max_temp = max(max_temp, 2*temp +1)
+                    temp += 1
+                    continue
+                elif A[i-temp:i+1] == A[i+1:i+1 + temp+1][::-1]:
+                    max_temp = max(max_temp,2* (temp+1) )
+                    temp += 1
+                    continue
+                break;
+        return max_temp
+    
+     def getLongestPalindrome2(self, A, n):
+        max = 1
+        for i in range(len(A)-2):
+            if A[i] == A[i+1]:
+                s = 0
+                while i-s >= 0 and i+1+s <len(A):
+                    if A[i-s] != A[i+1+s]:
+                        break
+                    s+=1
+                if 2 * s > max:
+                    max = 2 * s
+            if A[i] == A[i+2]:
+                s = 0
+                while i-s >= 0 and i+2+s <len(A):
+                    if A[i-s] != A[i+2+s]:
+                        break
+                    s+=1
+                if 2*s + 1 > max:
+                    max = 2 * s + 1
+```
+
+### 螺旋矩阵
+
+题目描述
+
+给定一个m x n大小的矩阵（m行，n列），按螺旋的顺序返回矩阵中的所有元素。
+
+示例1
+
+输入
+
+```
+[[1,2,3],[4,5,6],[7,8,9]]
+```
+
+返回值
+
+```
+[1,2,3,6,9,8,7,4,5]
+```
+
+```python
+#
+# 
+# @param matrix int整型二维数组 
+# @return int整型一维数组
+#
+class Solution:
+    def spiralOrder(self , matrix ):
+        # write code here
+        result = []
+        rows = len(matrix)
+        if rows == 0:
+            return []
+        if rows == 1:
+            return matrix[0]
+        cols = len(matrix[0])
+        if cols == 0:
+            return []
+        if cols == 1:
+            return [i[0] for i in matrix]
+        result.extend(matrix[0])
+        temp = matrix[1:]
+        while temp:
+            new_temp = list(zip(*temp))[::-1]
+            result.extend(new_temp[0])
+            temp = new_temp[1:]
+        return result
+    
+#         result = []
+#         rows = len(matrix)
+#         if rows == 0:
+#             return []
+#         if rows == 1:
+#             return matrix[0]
+#         cols = len(matrix[0])
+#         if cols == 0:
+#             return []
+#         left = 0
+#         right = cols - 1
+#         top = 0
+#         bottom = rows - 1
+#         while left <= right and top <= bottom:
+#             for col in range(left, right + 1):
+#                 result.append(matrix[top][col])
+#             for row in range(top + 1, bottom + 1):
+#                 result.append(matrix[row][right])
+#             if left < right and top < bottom:
+#                 for col in range(right - 1, left, -1):
+#                     result.append(matrix[bottom][col])
+#                 for row in range(bottom, top, -1):
+#                     result.append(matrix[row][left])
+#             left += 1
+#             right -= 1
+#             top += 1
+#             bottom -= 1
+#         return result
+
+```
+
+### 平衡二叉树
+
+题目描述
+
+输入一棵二叉树，判断该二叉树是否是平衡二叉树。
+
+在这里，我们只需要考虑其平衡性，不需要考虑其是不是排序二叉树
+
+示例1
+
+输入
+
+```
+{1,2,3,4,5,6,7}
+```
+
+返回值
+
+```
+true
+```
+
+```python
+# -*- coding:utf-8 -*-
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+class Solution:
+    def IsBalanced_Solution(self, pRoot):
+        # write code here
+        def height(pRoot):
+            if pRoot is None:
+                return 0
+            return max(height(pRoot.left) , height(pRoot.right)) + 1
+        
+        if pRoot is None:
+            return True
+        
+        return self.IsBalanced_Solution(pRoot.left) and \
+    self.IsBalanced_Solution(pRoot.right) and \
+    abs(height(pRoot.left) - height(pRoot.right)) <=1
+            
 ```
 
