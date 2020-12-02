@@ -642,21 +642,44 @@ System.out.println(chars);    //abc  println(char[])特殊处理，遍历输出�
 * 内部类
 * 注意
   * 静态方法内，不能使用this、super 关键字
+  * 子类和父类同一个方法都用static修饰，不构成重写
 
 ### final
 
 * 类
   * 无法被继承（比如String/System/StringBuffer）
 * 变量
-  * 属性：常量
+  * final在对变量进行修饰时一定要赋值，且不允许被再次赋值
+  * 属性(成员变量)：常量
     * 修改位置：
       * 显示初始化
       * 代码块初始化
       * 构造器中初始化
   * 局部变量：常量
-    * 形参：方法体内只能使用形参，不允许进行修改
+    * 形参：方法体内的形参只能读，不允许修改
 * 方法
   * 无法被重写（比如Object 的getClass()）
+
+### abstract
+
+* 抽象类
+  * 无法实例化
+  * 有构造器，用于子类对象实例化
+
+* 抽象方法
+
+  * 只有方法声明，无方法体
+
+* 不能修饰 属性、构造器；
+
+* 不能修饰私有方法、静态方法、final方法；
+
+* 不能修饰final类；
+
+  
+
+* 包含抽象方法的类一定是抽象类，反之抽象类不一定有抽象方法
+* 子类重写了父类中所有抽象方法（包括父类及祖先类的抽象方法），则此子类可实例化；否则，子类也是一个抽象类，需要abstract修饰；
 
 ## 类
 
@@ -714,6 +737,59 @@ System.out.println(chars);    //abc  println(char[])特殊处理，遍历输出�
 
 * 创建的对象，没有显示的赋值给一个变量名，即为匿名对象
 * 匿名对象只能使用一次
+
+```java
+//有名字的对象
+Student s = new Student();
+		
+//匿名对象:
+new Student()
+```
+
+#### 匿名类
+
+```java
+public class OuterClass {
+    public static void main(String[] args) {
+        /**
+         *     object1 = new Type(parameterList) {
+         *          // 匿名类代码
+         *     };
+         */
+
+
+        //创建匿名子类的对象
+        //1. 通过继承MyPerson类，创建的匿名类
+        MyPerson p2 = new MyPerson() {
+            @Override
+            public void shout() {
+                System.out.println("shout");
+            }
+        };
+        p2.shout();
+
+        //2. 通过实现接口，创建的匿名类
+        Human p3 = new Human() {
+            @Override
+            public void eat() {
+                System.out.println("eat");
+            }
+        };
+        p3.eat();
+    }
+}
+
+
+abstract class MyPerson {
+    public abstract void shout();
+}
+
+interface Human {
+    void eat();
+}
+```
+
+
 
 #### 方法重载
 
@@ -871,6 +947,8 @@ public class Main {
   * 可以对对象进行初始化（初始化在构造之前）
   * 可以调用静态或非静态结构
 
+### 内部类
+
 ### 包装类
 
 * 数值型包装类 均继承自 Number类
@@ -926,7 +1004,7 @@ public class Main {
   * 坏处：线程不安全
 
 ```java
-//饿汉式
+//饿汉式1
 public class Singleton {
     private static Singleton instance = new Singleton();
     private Singleton(){
@@ -937,6 +1015,20 @@ public class Singleton {
     }
     
 }
+// 饿汉式2 ： 静态代码块
+public class Singleton {
+    private static Singleton instance = null;
+    private Singleton(){
+    }
+		static {
+      instance = new Singleton();
+    }
+    public static Singleton getInstance(){
+        return instance;
+    }
+    
+}
+
 
 //懒汉式
 public class Singleton {
@@ -955,5 +1047,182 @@ public class Singleton {
 
 
 
+### 模板方法
+
+```java
+package test.alltests;
+
+// TemplateTest.class
+public class TemplateTest {
+    public static void main(String[] args) {
+        Template t = new SubTemplate();
+        System.out.println(t.spendTime());
+    }
+}
 
 
+// Template.class
+public abstract class Template {
+    public long spendTime(){
+        long strat = System.currentTimeMillis();
+        code();
+        long end = System.currentTimeMillis();
+        return end - strat;
+    }
+
+    public abstract void code();
+
+}
+
+
+class SubTemplate extends Template {
+		//求质数
+    @Override
+    public void code() {
+        for (int i = 2; i < 1000; i++) {
+            boolean flag = true;
+            for (int j = 2; j <= Math.sqrt(i); j++) {
+                if (i % j == 0){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                System.out.print(i + " ");
+            }
+        }
+    }
+}
+```
+
+### 代理模式
+
+```java
+package test.alltests;
+
+public class NetworkTest {
+
+    public static void main(String[] args) {
+        Server server = new Server();
+        ProxyServer proxyServer = new ProxyServer(server);
+        proxyServer.browse();
+
+    }
+
+}
+
+interface Network {
+    void browse();
+}
+
+class Server implements Network {
+
+    @Override
+    public void browse() {
+        System.out.println("server 访问网路");
+    }
+}
+
+class ProxyServer implements Network {
+    private Network network;
+
+    public ProxyServer(Network network) {
+        this.network = network;
+    }
+
+    public void check() {
+        System.out.println("联网之前检查网络");
+    }
+
+    @Override
+    public void browse() {
+        check();
+        network.browse();
+    }
+}
+```
+
+### 工厂模式
+
+* 简单工厂模式
+* 工厂方法模式
+* 抽象工厂模式
+
+
+
+
+
+## 接口
+
+**interface**
+
+### ~~构造器~~：
+
+* 接口中不可以有构造器，所以无法实例化
+
+### 方法：
+
+* 都是public
+* 1.7及之前
+  * 方法是隐式抽象的,接口中的方法会被隐式的指定为 **public abstract**
+  * 方法是不能在接口中实现的，只能由实现接口的类来实现接口中的方法
+  * 不能含有静态方法
+* 1.8及之后
+  * 可以定义静态方法
+    * 该静态方法只能通过接口调用，无法通过实现类 或实现类实例 调用
+  * 可以定义默认方法
+    * 可以通过实现类对象调用
+    * 父类优先：
+      * 如果父类实现一个方法，同时接口中也实现了同名同参方法，而子类未重写该方法：则子类会调用父类的方法
+        * 子类可以通过 super.fun() 调用父类方法
+        * 子类可以通过  interface.super.fun() 调用接口方法
+    * 接口冲突：
+      * 如果类实现多个接口，且多个接口有同名同参方法，而子类未重写该方法：则编译报错
+
+### 变量
+
+* 接口中变量全部会被隐式的指定为 **public static final** 变量（并且只能是 public，用 private 修饰会报编译错误）
+
+* 代码块
+  * 不能含有静态代码块
+
+### 类
+
+* 类实现接口，支持多实现
+* 如果接口中的方法都实现了，则该类可实例化；
+* 如果j接口中的方法有未实现，则该类为抽象类；
+
+```java
+... class 类名称 implements 接口名称[, 其他接口名称, 其他接口名称..., ...] ...
+```
+
+### 特性
+
+* 接口是隐式抽象的，当声明一个接口的时候，不必使用**abstract**关键字。
+* 接口中每一个方法也是隐式抽象的，声明时同样不需要**abstract**关键字。
+* 接口和接口之间可以多继承
+
+```java
+[可见度] interface 接口名称 [extends 其他的接口名,其他的接口名,其他的接口名] {
+```
+
+* 接口中的方法都是公有的
+
+```java
+interface{}{
+	public static final int SPEED = 1;
+	int SPEED = 2;  //书写时可以省略  public static final
+  
+	public abstract void fly();
+	void wing(); // 书写时可省略  public abstract
+}
+```
+
+* JDK1.7之前
+  *  可定义全局常量
+  * 可定义抽象方法
+* JDK1.8以后
+  * 可定义全局常量
+  * 可定义抽象方法
+  * 可定义静态方法
+  * 可定义默认方法
