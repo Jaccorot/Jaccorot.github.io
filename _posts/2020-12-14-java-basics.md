@@ -949,6 +949,62 @@ public class Main {
 
 ### 内部类
 
+* 成员内部类
+  * 作为成员
+    * 可以调用外部类的结构    外部类.this.属性   or   外部类.this.方法
+    * 可以被static修饰
+    * 可以被4种权限修饰符修饰
+  * 作为类
+    * 类内可以定义属性、方法、构造器，可以被继承
+    * 可以被final修饰，标识此类不能被继承；
+    * 可以被abstract修饰
+* 局部内部类（方法内、代码块内、构造器内）
+* 匿名内部类
+* 静态内部类
+
+```java
+public static void main(String[] args){
+    //创建静态的内部类成员
+    Person.Dog dog = new Person.Dog();
+    dog.show();
+    
+    //创建非静态的内部类成员
+    Person person = new Person();
+    Person.bird bird =  person.new Bird();
+    bird.sing();
+    
+    //内部类调用外部类结构
+    外部类.this.属性； // 无重名时直接调用  属性  即可
+    外部类.this.方法(); // 无重名时直接调用  方法  即可
+    
+    //使用情景
+    // 返回一个实现了Comparable接口的类的对象
+    public Comparable getComparable(){
+        // 方式一：
+        //创建一个实现了Comparable接口的类：局部内部类
+        class MyComparable implements Comparable{
+            @Override
+            public int compareTo(Object o){
+                return 0;
+            }
+        }
+        return new MyComparable();
+        
+        
+         //方式二：
+    	return new Comparable(){
+            @Override
+            public int compareTo(Object o){
+                return 0;
+        	}
+    	}
+    }
+   
+}
+```
+
+
+
 ### 包装类
 
 * 数值型包装类 均继承自 Number类
