@@ -679,7 +679,13 @@ System.out.println(chars);    //abc  println(char[])特殊处理，遍历输出�
   
 
 * 包含抽象方法的类一定是抽象类，反之抽象类不一定有抽象方法
+
 * 子类重写了父类中所有抽象方法（包括父类及祖先类的抽象方法），则此子类可实例化；否则，子类也是一个抽象类，需要abstract修饰；
+
+### throw and throws
+
+* throw 生成异常对象环节，表示抛出一个异常类的对象，声明在方法体内
+* throws 捕获处理异常环节，属于异常处理的一种方式，声明在方法的声明中
 
 ## 类
 
@@ -847,7 +853,7 @@ public static void main(String[] args) {
     * 父类被重写的方法返回值类型是基本数据类型，子类必须是相同的基本数据类型
     * 父类被重写的方法返回值类型是A类型，子类可以是A类 或A类的子类
   * 异常
-    * 父类被重写的方法返回值类型A，子类抛出的异常是A类或 A类的子类（大于等于子类重写方法）
+    * 父类被重写的方法异常类型A，子类抛出的异常是A类或 A类的子类（父类大于等于子类重写方法）
   * 静态方法不允许被覆盖
     * 子类和父类中的同名同参数方法，要么都声明非static （考虑重写）
     * 要么都声明为static(不是重写)
@@ -958,9 +964,38 @@ public class Main {
     * 类内可以定义属性、方法、构造器，可以被继承
     * 可以被final修饰，标识此类不能被继承；
     * 可以被abstract修饰
+  
 * 局部内部类（方法内、代码块内、构造器内）
+
+  * 在局部内部类的方法(比如show)中，如果调用局部内部类所声明方法(比如method)的局部变量（比如num），则要求该变量为final
+    * JDK1.7及之前版本必须显式声明
+    * JDK1.8及之后可以不声明，默认为final
+
+  ```java
+  public class InnerTest {
+      
+      public void method(){
+          int num = 10;
+          class AA{
+              public void show(){
+                  System.out.println(num);
+              }
+          }
+      }
+  }
+  
+  ```
+
+  
+
 * 匿名内部类
+
 * 静态内部类
+
+* 字节码文件名：
+
+  * 成员内部类：外部类名$内部类名.class
+  * 局部内部类：外部类名$数字+内部类名.class
 
 ```java
 public static void main(String[] args){
@@ -1230,8 +1265,8 @@ class ProxyServer implements Network {
     * 可以通过实现类对象调用
     * 父类优先：
       * 如果父类实现一个方法，同时接口中也实现了同名同参方法，而子类未重写该方法：则子类会调用父类的方法
-        * 子类可以通过 super.fun() 调用父类方法
-        * 子类可以通过  interface.super.fun() 调用接口方法
+        * 子类可以通过 super.func() 调用父类方法
+        * 子类可以通过  interface.super.func() 调用接口方法
     * 接口冲突：
       * 如果类实现多个接口，且多个接口有同名同参方法，而子类未重写该方法：则编译报错
 
@@ -1283,6 +1318,7 @@ interface{}{
   * 可定义静态方法
   * 可定义默认方法
 
+<<<<<<< HEAD
 # 多线程
 
 ![image-20201205182527893](../images/all/jvm-easy.png)
@@ -1319,10 +1355,65 @@ class MyThread2 implements Runnable {
     @Override
     public void run() {
         System.out.println("in MyThread2");
+=======
+## 异常
+
+* Throwable
+  * Error
+  * Exception
+    * 受检异常（Checked|编译时异常)
+      * IOException
+        * FileNotFoundException
+    * 非受检异常（Unchecked| 运行时异常RuntimeException）
+      * NullPointerException
+      * ArrayIndexOutOfBoundsException
+
+![img](../images/all/exception.png)
+
+​```java
+try{
+  // 程序代码
+}catch(异常类型1 异常的变量名1){
+  // 程序代码
+}catch(异常类型2 异常的变量名2){
+  // 程序代码
+}catch(异常类型3 e)
+  
+}finally{
+  // 程序代码
+}
+
+
+public class className {
+  public void deposit(double amount) throws RemoteException,IOException {
+    // Method implementation
+    throw new RemoteException();
+  }
+  //Remainder of class definition
+}
+
+
+public class ExceptionTest {
+    public static void main(String[] args) {
+        try {
+            devide();
+        } catch (ArithmeticException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException("除数不能为0");
+        }
+    }
+
+    public static void devide() throws ArithmeticException {
+        int i = 1;
+        System.out.println(i / 0);
+
+        //不执行
+        System.out.println("error.....");
     }
 }
 ```
 
+<<<<<<< HEAD
 
 
 ## 常用方法
@@ -1387,3 +1478,71 @@ class MyThread2 implements Runnable {
 # 网络编程
 
 # 反射
+相关要点
+
+* 异常捕获从上到下，父类写到子类下面
+
+* 异常相关内容
+
+  * e.printStackTrace();
+  * e.getMessage()
+
+* try中定义的变量，在try结构外面无法使用
+
+* finally 代码块中的内容始终会被执行，无论程序是否出现异常的原因就是，**编译器会将 finally 块中的代码复制两份并分别添加在 try 和 catch 的后面**。
+
+  * try中有return，finally中有return
+
+    * 最终返回return的值，不返回try中的return
+
+  * try中有return，但是finally改变 return 的值
+
+    * 在 return 语句返回之前，虚拟机会将待返回的值压入操作数栈，等待返回，即使 finally 语句块对 i 进行了修改，但是待返回的值已经确实的存在于操作数栈中了，所以不会影响程序返回结果。
+
+      ```java
+      public static void main(String[] args){
+          int result = test3();
+          System.out.println(result);
+      }
+      
+      public static int test3(){
+          //try 语句块中有 return 语句时的整体执行顺序
+          int i = 1;
+          try{
+              i++;
+              System.out.println("try block, i = "+i);
+              return i;
+          }catch(Exception e){
+              i ++;
+              System.out.println("catch block i = "+i);
+              return i;
+          }finally{
+              i = 10;
+              System.out.println("finally block i = "+i);
+          }
+      }
+      
+      //try block, i = 2
+      //finally block i = 10
+      //2
+      ```
+
+      
+
+* 如果一个方法**没有捕获一个检查性异常**，那么该方法**必须使用 throws 关键字来声明**
+
+* 约定：尽量在某个集中的位置进行统一处理，不要到处的使用 try-catch，否则会使得代码结构混乱不堪
+
+* 自定义异常
+
+  * 继承现有异常
+    * 所有异常都必须是 Throwable 的子类。
+    * 如果希望写一个检查性异常类，则需要继承 Exception 类。
+    * 如果写一个运行时异常类，那么需要继承 RuntimeException 
+  * 提供序列版本号（serialVersionUID）
+  * 重载构造器
+
+  ```
+  
+  
+  ```
