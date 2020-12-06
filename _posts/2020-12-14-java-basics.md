@@ -1282,3 +1282,108 @@ interface{}{
   * 可定义抽象方法
   * 可定义静态方法
   * 可定义默认方法
+
+# 多线程
+
+![image-20201205182527893](../images/all/jvm-easy.png)
+
+* 每个线程，拥有自己独立的栈、程序计数器；
+* 多个线程，共享同一个进程中的结构：方法区、堆；
+* 一个Java程序，至少有三个线程：main主线程；gc 垃圾回收线程；异常处理线程；
+
+## 创建
+
+1. 继承Thread类，重写run方法；通过子类实例对象的start() 启动；
+2. 实现Runnable接口，实现run方法；将实例对象传给Thread类的带参构造器生成Thread实例，通过 Thread实例的start()方法启动；
+
+```java
+public class ThreadTest {
+    public static void main(String[] args) {
+        MyThread myThread = new MyThread();
+        myThread.start();
+
+        MyThread2 myThread2 = new MyThread2();
+        Thread thread2 = new Thread(myThread2);
+        thread2.start();
+    }
+}
+
+class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("in MyThread");
+    }
+}
+
+class MyThread2 implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("in MyThread2");
+    }
+}
+```
+
+
+
+## 常用方法
+
+### 基本方法
+
+* start()
+* run()
+* currentThread()  
+  * 静态方法，返回当前线程
+* getName()
+* setName()
+* yield()   
+  * 释放当前CPU
+* join()  
+  * 在线程A中调用线程B的join()方法，此时线程A进入阻塞状态，线程B执行完后，线程A才会结束阻塞状态
+* sleep(long millitime)
+  * 静态方法，单位毫秒
+* stop() 
+  * depreciate，结束线程
+* isAlive()
+  * 判断当前线程是否存活
+* setDaemon(true)
+  * 守护线程
+
+### 调度方法
+
+* 同优先级的线程组成先进先出队列，使用时间片策略
+* 对高优先级，使用优先调度的抢占式策略  
+  * 高优先级只是高概率抢占到执行权，而非绝对
+  * 并不意味着高优先级线程执行完毕后，才会开始执行低优先级的线程
+
+#### 优先级方法
+
+* getPriority()
+* setPriority(int newPriority)  
+
+#### 优先级等级
+
+* MAX_PRIORITY: 10
+* MIN_PRIORITY:   1
+* NORM_PRIORITY:  5
+
+## 线程生命周期
+
+* 新建NEW
+* 就绪WAITING/ TIMED_WAITING
+* 运行RUNNABLE
+* 阻塞BLOCKED
+* 死亡TERMINATED
+
+# 常用类
+
+# 枚举类& 注解
+
+# 集合
+
+# 泛型
+
+# IO流
+
+# 网络编程
+
+# 反射
