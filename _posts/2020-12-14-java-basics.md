@@ -1413,7 +1413,6 @@ public class ExceptionTest {
 }
 ```
 
-<<<<<<< HEAD
 
 
 ## 常用方法
