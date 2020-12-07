@@ -480,11 +480,6 @@ System.out.println(chars);    //abc  println(char[])特殊处理，遍历输出�
         System.out.println(Arrays.binarySearch(arr, -1));
 ```
 
-### 异常
-
-* ArrayIndexOutOfBoundsException
-* NullPointerException
-
 # 面向对象
 
 ## 三大特性
@@ -1134,6 +1129,40 @@ public class Singleton {
         return instance;
     }
 }
+
+// 线程安全:同步优化1
+public class Singleton {
+    private static Singleton instance = null;
+    private Singleton() {
+    }
+
+    public static Singleton getInstance() {
+      	synchronized(Singleton.class){
+        	if (instance == null) {
+              instance = new Singleton();
+          }
+          return instance;
+        }
+    }
+}
+
+// 线程安全:同步优化2,效率相对更高
+public class Singleton {
+    private static Singleton instance = null;
+    private Singleton() {
+    }
+
+    public static Singleton getInstance() {
+        if (instance == null){
+          synchronized(Singleton.class){
+            if (instance == null) {
+                instance = new Singleton();
+            }
+          }
+       return instance;
+       }
+    }
+}
 ```
 
 
@@ -1318,7 +1347,133 @@ interface{}{
   * 可定义静态方法
   * 可定义默认方法
 
-<<<<<<< HEAD
+## 异常
+
+### Throwable
+
+* Error
+* Exception
+  * 受检异常（Checked|编译时异常)
+    * IOException
+      * FileNotFoundException
+  * 非受检异常（Unchecked| 运行时异常RuntimeException）
+    * NullPointerException
+    * ArrayIndexOutOfBoundsException
+
+![img](../images/all/exception.png)
+
+
+
+```java
+try{
+  // 程序代码
+}catch(异常类型1 异常的变量名1){
+  // 程序代码
+}catch(异常类型2 异常的变量名2){
+  // 程序代码
+}catch(异常类型3 e){
+  
+}finally{
+  // 程序代码
+}
+
+
+public class className {
+  public void deposit(double amount) throws RemoteException,IOException {
+    // Method implementation
+    throw new RemoteException();
+  }
+  //Remainder of class definition
+}
+
+
+public class ExceptionTest {
+    public static void main(String[] args) {
+        try {
+            devide();
+        } catch (ArithmeticException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException("除数不能为0");
+        }
+    }
+
+    public static void devide() throws ArithmeticException {
+        int i = 1;
+        System.out.println(i / 0);
+    
+        //不执行
+        System.out.println("error.....");
+    }
+
+}
+```
+
+### 相关要点
+
+* 异常捕获从上到下，父类写到子类下面
+
+* 异常相关内容
+
+  * e.printStackTrace();
+  * e.getMessage()
+
+* try中定义的变量，在try结构外面无法使用
+
+* finally 代码块中的内容始终会被执行，无论程序是否出现异常的原因就是，**编译器会将 finally 块中的代码复制两份并分别添加在 try 和 catch 的后面**。
+
+  * try中有return，finally中有return
+
+    * 最终返回return的值，不返回try中的return
+
+  * try中有return，但是finally改变 return 的值
+
+    * 在 return 语句返回之前，虚拟机会将待返回的值压入操作数栈，等待返回，即使 finally 语句块对 i 进行了修改，但是待返回的值已经确实的存在于操作数栈中了，所以不会影响程序返回结果。
+
+      ```java
+       public static void main(String[] args){
+          int result = test3();
+          System.out.println(result);
+      }
+      
+      public static int test3(){
+          //try 语句块中有 return 语句时的整体执行顺序
+          int i = 1;
+          try{
+              i++;
+              System.out.println("try block, i = "+i);
+              return i;
+          }catch(Exception e){
+              i ++;
+              System.out.println("catch block i = "+i);
+              return i;
+          }finally{
+              i = 10;
+              System.out.println("finally block i = "+i);
+          }
+      }
+      
+      //try block, i = 2
+      //finally block i = 10
+      //2
+      ```
+
+   ```
+  
+   ```
+
+* 如果一个方法**没有捕获一个检查性异常**，那么该方法**必须使用 throws 关键字来声明**
+
+* 约定：尽量在某个集中的位置进行统一处理，不要到处的使用 try-catch，否则会使得代码结构混乱不堪
+
+* 自定义异常
+
+  * 继承现有异常
+    * 所有异常都必须是 Throwable 的子类。
+    * 如果希望写一个检查性异常类，则需要继承 Exception 类。
+    * 如果写一个运行时异常类，那么需要继承 RuntimeException 
+  * 提供序列版本号（serialVersionUID）
+  * 重载构造器
+
 # 多线程
 
 ![image-20201205182527893](../images/all/jvm-easy.png)
@@ -1355,66 +1510,7 @@ class MyThread2 implements Runnable {
     @Override
     public void run() {
         System.out.println("in MyThread2");
-=======
-## 异常
-
-* Throwable
-  * Error
-  * Exception
-    * 受检异常（Checked|编译时异常)
-      * IOException
-        * FileNotFoundException
-    * 非受检异常（Unchecked| 运行时异常RuntimeException）
-      * NullPointerException
-      * ArrayIndexOutOfBoundsException
-
-![img](../images/all/exception.png)
-
-​```java
-try{
-  // 程序代码
-}catch(异常类型1 异常的变量名1){
-  // 程序代码
-}catch(异常类型2 异常的变量名2){
-  // 程序代码
-}catch(异常类型3 e)
-  
-}finally{
-  // 程序代码
-}
-
-
-public class className {
-  public void deposit(double amount) throws RemoteException,IOException {
-    // Method implementation
-    throw new RemoteException();
-  }
-  //Remainder of class definition
-}
-
-
-public class ExceptionTest {
-    public static void main(String[] args) {
-        try {
-            devide();
-        } catch (ArithmeticException e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException("除数不能为0");
-        }
-    }
-
-    public static void devide() throws ArithmeticException {
-        int i = 1;
-        System.out.println(i / 0);
-
-        //不执行
-        System.out.println("error.....");
-    }
-}
 ```
-
-
-
 ## 常用方法
 
 ### 基本方法
@@ -1464,6 +1560,38 @@ public class ExceptionTest {
 * 阻塞BLOCKED
 * 死亡TERMINATED
 
+![image-20201207101215811](../images/all/thread-lifetime.png)
+
+## 线程同步
+
+* 同步代码块
+
+  ```java
+  synchronized (同步监视器){
+      //需要同步的方法
+  }
+  
+  //同步监视器，即锁，任何一个类的对象都可以是锁
+  // synchronized(this){}    当前实例对象
+  //通过实现runnable接口创建多线程，可以考虑使用this当锁
+  
+  // synchronnized(current_class_name.class){}   当前类对象
+  ```
+
+* 同步方法
+
+  ```java
+  [修饰符] [static] synchronized 返回值 funName(){
+   // 需要同步的内容  
+  }
+  
+  // 非static方法的锁为this （当前实例对象）
+  // static方法的锁为类对象（类本身）
+  
+  ```
+
+  
+
 # 常用类
 
 # 枚举类& 注解
@@ -1477,71 +1605,6 @@ public class ExceptionTest {
 # 网络编程
 
 # 反射
-相关要点
+```
 
-* 异常捕获从上到下，父类写到子类下面
-
-* 异常相关内容
-
-  * e.printStackTrace();
-  * e.getMessage()
-
-* try中定义的变量，在try结构外面无法使用
-
-* finally 代码块中的内容始终会被执行，无论程序是否出现异常的原因就是，**编译器会将 finally 块中的代码复制两份并分别添加在 try 和 catch 的后面**。
-
-  * try中有return，finally中有return
-
-    * 最终返回return的值，不返回try中的return
-
-  * try中有return，但是finally改变 return 的值
-
-    * 在 return 语句返回之前，虚拟机会将待返回的值压入操作数栈，等待返回，即使 finally 语句块对 i 进行了修改，但是待返回的值已经确实的存在于操作数栈中了，所以不会影响程序返回结果。
-
-      ```java
-      public static void main(String[] args){
-          int result = test3();
-          System.out.println(result);
-      }
-      
-      public static int test3(){
-          //try 语句块中有 return 语句时的整体执行顺序
-          int i = 1;
-          try{
-              i++;
-              System.out.println("try block, i = "+i);
-              return i;
-          }catch(Exception e){
-              i ++;
-              System.out.println("catch block i = "+i);
-              return i;
-          }finally{
-              i = 10;
-              System.out.println("finally block i = "+i);
-          }
-      }
-      
-      //try block, i = 2
-      //finally block i = 10
-      //2
-      ```
-
-      
-
-* 如果一个方法**没有捕获一个检查性异常**，那么该方法**必须使用 throws 关键字来声明**
-
-* 约定：尽量在某个集中的位置进行统一处理，不要到处的使用 try-catch，否则会使得代码结构混乱不堪
-
-* 自定义异常
-
-  * 继承现有异常
-    * 所有异常都必须是 Throwable 的子类。
-    * 如果希望写一个检查性异常类，则需要继承 Exception 类。
-    * 如果写一个运行时异常类，那么需要继承 RuntimeException 
-  * 提供序列版本号（serialVersionUID）
-  * 重载构造器
-
-  ```
-  
-  
-  ```
+```
