@@ -1564,7 +1564,12 @@ class MyThread2 implements Runnable {
 
 ## 线程同步
 
-* 同步代码块
+* synchronize：
+
+  1. 隐式锁，出了作用于自动的释放同步监视器
+  2. 支持代码块和方法
+
+  * 同步代码块
 
   ```java
   synchronized (同步监视器){
@@ -1578,7 +1583,7 @@ class MyThread2 implements Runnable {
   // synchronnized(current_class_name.class){}   当前类对象
   ```
 
-* 同步方法
+  * 同步方法
 
   ```java
   [修饰符] [static] synchronized 返回值 funName(){
@@ -1590,7 +1595,102 @@ class MyThread2 implements Runnable {
   
   ```
 
+* Lock锁（ JDK 5.0 新增）
+
+  1. 显式锁，需要手动开启和结束同步，自由灵活
+  2. 只支持代码块
+  3. 相对synchronize,Lock将耗费更少的时间调度线程，性能更好；且更易扩展（提供更多子类）
+
+  * ReentrantLock：
+
+  ```java
+  class Ticket implements Runnable {
   
+      private int tickets = 100;
+      ReentrantLock lock = new ReentrantLock();
+  
+      @Override
+      public void run() {
+          while (true) {
+              try {
+                  lock.lock();
+                  if (tickets > 0) {
+                      System.out.println(Thread.currentThread().getName() + " ticket left: " + tickets);
+                      tickets--;
+                  } else {
+                      break;
+                  }
+              }finally {
+                  lock.unlock();
+              }
+          }
+      }
+  }
+  ```
+
+## 线程通信
+
+* 同步代码块/同步方法  中线程通信
+
+  wait/notify/notifyall
+
+  * wait
+    * 当前线程进入阻塞状态，并释放同步监视器
+  * notify
+    * 唤醒某个处于wait状态的线程。如果有多个则唤醒优先级高的
+  * notifyall
+    * 唤醒所有处于wait状态的线程。
+  * 调用者必须是同步代码中的同步监视器，否则会报IllegalMonitorStateException
+
+```java
+class Number implements Runnable {
+    private int num = 1;
+    Object o1 = new Object();
+
+    @Override
+    public void run() {
+        while (true) {
+            synchronized (o1) {
+//            synchronized (o1) {
+              // notify();
+                o1.notify();
+                if (num <= 100) {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(Thread.currentThread().getName() + " : " + num);
+                    num++;
+                    try {
+                      // wait();
+                        o1.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+}
+```
+
+### sleep 和 wait  的异同
+
+* 相同
+  * 都会让当前线程处于阻塞状态
+* 不同
+  * 声明位置不同
+    * Thread类的sleep
+    * Object类的wait
+  * 调用的前提不同
+    * sleep在任何需要的场景调用
+    * wait必须在同步代码块或同步方法中调用
+  * 同步监视器处理不同
+    * sleep不会释放当前的同步监视器
+    * wait会释放同步监视器（锁）
 
 # 常用类
 
