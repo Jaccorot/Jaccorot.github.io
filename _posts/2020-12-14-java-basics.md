@@ -1485,7 +1485,47 @@ public class ExceptionTest {
 ## 创建
 
 1. 继承Thread类，重写run方法；通过子类实例对象的start() 启动；
+
 2. 实现Runnable接口，实现run方法；将实例对象传给Thread类的带参构造器生成Thread实例，通过 Thread实例的start()方法启动；
+
+3. 实现callable接口，重写call方法（jdk5.0+）；
+
+   > 1. 创建一个实现Callable的实现类；
+   > 2. 实现call方法，将此线程需要执行的操作声明在call()中；
+   > 3. 创建Callable接口的实现类对象；
+   > 4. 将此Callable接口实现类的对象传递到FutureTask构造器中，创建FutureTask对象
+   > 5. 将FutureTask的对象作为参数传递到Thread类的构造器中，创建Thread对象，并调用start
+   > 6. 获取Callable中call方法的返回值；
+
+   * FutureTask 是Future接口的唯一实现类
+     * 实现了Runnable，可以作为Runnable被线程执行；
+     * 实现了Future，可以作为Future得到Callable的返回值
+   * 优点：
+     * 可以有返回值
+     * 可以抛出异常，被外面捕获或获取异常信息；
+     * 支持泛型
+
+4. 使用线程池
+
+   * ExecutorService：线程池接口，常见子类ThreadPoolExecutor
+     * void execute(Runnable command)
+       * 执行任务，没有返回值，一般用来执行Runnable
+     * <T> Future<T> submit(Callable<T> task):
+       * 执行任务，有返回值时，一般用来执行Callable
+   * Executors：工具类、线程池的工厂类，用于创建并返回不同类型的线程池
+     * Executors.newCachedThreadPool():创建一个可根据需要创建新线程的线程池；
+     * Executors.newFixedThreadPool(n):创建一个可重用固定线程数的线程池；
+     * Executors.newSingleThreadExecutor():创建一个只有一个线程的线程池；
+     * Executors.newScheduledThreadPool(n):创建一个线程池，可安排在给定延迟后运行命令或定期地执行
+
+   * 好处
+     * 提高响应速度：减少创建的时间
+     * 降低资源消耗：重复利用线程池中的资源，不需要每次都重新创建
+     * 便于线程管理
+       * corePoolSize：核心池的大小
+       * maximumPoolSize：最大线程数
+       * keepAliveTime：线程没有任务时最多保持多长时间后会终止
+   * 
 
 ```java
 public class ThreadTest {
@@ -1496,6 +1536,24 @@ public class ThreadTest {
         MyThread2 myThread2 = new MyThread2();
         Thread thread2 = new Thread(myThread2);
         thread2.start();
+        
+        
+        //3. 创建Callable接口的实现类对象；
+        MyThread3 myThread3 = new MyThread3();
+        //4. 将此Callable接口实现类的对象传递到FutureTask构造器中，创建FutureTask对象
+        FutureTask futureTask = new FutureTask(myThread3);
+        // 5. 将FutureTask的对象作为参数传递到Thread类的构造器中，创建Thread对象，并调用start
+        Thread thread3 = new Thread(futureTask);
+        thred3.start();
+        try {
+            // 6. 获取Callable中call方法的返回值；
+            Object sum = futureTask.get();
+            System.out.println("总和为：" + sum);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 }
 
@@ -1510,6 +1568,56 @@ class MyThread2 implements Runnable {
     @Override
     public void run() {
         System.out.println("in MyThread2");
+    }
+}
+
+//1. 创建一个实现Callable的实现类；
+class MyThread3 implements Callable {
+    //2. 实现call方法，将此线程需要执行的操作声明在call()中；
+    @Override
+    public Object call() throws Exception {
+        int sum = 0;
+        for (int i = 1; i < 100; i++) {
+            if (i % 2 == 0) {
+                System.out.println(i);
+                sum += i;
+            }
+        }
+        return sum;
+    }
+
+}
+
+
+
+
+//线程池
+public class MyThreadPool {
+    public static void main(String[] args) {
+        ExecutorService service = Executors.newFixedThreadPool(5);
+        service.execute(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(Thread.currentThread().getName() + "runnable");
+            }
+        });
+        NumThread2 numThread2 = new NumThread2();
+        service.submit(numThread2);
+        service.shutdown();
+    }
+
+}
+
+class NumThread2 implements Callable {
+    //2. 实现call方法，将此线程需要执行的操作声明在call()中；
+    @Override
+    public Object call() throws Exception {
+        int sum = 0;
+        System.out.println(Thread.currentThread().getName() + "runnable");
+        return sum;
+    }
+
+}
 ```
 ## 常用方法
 
