@@ -1802,6 +1802,401 @@ class Number implements Runnable {
 
 # 常用类
 
+## String
+
+* String声明
+
+  * 为final，不可被继承
+
+* String实现
+
+  * 实现了serializable接口：表示可以被序列化；
+  * 实现了Comparable接口：表示可以比较大小
+
+* String内部
+
+  * 定义了final char[] value用于存储字符串数据
+
+* String代表不可变的字符序列
+
+  * 当对字符串重新赋值时，需要重新指定内存区域赋值，不能使用原有value进行赋值
+  * 当对现有字符串进行连接操作时，也需要重新赋值；
+  * 当对现有字符串进行修改操作时，也需要重新赋值；
+
+* String赋值
+
+  * 通过”字面量的形式“给字符串赋值，此时声明在  方法区的 ”字符串常量池“中；
+    * 字符串常量池不会存储相等的内容，重复的会复用，引用地址相同；
+    * 字符串常量池JVM存放位置
+      * jdk 1.6 : 字符串常量池在方法区（永久区）
+      * jdk 1.7：字符串常量池在堆空间
+      * jdk 1.8：字符串常量池在方法区（元空间）
+  * 通过”new + 构造器“给字符串赋值，此时声明在堆空间中；
+    * 堆空间对象可以重复，多个对象引用地址不同；
+  * String s = new String("abc");  一共创建多几个对象？
+    * 2个
+      * 一个是堆空间中new的对象；
+      * 一个是char[]对应的常量池中的数据”abc“;
+
+  ```java
+  String s1 = "abc";  //字面量的定义方式
+  String s2 = "abc";
+  s1 == s2  // true  
+    
+    
+  Person p1 = new Person("Tom", 12);
+  Person p2 = new Person("Tom", 12);
+  
+  p1.name.equals(p2.name)  // true
+  p1.name == p2.name  // true   p1和p2的name都是通过字面量的方式定义，引用自方法区
+  
+  ```
+
+  * String 拼接
+    * 字面量与字面量的拼接结果还是类似字面量赋值：存在方法区常量池；
+    * 变量与字面量、变量与变量的拼接结果，存在堆空间；
+    * 如果拼接的结果调用了”intern“方法，则返回结果在常量池中
+
+  ```java
+  String s1 = "javaEE";
+  String s2 = "hadoop";
+  
+  String s3 = "javaEEhadoop";
+  String s4 = "javaEE" + "hadoop";
+  String s5 = s1 + "hadoop";
+  String s6 = "javaEE" + s2;
+  String s7 = s1 + s2;
+  
+  s3 == s4;  //true
+  s3 == s5;  //false 
+  s3 == s6;  //false
+  s3 == s7;  //false
+  s5 == s6;  //false
+  s5 == s7;  //false
+  s6 == s7;  //false
+  
+  String s8 = s5.intern();
+  s3 == s8 // true
+  ```
+
+  
+
+* String的创建
+
+```java
+String s00 = "strs";
+
+//本质上是this.value = new char[0];
+String s1 = new String();
+
+//this.value = original.value
+String s2 = new String(String original);
+
+//this.value = Arrays.copyof(value, value.length);
+String s3 = new String(char[] a);
+String s4 = new String(char[] a, int startIndex, int count);
+```
+
+* String 常用方法
+  * int length()
+    *  返回字符串的长度
+  * char charAt(int index)
+    * 返回某所引出的字符
+  * boolean isEmpty()
+    * 判断是否是空字符串
+  * String toLowerCase()
+    * 将String中的所有字符转换为小写，并生成副本
+  * String toUpperCase()
+  * String trim()
+    * 返回字符串的副本，忽略前导空白和尾部空白
+  * boolean equals(Object obj)
+    * 比较字符串的内容是否相同
+  * boolean equalsIgnoreCase(String anotherString)
+    * 忽略大小写比较
+  * String concat(String str)
+    * 将制定字符串连接到字符串的结尾，等价于用”+“
+  * int compareTo(String anotherString)
+    * 比较两个字符串的大小
+  * String substring(int beginIndex)
+    * 返回一个新的字符串，它是此字符串的从beginIndex开始截取
+  * String substring(int beginIndex, int endIndex)
+    * 返回一个新的字符串，它是此字符串的从beginIndex开始截取，从endIndex（不包含）截止
+  * boolean endsWith(String suffix)
+    * 测试此字符串是否以指定的后缀结束
+  * boolean startsWith(String prefix)
+    * 测试此字符串是否以指定的前缀开始
+  * boolean startsWith(String prefix, int toffset)
+    * 测试此字符串从指定索引开始的子字符串，是否以指定前缀开始
+  * boolean contains（CharSequence s)
+    * 当且仅当此字符串包含指定的char值序列时，返回true
+  * int indexOf(String str)
+    * 返回指定子字符串在此字符串第一次出现处的索引,未找到-1
+  * int indexOf(String str, int fromIndex)
+    * 返回指定子字符串在此字符串从指定索引开始，第一次出现处的索引,未找到-1
+  * int lastIndexOf(String str)
+    * 从后往前
+  * int lastIndexOf(String str, int fromIndex)
+    * 返回指定子字符串在此字符串从指定索引开始，从后往前，第一次出现处的索引,未找到-1
+  * String replace(char oldChar, char newChar)
+    * 返回一个新的字符串，它是通过用newChar替换此字符串中出现的所有oldChar得到的
+  * String replace(CharSequence target, CharSequence replacement)
+    * 使用指定的字面值替换序列，替换此字符串所有匹配字面值目标序列的子字符串
+  * String replaceAll(String regex, String replacement)
+    * 使用给定的replacement替换此字符串所有匹配给定的正则表达式的子字符串
+  * String replaceFirst(String regex, String replacement)
+    * 使用给定的replacement替换此字符串匹配给定的正则表达式中第一个子字符串
+  * boolean matches(String regex)
+    * 此字符串是否匹配给定的正则表达式
+  * String[] split(String regex)
+    * 根据给定正则表达式的匹配拆分此字符串
+  * String[] split(String regex,int limit)
+    * 根据给定正则表达式的匹配拆分此字符串，最多不超过limit次；如果超过了，剩下的全部放到最后一个元素中
+
+```java
+String s1 = "helloworld";
+s1.charAt(100);   // Exception ：StirngIndexOutOfBoundsException
+
+s1.lastIndexOf("o"); // 6
+s1.lastIndexOf("o", 5); //4
+```
+
+* String与其他数据结构转换
+  * 基本数据类型、包装类
+    * String --> 基本数据类型、包装类
+      * 调用包装类的静态方法：parseXxx(str)
+    * 基本数据类型、包装类 --> String
+      * 调用String重载的valueOf方法
+  * 字符数组
+    * String -- > char[]
+      * 调用String方法：String.toCharArray()
+    * char[] -->String
+      * 调用String构造器：new String(char[])
+  * 字节数组
+    * 编码： 字符串->字节
+    * 解码：字节->字符串
+    * String --> byte[]：编码
+      * 调用String方法： 
+        * getBytes() ：默认字符集进行转换
+        * getBytes(String charsetName) ：指定字符集，进行转换（编码）
+    * byte[] -->String：解码
+      * 调用String构造器：
+        * new String(byte[])
+        * new String(byte[] , charsetName)
+
+```java
+String str1 = "123"
+int num = Integer.parseInt(str1); 
+String str2 = String.valueOf(num);
+
+char[] charArray = str1.toCharArray(); //["1","2","3"]
+String str3 = new String(charArray);
+
+byte[] bytes = str1.getBytes();  // [49, 50, 51]
+byte[] bytes2 = str1.getBytes("gbk");  // [49, 50, 51], 非ASCII会不一样
+
+String str4 = new String(bytes); // "123"
+String str5 = new String(bytes2,"gbk"); // "123"
+```
+
+### String/StringBuffer/StringBuilder
+
+相同：底层都使用char[] 存储
+
+效率排序：  StringBuilder  >  StringBuffer   > String
+
+* String
+
+  * 不可变的字符序列
+
+  * final 修饰，不可继承
+
+    
+
+* StringBuffer
+
+  * 无final修饰
+  * 可变的字符序列
+  * 线程安全（synchronized），效率低
+  * 初始化大小：capacity 16： new char[16]
+  * 扩容：默认扩容至“原长度 * 2 + 2”，并将原数组的内容复制到新数组中
+
+* StringBuilder
+
+  * 无final修饰
+  * 可变的字符序列
+  * 线程不安全，效率高 （JDK 1.5新增）
+  * 初始化及扩容逻辑同StringBuffer
+    * 初始化大小：capacity 16： new char[16]
+    * 扩容：默认扩容至“原长度 * 2 + 2”，并将原数组的内容复制到新数组中
+
+#### 常用方法
+
+* append(xxx)
+  * 插入其他类型会转化成String
+* delete(int start, int end)
+  * 删除指定位置的内容
+* replace(int start, int end, String str)
+  * 把[start, end)的内容替换
+* insert(int offset, xxx)
+  * insert(1, false)   // 会插入"false"字符串
+* reverse
+* indexOf
+* substring
+* length
+* charAt
+* setCharAt
+* toString
+
+```java
+StringBuffer sb = new StringBuffer();
+sb.append(1);
+sb.append("1");
+sb.append(false);
+System.out.println(sb);
+System.out.println(sb.length());
+
+// 11false
+// 7
+```
+
+## 时间
+
+* #### java.lang.System
+
+  * currentTimeMillis()   # 时间戳
+
+```java
+long curTime = System.currentTimeMillis();
+System.out.println(curTime);  
+// 1615608205700
+```
+
+* #### java.util.Date 
+
+  * 实例化
+    * new Date()    # 创建当前时间的对象
+    * new Date(long timestamp)  #创建指定时间戳的对象
+  * 常用方法
+    * date.toString()  # 当前对象的年月日时分秒
+    * date.getTime()  # 当前对象的时间戳
+
+```java
+Date date1 = new Date();
+System.out.println(date1.toString());  // 当前年月日时分秒
+System.out.println(date1.getTime());    // 时间戳
+// Sat Mar 13 12:03:25 CST 2021
+// 1615608205700
+
+Date date2 = new Date(1615608340539L);
+System.out.println(date2);
+// Sat Mar 13 12:05:40 CST 2021
+```
+
+
+
+* #### java.sql.Date  
+
+  * java.util.Date的子类，对应着数据库中的Date类型
+  * 实例化
+    * new Date(long timestamp)  #创建指定时间戳的对象
+  * 常用方法
+    * 转换
+      * sql -> util
+        * java.sql.Date是java.util.Date的子类，所以直接通过多态赋值就可以将java.sql.Date 转化为java.util.Date
+      * util -> sql
+        * 通过util的getTime，再进行创建
+
+  ```java
+  java.sql.Date date3 = new java.sql.Date(1615608340539L);
+  System.out.println(date3.toString());
+  System.out.println(date3.getTime());
+  // 2021-03-13  
+  // 1615608340539
+  
+  // sql -> util
+  java.util.Date date4 = new java.sql.Date(1615608340539L);
+  
+  // util -> sql
+  java.util.Date date5 = new java.util.Date();
+  java.sql.Date date6 = new java.sql.Date(date5.getTime());
+  ```
+
+  
+
+* #### java.text.SimpleDateFormat
+
+  * 对Date类型进行格式化和解析
+
+  * 实例化
+
+    * new SimpleDateFormat(String formatStyle)
+
+  * 常用方法
+
+    * 格式化： 日期Date ->字符串
+      * simpleDateFormat.format(date);
+    * 解析： 字符换->日期Date
+      * simpleDateFormat.parse(formattedDate)
+
+    ```java
+    Date date = new Date();
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    String formattedDate = simpleDateFormat.format(date);
+    System.out.println(formattedDate);
+    
+    Date date2 = simpleDateFormat.parse(formattedDate);
+    System.out.println(date2);
+    ```
+
+* #### java.util.Calendar
+
+  * 抽象类
+
+  * 实例化
+
+    * 调用其静态方法
+      * Calendar.getInstance();
+    * 创建子类其子类对象（不常用，静态方法底层也是调用该方法）
+      * new GregorianCalendar();
+
+  * 常用方法
+
+    * get(int field)
+      * Calendar.DAY_OF_YEAR
+      * Calendar.DAY_OF_MONTH
+      * Calendar.DAY_OF_WEEK
+        * 周日是1 ，周一是2 。。。。周六为7
+      * Calendar.MONTH
+        * 月份从0开始，1月为0， 。。。。 12月为11
+    * set(int field, int i)
+    * add(int field, int i)
+    * getTime()   
+      * 返回Date对象
+    * setTime(Date  date)   
+
+    ```java
+    Calendar calendar1 = Calendar.getInstance();
+    int days = calendar1.get(Calendar.DAY_OF_YEAR);
+    calendar1.get(Calendar.DAY_OF_MONTH); 
+    calendar1.get(Calendar.DAY_OF_WEEK);  // 周日是1 ，周一是2 。。。。周六为7
+    calendar1.get(Calendar.MONTH); // 月份从0开始，1月为0， 。。。。 12月为11
+    
+    callendar1.set(Calendar.DAY_OF_MONTH, 22)
+      
+    calendar1.add(Calendar.DAY_OF_MONTH, 2)
+      
+    Date date = calendar1.getTime();
+    
+    Date date2 = new Date();
+    calendar1.setTime(date2);
+    ```
+
+    
+
+    
+
+
+
 # 枚举类& 注解
 
 # 集合
