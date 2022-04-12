@@ -83,5 +83,37 @@ RubyGems在墙外面，国内很难访问到，需要换gem源，具体参照[ru
         $rvm list known # 查看ruby所有版本
         $rvm install 2.4.2  # 将ruby升级到2.4.2
 
+3. 依赖报错：
+> in `require': cannot load such file -- webrick (LoadError)
+
+       /.rvm/gems/ruby-3.1.1/gems/jekyll-4.0.1/lib/jekyll/commands/serve/servlet.rb:3:in `require': cannot load such file -- webrick (LoadError)
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/jekyll-4.0.1/lib/jekyll/commands/serve/servlet.rb:3:in `<top (required)>'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/jekyll-4.0.1/lib/jekyll/commands/serve.rb:179:in `require_relative'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/jekyll-4.0.1/lib/jekyll/commands/serve.rb:179:in `setup'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/jekyll-4.0.1/lib/jekyll/commands/serve.rb:100:in `process'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/jekyll-4.0.1/lib/jekyll/command.rb:89:in `block in process_with_graceful_fail'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/jekyll-4.0.1/lib/jekyll/command.rb:89:in `each'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/jekyll-4.0.1/lib/jekyll/command.rb:89:in `process_with_graceful_fail'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/jekyll-4.0.1/lib/jekyll/commands/serve.rb:86:in `block (2 levels) in init_with_program'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/mercenary-0.3.6/lib/mercenary/command.rb:220:in `block in execute'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/mercenary-0.3.6/lib/mercenary/command.rb:220:in `each'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/mercenary-0.3.6/lib/mercenary/command.rb:220:in `execute'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/mercenary-0.3.6/lib/mercenary/program.rb:42:in `go'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/mercenary-0.3.6/lib/mercenary.rb:19:in `program'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/gems/jekyll-4.0.1/exe/jekyll:15:in `<top (required)>'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/bin/jekyll:25:in `load'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/bin/jekyll:25:in `<main>'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/bin/ruby_executable_hooks:22:in `eval'
+        from /Users/caozijun/.rvm/gems/ruby-3.1.1/bin/ruby_executable_hooks:22:in `<main>'
+
+从 Ruby 3.0 开始 webrick 已经不在绑定到 Ruby 中了，请参考链接： Ruby 3.0.0 Released 中的说明。
+
+webrick 需要手动进行添加。
+
+添加的命令为：
+
+ bundle add webrick
+
+后就可以解决这个问题了。
 
 # [快去看看最终效果吧](http://jaccorot.github.io)
